@@ -23,9 +23,9 @@ namespace WindowsFormsApplication2
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            var p = new Process();
-            p.StartInfo.FileName = "http://www.ig2i.fr";
-            p.Start();
+            //var p = new Process();
+            //p.StartInfo.FileName = "http://www.ig2i.fr";
+            //p.Start();
         }
 
         #endregion Private Methods

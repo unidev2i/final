@@ -63,7 +63,8 @@
             this.ClientSize = new System.Drawing.Size(639, 366);
             this.Controls.Add(this.chart1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.ShowIcon = false;
+            this.Text = "Fenêtre Zoomée";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.ResumeLayout(false);
