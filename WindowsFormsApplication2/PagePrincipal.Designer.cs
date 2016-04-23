@@ -354,8 +354,10 @@
             series3.IsValueShownAsLabel = true;
             series3.Legend = "Legend1";
             series3.Name = "Series1";
+            series4.BorderWidth = 2;
             series4.ChartArea = "ChartArea1";
             series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Radar;
+            series4.Color = System.Drawing.Color.Red;
             series4.Legend = "Legend1";
             series4.Name = "Series2";
             this.chart3.Series.Add(series3);

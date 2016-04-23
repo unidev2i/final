@@ -8,15 +8,39 @@ namespace WindowsFormsApplication2
     {
         #region Public Constructors
 
-        public Form1(Chart a)
+        public Form1(Chart a, int type)
         {
             InitializeComponent();
-            chart1.Series[0].Points.Clear();
-            chart1.Series[0].ChartType = a.Series[0].ChartType;
-
-            foreach (var b in a.Series[0].Points)
+            if (type == 0)
             {
-                chart1.Series[0].Points.Add(b);
+                chart1.Series[0].Points.Clear();
+                chart1.Series[0].ChartType = a.Series[0].ChartType;
+
+                foreach (var b in a.Series[0].Points)
+                {
+                    chart1.Series[0].Points.Add(b);
+                }
+            }
+            if(type==1)
+            {
+                chart1.Series[0].Points.Clear();
+                chart1.Series[0].ChartType = a.Series[0].ChartType;
+
+                foreach (var b in a.Series[0].Points)
+                {
+                    chart1.Series[0].Points.Add(b);
+                }
+
+                chart1.Series.Add("Series2");
+                chart1.Series[1]["BorderWidth"] = "2";
+                chart1.Series[1]["RadarDrawingStyle"] = "Line";
+                chart1.Series[1]["Color"] = "Red";
+                chart1.Series[1].Points.Clear();
+                chart1.Series[1].ChartType = a.Series[1].ChartType;
+                foreach (var c in a.Series[1].Points)
+                {
+                    chart1.Series[1].Points.Add(c);
+                }     
             }
         }
 
@@ -29,5 +53,10 @@ namespace WindowsFormsApplication2
         }
 
         #endregion Private Methods
+
+        private void chart1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

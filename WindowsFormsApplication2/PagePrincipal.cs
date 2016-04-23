@@ -227,9 +227,11 @@ namespace WindowsFormsApplication2
                 }
                 var w = Database.GetWthRequest(promo);
                 var z = Database.GetWebClasseRequest(promo);
+                var y = Database.GetWebMax();
 
                 drawGraph(w);
                 drawWeb(z,0);
+                drawWeb(y, 1);
                 chart1.Visible = true;
                 chart2.Visible = true;
                 chart3.Visible = true;
@@ -264,7 +266,7 @@ namespace WindowsFormsApplication2
 
         private void chart2_Click(object sender, EventArgs e)
         {
-            new Form1(chart2).Show();
+            new Form1(chart2,0).Show();
         }
 
         private void ajouterToolStripMenuItem2_Click(object sender, EventArgs e)
@@ -315,7 +317,7 @@ namespace WindowsFormsApplication2
 
         private void chart3_Click(object sender, EventArgs e)
         {
-            new Form1(chart3).Show();
+            new Form1(chart3,1).Show();
         }
 
         private void exporterToolStripMenuItem_Click(object sender, EventArgs e)
