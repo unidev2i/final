@@ -217,7 +217,13 @@ namespace WindowsFormsApplication2
                 chart2.Visible = true;
                 chart3.Visible = true;
             }
-            catch { }
+            catch {
+
+                comboBox3.Items.Clear();
+                foreach (var a in Database.GetListRequest("classe", new[] { "Promotion" }))
+                    comboBox3.Items.Add(a);
+            }
+       
             
         }
 
