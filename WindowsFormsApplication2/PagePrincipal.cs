@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms.DataVisualization.Charting;
 using MySql.Data.MySqlClient;
 using System.Diagnostics;
+using System.Threading;
 
 namespace WindowsFormsApplication2
 {
@@ -326,13 +327,19 @@ namespace WindowsFormsApplication2
                 Process.Start(sgInfo);
                 this.Close();
             }
-            
     }
 
         private void sélectionnerLeDossierToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Form OptionTP = new OptionTP();
             OptionTP.ShowDialog();
+        }
+
+        private void importerTPToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var a = new ImportTp();
+            var b = new Thread(new ThreadStart(a.Go));
+            b.Start();
         }
     }
 }

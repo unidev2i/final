@@ -314,6 +314,7 @@
             this.importerTPToolStripMenuItem.Name = "importerTPToolStripMenuItem";
             this.importerTPToolStripMenuItem.Size = new System.Drawing.Size(94, 23);
             this.importerTPToolStripMenuItem.Text = "Importer TP";
+            this.importerTPToolStripMenuItem.Click += new System.EventHandler(this.importerTPToolStripMenuItem_Click);
             // 
             // chart1
             // 

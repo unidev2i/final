@@ -12,7 +12,7 @@ namespace WindowsFormsApplication2
     {
         private readonly string _rootFolder;
 
-        public ImportTp(string rootFolder)
+        public ImportTp()
         {
             _rootFolder = WindowsFormsApplication2.Properties.Settings.Default.repoPath;
         }
@@ -32,7 +32,7 @@ namespace WindowsFormsApplication2
             foreach (var a in CheckPromo())
             {
                 // pour tous les dossiers qui ont étés modifiés
-                MessageBox.Show("C:\\Users\\geekg\\Desktop\\PDF\\2017" + Environment.NewLine + (_rootFolder + @"\" + a));
+                MessageBox.Show($"C:\\Users\\geekg\\Desktop\\PDF\\2017{Environment.NewLine}{(_rootFolder + @"\" + a)}");
                 //foreach (var file in Directory.GetFiles("C:\\Users\\geekg\\Desktop\\PDF\\2017"))
                 foreach (var file in Directory.GetFiles(_rootFolder+@"\"+a))
                 {
