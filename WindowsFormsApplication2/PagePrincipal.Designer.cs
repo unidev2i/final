@@ -444,11 +444,11 @@
         private System.Windows.Forms.DataVisualization.Charting.Chart chart3;
         private System.Windows.Forms.ToolStripMenuItem ajouterUnPDFToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sélectionnerLeDossierToolStripMenuItem;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ToolStripMenuItem compteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem changerDeLoginToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem changerDeMotDePasseToolStripMenuItem;
         private System.Windows.Forms.Button button1;
         public System.Windows.Forms.ProgressBar progressBar1;
+        public System.Windows.Forms.Label label4;
     }
 }
