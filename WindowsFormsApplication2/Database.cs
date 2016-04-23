@@ -97,7 +97,7 @@ namespace WindowsFormsApplication2
 
             while (r.Read())
             {
-                var toReturn = columns.Aggregate(string.Empty, (current, c) => current + r[c].ToString() + "");
+                var toReturn = columns.Aggregate(string.Empty, (current, c) => current + r[c].ToString() + " ");
                 retour.Add(toReturn);
             }
             r.Close();

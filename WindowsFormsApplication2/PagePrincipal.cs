@@ -196,24 +196,29 @@ namespace WindowsFormsApplication2
             var i = 0;
             string promo = comboBox3.Text;
             string[] eleve = new String[1000];
-            eleve=Database.RecupEleveAvecPromo(promo);
-            comboBox1.Items.Clear();
-            if (eleve != null)
-            {
-                for (i = 0; i < eleve.Length && eleve[i]!=null; i++)
+            try 
+            { 
+                eleve = Database.RecupEleveAvecPromo(promo);
+                comboBox1.Items.Clear();
+                if (eleve != null)
                 {
-                    //MessageBox.Show(eleve[i]);
-                    comboBox1.Items.Add(eleve[i]);
+                    for (i = 0; i < eleve.Length && eleve[i] != null; i++)
+                    {
+                        //MessageBox.Show(eleve[i]);
+                        comboBox1.Items.Add(eleve[i]);
+                    }
                 }
+                var w = Database.GetWthRequest(promo);
+                var z = Database.GetWebClasseRequest(promo);
+
+                drawGraph(w);
+                drawWeb(z);
+                chart1.Visible = true;
+                chart2.Visible = true;
+                chart3.Visible = true;
             }
-            var w = Database.GetWthRequest(promo);
-            var z = Database.GetWebClasseRequest(promo);
- 
-            drawGraph(w);
-            drawWeb(z);
-            chart1.Visible = true;
-            chart2.Visible = true;
-            chart3.Visible = true;
+            catch { }
+            
         }
 
         private void ajouterToolStripMenuItem1_Click(object sender, EventArgs e)
