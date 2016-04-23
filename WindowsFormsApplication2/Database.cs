@@ -574,10 +574,10 @@ namespace WindowsFormsApplication2
             return null;
         }
 
-        public static void AjouteEleve(string nom, string prenom, string idClasse)
+        public static void AjouteEleve(string nom, string prenom, string promo)
         {
-            MessageBox.Show("INSERT INTO " + TAB_ELEVE + " (Nom, Prenom, idClasse) VALUES (\"" + nom + "\", \"" + prenom + "\", \"" + idClasse + "\")");
-            ("INSERT INTO "+TAB_ELEVE+" (Nom, Prenom, idClasse) VALUES (\""+nom+"\", \""+prenom+"\", \"" + idClasse + "\")").SimpleRequest();
+            MessageBox.Show("INSERT INTO " + TAB_ELEVE + " (Nom, Prenom, idClasse) VALUES (\"" + nom + "\", \"" + prenom + "\", (SELECT idClasse FROM classe WHERE Promotion = \"" + promo + "\"))");
+            ("INSERT INTO "+TAB_ELEVE+" (Nom, Prenom, idClasse) VALUES (\""+nom+"\", \""+prenom+"\", (SELECT idClasse FROM classe WHERE Promotion = \""+promo+"\"))").SimpleRequest();
         }
 
         public static void AddTp(string tpname, string idEleve, string idCorrecteur)
@@ -585,6 +585,32 @@ namespace WindowsFormsApplication2
             MessageBox.Show("INSERT INTO " + TAB_TP + "(idTp, idEleve, idcorrecteur) VALUES (\"" + tpname + "\", \"" +
                             idEleve + "\", \"" + idCorrecteur + "\")");
             ("INSERT INTO " + TAB_TP + "(idTp, idEleve, idcorrecteur) VALUES (\"" + tpname + "\", \"" + idEleve + "\", \"" + idCorrecteur + "\")").SimpleRequest();
+        }
+
+        public static string GetLastPdfId()
+        {
+            var retour = string.Empty;
+            var req = "SELECT max(idPdf) FROM tp";
+            var command = _conn.CreateCommand();
+            command.CommandText = req;
+            var r = command.ExecuteReader();
+
+            while (r.Read())
+            {
+                retour = r["max(idPdf)"].ToString();
+            }
+
+            r.Close();
+            return retour;
+        }
+
+        public static void AddNote(string idPdf, string idCompetence, string Note, string maxNote)
+        {
+            MessageBox.Show("INSERT INTO note (idPdf, idCompetence, note, maxnote) VALUES (\"" + idPdf + "\", \"" +
+                            idCompetence +
+                            "\", \"" + Note + "\", \"" + maxNote + "\")");
+            ("INSERT INTO note (idPdf, idCompetence, note, maxnote) VALUES (\"" + idPdf + "\", \"" + idCompetence +
+             "\", \"" + Note + "\", \""+maxNote+"\")").SimpleRequest();
         }
 
 

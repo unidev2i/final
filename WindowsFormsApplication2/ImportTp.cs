@@ -12,6 +12,7 @@ namespace WindowsFormsApplication2
     {
         private static readonly string _rootFolder;
         private static string _errMssg = string.Empty;
+        private static string _logMssg = string.Empty;
 
         static ImportTp()
         {
@@ -23,7 +24,7 @@ namespace WindowsFormsApplication2
             var request0 = Directory.GetDirectories(_rootFolder).Aggregate(string.Empty, (current, a) => current + ("\""+Crypt.CreateMd5ForFolder(a) + "\","));
 
             var retour1 = Database.GetListRequest("classe", new[] { "promotion" },
-                String.Format("`hash` NOT IN ({0}0)", request0));
+                String.Format("`hashClasse` NOT IN ({0}0)", request0));
             var retour2 = retour1.ToList();
 
             return retour2;
@@ -31,17 +32,16 @@ namespace WindowsFormsApplication2
 
         public static void Go()
         {
+            _logMssg += "Traitement des dossiers démarré." + Environment.NewLine;
             var cp = CheckPromo();
-            Program.ac.graphic.setBarmax(cp.Count);
-            foreach (var a in cp)
+
+            Program.ac.graphic.progressBar1.Invoke(
+                (MethodInvoker)(() => Program.ac.graphic.progressBar1.Visible = true));
+            Program.ac.graphic.progressBar1.Invoke(
+                (MethodInvoker) (() => Program.ac.graphic.progressBar1.Maximum = cp.Count));
+
+            foreach (var dir in cp.Select(a => _rootFolder + "\\" + a.Remove(a.Length-1, 1)))
             {
-                // MessageBox.Show(a);
-                // pour tous les dossiers qui ont étés modifiés
-
-                var dir = _rootFolder + "\\" + a.Remove(a.Length-1, 1);
-                // var dic = "C:\\Users\\geekg\\Desktop\\PDF\\2017";
-
-                //foreach (var file in Directory.GetFiles("C:\\Users\\geekg\\Desktop\\PDF\\2017"))
                 if (!Directory.Exists(dir))
                 {
                     var dialogResult = MessageBox.Show(
@@ -50,25 +50,74 @@ namespace WindowsFormsApplication2
                             dir), @"ATTENTION !", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                     if (dialogResult == DialogResult.Yes)
                     {
-                        // TODO : supprimer promo
+                        Database.DeletePromo(dir.Split('\\')[dir.Split('\\').Length-1]);
                     }
                     else if (dialogResult == DialogResult.No)
                     {
-                        // do nothing
+                        _errMssg += "Le dossier " + dir +
+                                    " n'existe pas, mais il n'a pas été supprimé de la base de données." + Environment.NewLine;
                     }
+                    goto fin;
                 }
+
+                var a = Database.GetHashList(dir.Split('\\')[dir.Split('\\').Length - 1]);
+
                 foreach (var file in Directory.GetFiles(dir))
                 {
-                    if (!file.Contains(".pdf"))
+                    var cr = Crypt.Md5(file);
+                    if (a.Contains(cr))
                     {
-                        _errMssg += file + " : Le fichier est au mauvais format. Attendu : pdf"+Environment.NewLine;
+                        a.Remove(cr);
                     }
-                    var infos = GetInfos(file);
-                    if (infos == null) continue;
-                    var value = GetValue(file);
+                    else
+                    {
+                        // TODO : AJOUTER LE FICHIER DANS LA BASE DE DONNEES
+                        TraiterFichier(file);
+                    }
                 }
-                Program.ac.graphic.setBarval(Program.ac.graphic.getBarValue()+1);
+                var k = a.Aggregate(string.Empty, (current, other) => current + (other + ", "));
+
+                fin:
+                Program.ac.graphic.progressBar1.Invoke(
+                    (MethodInvoker)(() => Program.ac.graphic.progressBar1.Value++));
             }
+            Program.ac.graphic.progressBar1.Invoke(
+                 (MethodInvoker)(() => Program.ac.graphic.progressBar1.Visible = false));
+        }
+
+        private static void TraiterFichier(string file)
+        {
+            if (!file.Contains(".pdf"))
+            {
+                _errMssg += file + " : Le fichier est au mauvais format. Attendu : pdf" + Environment.NewLine;
+            }
+            var infos = GetInfos(file);
+            if (infos == null) return;
+            var value = GetValue(file);
+
+            var idEleve = Database.GetIdEleveFromName(infos.Item1, infos.Item2);
+
+            if ( idEleve == null)
+            {
+                Database.AjouteEleve(infos.Item1, infos.Item2, file.Split('\\')[file.Split('\\').Length-2]);
+                idEleve = Database.GetIdEleveFromName(infos.Item1, infos.Item2);
+            }
+
+            // TODO : AJOUTER LE TP
+
+            // ETAPE 1 : Créer le TP
+            var mdr = Program.ac.graphic.login;
+            Database.AddTp(infos.Item3, idEleve, mdr);
+
+            // ETAPE 1' : Recup id tp
+            var idPdf = Database.GetLastPdfId();
+
+            // ETAPE 2 : Insérer note
+            foreach (var a in value)
+            {
+                Database.AddNote(idPdf, a.Item1, a.Item2, a.Item3);
+            }
+
         }
 
         private static Tuple<string, string, string> GetInfos(string file)
@@ -94,7 +143,7 @@ namespace WindowsFormsApplication2
             }
         }
 
-        private static List<Tuple<string, string>> GetValue(string file)
+        private static List<Tuple<string, string, string>> GetValue(string file)
         {
             if (!file.Contains(".pdf"))
                 return null;
@@ -102,8 +151,6 @@ namespace WindowsFormsApplication2
             var b = file;
             var a = new pdfHandler(ref b);
             var c = (string)a.readPDF();
-
-            //MessageBox.Show(c);
 
             const string strRegex = @"C[0-9].[0-9]";
             var myRegex = new Regex(strRegex, RegexOptions.None);
@@ -118,7 +165,7 @@ namespace WindowsFormsApplication2
 
             var mark = (from Match l in myRegex2.Matches(sortie) select l.Value).ToList();
 
-            var tempReturn = new List<Tuple<string, string>>();
+            var tempReturn = new List<Tuple<string, string, string>>();
 
             for (var index = 0; index < mark.Count; index++)
             {
@@ -131,12 +178,9 @@ namespace WindowsFormsApplication2
             for (var index = 0; index < skills.Count; index++)
             {
                 var z = mark[index] + "->" + maxMark[index];
-                //MessageBox.Show(z+"aa");
-
-                tempReturn.Add(new Tuple<string, string>(mark[index], maxMark[index]));
+                tempReturn.Add(new Tuple<string, string, string>(skills[index], mark[index], maxMark[index]));
             }
 
-            // Ceci est tellement horrible MDR
             a = null;
             GC.Collect();
             return tempReturn;
