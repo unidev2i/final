@@ -141,8 +141,9 @@ namespace WindowsFormsApplication2
             var y = Database.GetWebMax();
 
             drawGraph(w);
-            drawWeb(z);
-            //drawWeb(y);
+            drawWeb(z,0);
+            drawWeb(y, 1);
+            //drawWebMax(y);
             chart1.Visible = true;
             chart2.Visible = true;
             chart3.Visible = true;
@@ -151,12 +152,13 @@ namespace WindowsFormsApplication2
 
         }
 
-        private void drawWeb(List<Tuple<string, float>> aTuples)
+        private void drawWeb(List<Tuple<string, float>> aTuples,int serie)
         {
-            chart3.Series[0].Points.Clear();
+            chart3.Series[1]["RadarDrawingStyle"] = "Line";
+            chart3.Series[serie].Points.Clear();
             foreach (var a in aTuples)
             {
-                var p = chart3.Series[0].Points.Add(a.Item2);
+                var p = chart3.Series[serie].Points.Add(a.Item2);
                 p.Name = a.Item1;
                 p.AxisLabel = a.Item1;
                 //p.Label = a.Item1;
@@ -166,6 +168,7 @@ namespace WindowsFormsApplication2
         private void drawWebMax(List<Tuple<string, float>> aTuples)
         {
             chart3.Series[1].Points.Clear();
+            chart3.Series[1]["RadarDrawingStyle"] = "Line";
             foreach (var a in aTuples)
             {
                 var p = chart3.Series[1].Points.Add(a.Item2);
@@ -226,7 +229,7 @@ namespace WindowsFormsApplication2
                 var z = Database.GetWebClasseRequest(promo);
 
                 drawGraph(w);
-                drawWeb(z);
+                drawWeb(z,0);
                 chart1.Visible = true;
                 chart2.Visible = true;
                 chart3.Visible = true;
@@ -371,6 +374,8 @@ namespace WindowsFormsApplication2
         {
             MaximumCP MaxCPForm = new MaximumCP();
             MaxCPForm.ShowDialog();
+            var y = Database.GetWebMax();
+            drawWeb(y, 1);
         }
 
         public void setBarval(int val)
