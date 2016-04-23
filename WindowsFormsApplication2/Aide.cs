@@ -29,5 +29,10 @@ namespace WindowsFormsApplication2
         }
 
         #endregion Private Methods
+
+        private void Aide_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
