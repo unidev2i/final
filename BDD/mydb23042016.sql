@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 23, 2016 at 06:42 PM
+-- Generation Time: Apr 23, 2016 at 07:38 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -80,18 +80,19 @@ CREATE TABLE IF NOT EXISTS `eleve` (
   `idClasse` tinyint(3) unsigned NOT NULL,
   PRIMARY KEY (`idEleve`),
   KEY `idClasse` (`idClasse`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='une ligne pour chaque élève' AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='une ligne pour chaque élève' AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `eleve`
 --
 
 INSERT INTO `eleve` (`idEleve`, `Nom`, `Prenom`, `idClasse`) VALUES
-(2, 'Daniel', 'jack', 1),
 (4, 'dumortier', 'paul', 1),
 (5, 'Duzamel', 'baptiste', 1),
 (6, 'Morand', 'maxence', 2),
-(7, 'Vancayzeele', 'matthieu', 2);
+(7, 'Vancayzeele', 'matthieu', 2),
+(8, 'jean', 'jean', 1),
+(9, 'jacques', 'jean', 1);
 
 -- --------------------------------------------------------
 
@@ -183,11 +184,8 @@ CREATE TABLE IF NOT EXISTS `tp` (
 --
 
 INSERT INTO `tp` (`idPdf`, `idTp`, `idEleve`, `idcorrecteur`, `date`, `hashTp`) VALUES
-(5, '2', 2, 1, '2016-04-19 17:38:42', '1'),
 (10, 'TP5', 4, 1, '2016-04-19 17:38:44', '2'),
 (11, 'TP5', 5, 1, '2016-04-19 17:38:48', '4'),
-(12, 'TP carross', 2, 4, '2016-04-19 17:38:50', '3'),
-(13, 'TP verrin', 2, 3, '2016-04-19 17:38:52', '8'),
 (14, 'TP portail', 4, 2, '2016-04-19 17:39:01', '11'),
 (15, 'TP portail', 5, 2, '2016-04-19 17:39:05', '15'),
 (16, 'TP portail', 6, 2, '2016-04-22 17:42:32', '18'),
@@ -233,7 +231,7 @@ INSERT INTO `user` (`idUser`, `Login`, `Password`, `Admin`) VALUES
 -- Constraints for table `eleve`
 --
 ALTER TABLE `eleve`
-  ADD CONSTRAINT `fk_classe_eleve` FOREIGN KEY (`idClasse`) REFERENCES `classe` (`idClasse`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_classe_eleve` FOREIGN KEY (`idClasse`) REFERENCES `classe` (`idClasse`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `note`
