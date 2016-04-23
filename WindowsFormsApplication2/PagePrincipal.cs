@@ -22,7 +22,7 @@ namespace WindowsFormsApplication2
         Suppresion_User graphic3=null;
         DelEleve graphic7 = null;
         DataGridDebug dataForm;
-        string login;
+        public string login;
         
 
         public PagePrincipal()
