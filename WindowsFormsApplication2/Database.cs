@@ -557,6 +557,36 @@ namespace WindowsFormsApplication2
             return a;
         }
 
+        public static void DeleteTp(string hashes)
+        {
+            MessageBox.Show("DELETE FROM " + TAB_TP + " WHERE hashTp IN " + hashes+"0");
+            ("DELETE FROM " + TAB_TP + " WHERE hashTp IN " + hashes+"0").SimpleRequest();
+        }
+
+        public static string GetIdEleveFromName(string nom, string prenom)
+        {
+            string b = "";
+            foreach(var a in GetListRequest(TAB_ELEVE, new []{COL_IDELEVE}, "Nom = \"" + nom + "\" AND Prenom = \"" + prenom + "\""))
+            {
+                b = a;
+                return b;
+            }
+            return null;
+        }
+
+        public static void AjouteEleve(string nom, string prenom, string idClasse)
+        {
+            MessageBox.Show("INSERT INTO " + TAB_ELEVE + " (Nom, Prenom, idClasse) VALUES (\"" + nom + "\", \"" + prenom + "\", \"" + idClasse + "\")");
+            ("INSERT INTO "+TAB_ELEVE+" (Nom, Prenom, idClasse) VALUES (\""+nom+"\", \""+prenom+"\", \"" + idClasse + "\")").SimpleRequest();
+        }
+
+        public static void AddTp(string tpname, string idEleve, string idCorrecteur)
+        {
+            MessageBox.Show("INSERT INTO " + TAB_TP + "(idTp, idEleve, idcorrecteur) VALUES (\"" + tpname + "\", \"" +
+                            idEleve + "\", \"" + idCorrecteur + "\")");
+            ("INSERT INTO " + TAB_TP + "(idTp, idEleve, idcorrecteur) VALUES (\"" + tpname + "\", \"" + idEleve + "\", \"" + idCorrecteur + "\")").SimpleRequest();
+        }
+
 
     }
 }
