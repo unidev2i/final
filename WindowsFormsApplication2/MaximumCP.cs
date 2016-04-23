@@ -24,7 +24,6 @@ namespace WindowsFormsApplication2
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             textBox1.Text = Database.getMaxCP(comboBox1.SelectedItem.ToString());
-            Database.setMaxCP(comboBox1.Text, textBox1.Text);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -40,6 +39,11 @@ namespace WindowsFormsApplication2
         private void button2_Click(object sender, EventArgs e)
         {
             Database.setMaxCP(comboBox1.Text, textBox1.Text);
+        }
+
+        private void comboBox1_SelectedValueChanged(object sender, EventArgs e)
+        {
+            //
         }
     }
 }
