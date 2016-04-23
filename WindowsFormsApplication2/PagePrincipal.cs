@@ -210,7 +210,7 @@ namespace WindowsFormsApplication2
             var z = Database.GetWebClasseRequest(promo);
  
             drawGraph(w);
-            //drawWeb(z);
+            drawWeb(z);
             chart1.Visible = true;
             chart2.Visible = true;
             chart3.Visible = true;

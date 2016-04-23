@@ -249,7 +249,7 @@ namespace WindowsFormsApplication2
             return retour;
         }
 
-        public static List<Tuple<string,float>> GetWebClasseRequest(string idPromo)
+        public static List<Tuple<string,float>> GetWebClasseRequest(string idPromo = "2017")
         {
             var retour = new List<Tuple<string, float>>();
             var req =
