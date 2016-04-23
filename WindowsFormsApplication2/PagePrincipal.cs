@@ -165,18 +165,6 @@ namespace WindowsFormsApplication2
             }
         }
 
-        private void drawWebMax(List<Tuple<string, float>> aTuples)
-        {
-            chart3.Series[1].Points.Clear();
-            chart3.Series[1]["RadarDrawingStyle"] = "Line";
-            foreach (var a in aTuples)
-            {
-                var p = chart3.Series[1].Points.Add(a.Item2);
-                p.Name = a.Item1;
-                p.AxisLabel = a.Item1;
-                p.Label = "Notes Maximums";
-            }
-        }
 
         private void drawGraph(List<Tuple<string, float, int>> tuples)
         {
