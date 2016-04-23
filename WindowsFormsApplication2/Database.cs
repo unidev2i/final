@@ -104,6 +104,7 @@ namespace WindowsFormsApplication2
                 }
                 catch (Exception)
                 {
+                    r.Close();
                     return retour;
                 }
             }
