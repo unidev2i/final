@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -15,6 +16,7 @@ namespace WindowsFormsApplication2
             {
                 chart1.Series[0].Points.Clear();
                 chart1.Series[0].ChartType = a.Series[0].ChartType;
+                chart1.Legends[0].Enabled = true;
 
                 foreach (var b in a.Series[0].Points)
                 {
@@ -34,7 +36,8 @@ namespace WindowsFormsApplication2
                 chart1.Series.Add("Series2");
                 chart1.Series[1]["BorderWidth"] = "2";
                 chart1.Series[1]["RadarDrawingStyle"] = "Line";
-                chart1.Series[1]["Color"] = "Red";
+                chart1.Series[1].Color = Color.Red;
+                chart1.Series[1].BorderWidth = 2;
                 chart1.Series[1].Points.Clear();
                 chart1.Series[1].ChartType = a.Series[1].ChartType;
                 foreach (var c in a.Series[1].Points)

@@ -1,5 +1,5 @@
 -- MySqlBackup.NET 2.0.9.3
--- Dump Time: 2016-04-23 16:17:58
+-- Dump Time: 2016-04-23 18:26:17
 -- --------------------------------------
 -- Server version 5.6.17 MySQL Community Server (GPL)
 
@@ -55,8 +55,13 @@ CREATE TABLE IF NOT EXISTS `competence` (
 /*!40000 ALTER TABLE `competence` DISABLE KEYS */;
 INSERT INTO `competence`(`idCompetence`,`maxEchelle`) VALUES
 ('CP1.1',20),
-('CP1.3',17),
-('CP2.3',14);
+('CP1.2',20),
+('CP1.3',20),
+('CP2.1',20),
+('CP2.2',20),
+('CP2.3',20),
+('CP3.1',20),
+('CP3.3',20);
 /*!40000 ALTER TABLE `competence` ENABLE KEYS */;
 
 -- 
@@ -234,5 +239,5 @@ INSERT INTO `user`(`idUser`,`Login`,`Password`,`Admin`) VALUES
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 
--- Dump completed on 2016-04-23 16:17:59
--- Total time: 0:0:0:0:195 (d:h:m:s:ms)
+-- Dump completed on 2016-04-23 18:26:17
+-- Total time: 0:0:0:0:78 (d:h:m:s:ms)
