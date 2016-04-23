@@ -535,5 +535,11 @@ namespace WindowsFormsApplication2
             }
             return id;
         }
+
+        public static void DeletePromo(string promo)
+        {
+            MessageBox.Show("DELETE FROM " + TAB_CLASSE + " WHERE " + COL_PROMO + " = " + promo);
+            ("DELETE FROM " + TAB_CLASSE + " WHERE " + COL_PROMO + " = " + promo).SimpleRequest();
+        }
     }
 }
