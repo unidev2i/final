@@ -178,7 +178,7 @@ namespace WindowsFormsApplication2
             for (var a = 0; a != array.Count; a++)
             {
                 chart1.Series.Add(new Series(array[a]));
-                //chart1.Series[a]["PointWidth"] = "1.3";
+                chart1.Series[a]["PointWidth"] = "1";
             }
 
             var i = 0;
