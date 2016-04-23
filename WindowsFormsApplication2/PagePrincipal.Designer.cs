@@ -403,7 +403,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "PagePrincipal";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Facebook";
+            this.Text = "PPM : La formation personnalisée";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form3_FormClosing_1);
             this.Load += new System.EventHandler(this.Form3_Load_1);
             this.panel1.ResumeLayout(false);
