@@ -276,9 +276,7 @@ namespace WindowsFormsApplication2
 
         private void ajouterUnPDFToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
-            var a = new ImportTp();
-            var b = new Thread(new ThreadStart(a.Go));
+            var b = new Thread(new ThreadStart(ImportTp.Go));
             b.Start();
         }
 
@@ -365,8 +363,7 @@ namespace WindowsFormsApplication2
 
         private void importerTPToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var a = new ImportTp();
-            var b = new Thread(new ThreadStart(a.Go));
+            var b = new Thread(new ThreadStart(ImportTp.Go));
             b.Start();
         }
 
@@ -374,6 +371,21 @@ namespace WindowsFormsApplication2
         {
             MaximumCP MaxCPForm = new MaximumCP();
             MaxCPForm.ShowDialog();
+        }
+
+        public void setBarval(int val)
+        {
+            progressBar1.Value = val;
+        }
+
+        public void setBarmax(int max)
+        {
+            progressBar1.Maximum = max;
+        }
+
+        public int getBarValue()
+        {
+            return progressBar1.Value;
         }
     }
 }

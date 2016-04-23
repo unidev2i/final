@@ -7,7 +7,7 @@ namespace WindowsFormsApplication2
     public partial class AssistantConnexion : Form
     {
         Aide apropos = null;
-        PagePrincipal graphic = null;
+        public PagePrincipal graphic = null;
         Inscription graphic2 = null;
 
         public AssistantConnexion()

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -8,6 +9,8 @@ namespace WindowsFormsApplication2
 {
     static class Program
     {
+
+        public static AssistantConnexion ac;
         //public static string repoPath;
         /// <summary>
         /// Point d'entrée principal de l'application.
@@ -22,13 +25,13 @@ namespace WindowsFormsApplication2
                 System.Threading.Thread.Sleep(1000);*/
  
                 Database.Connect();
-             
             }
             catch { MessageBox.Show("Impossible de se connecter à la BDD"); }
  
-            Application.EnableVisualStyles();		             
-            Application.SetCompatibleTextRenderingDefault(false);		           
-            Application.Run(new AssistantConnexion());		             
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            ac = new AssistantConnexion();
+            Application.Run(ac);
  
             /*ProcessStartInfo stopServ = new ProcessStartInfo("mysql\\stop.exe");
             Process.Start(stopServ);                                            //A décommenter avant mise en oeuvre
