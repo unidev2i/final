@@ -273,6 +273,24 @@ namespace WindowsFormsApplication2
             r.Close();
             return retour;
         }
+
+        public static List<Tuple<string, float>> GetWebMax()
+        {
+            var retour = new List<Tuple<string, float>>();
+            var req =
+            "SELECT "+COL_IDSKILL+", maxEchelle FROM competence";
+            var command = _conn.CreateCommand();
+            command.CommandText = req;
+            var r = command.ExecuteReader();
+
+            while (r.Read())
+            {
+                retour.Add(new Tuple<string, float>(r[COL_IDSKILL].ToString(), float.Parse(r["maxEchelle"].ToString())));
+            }
+
+            r.Close();
+            return retour;
+        }
  
 
         public static string getpromo(string idClasse)

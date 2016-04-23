@@ -138,9 +138,11 @@ namespace WindowsFormsApplication2
 
             var w = Database.GetWtfRequest(idEleve);
             var z = Database.GetWebRequest(idEleve);
+            var y = Database.GetWebMax();
 
             drawGraph(w);
             drawWeb(z);
+            //drawWeb(y);
             chart1.Visible = true;
             chart2.Visible = true;
             chart3.Visible = true;
@@ -158,6 +160,18 @@ namespace WindowsFormsApplication2
                 p.Name = a.Item1;
                 p.AxisLabel = a.Item1;
                 //p.Label = a.Item1;
+            }
+        }
+
+        private void drawWebMax(List<Tuple<string, float>> aTuples)
+        {
+            chart3.Series[1].Points.Clear();
+            foreach (var a in aTuples)
+            {
+                var p = chart3.Series[1].Points.Add(a.Item2);
+                p.Name = a.Item1;
+                p.AxisLabel = a.Item1;
+                p.Label = "Notes Maximums";
             }
         }
 
