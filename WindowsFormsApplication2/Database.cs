@@ -541,5 +541,22 @@ namespace WindowsFormsApplication2
             MessageBox.Show("DELETE FROM " + TAB_CLASSE + " WHERE " + COL_PROMO + " = " + promo);
             ("DELETE FROM " + TAB_CLASSE + " WHERE " + COL_PROMO + " = " + promo).SimpleRequest();
         }
+
+        public static List<string> GetHashList(string promo)
+        {
+            var a = new List<string>();
+            var command = _conn.CreateCommand();
+
+            command.CommandText = "SELECT hashTp FROM "+TAB_CLASSE+" NATURAL JOIN "+TAB_ELEVE+" NATURAL JOIN "+TAB_TP+" WHERE "+COL_PROMO+" = " + promo;
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                a.Add(reader["hashTp"].ToString());
+            }
+            reader.Close();
+            return a;
+        }
+
+
     }
 }
