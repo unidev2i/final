@@ -6,7 +6,7 @@ using System.Text;
 
 namespace WindowsFormsApplication2
 {
-    internal class Crypt
+    internal static class Crypt
     {
         public static string CreateMd5ForFolder(string path)
         {
