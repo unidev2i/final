@@ -21,7 +21,8 @@ namespace WindowsFormsApplication2
         {
             var request0 = Directory.GetDirectories(_rootFolder).Aggregate(string.Empty, (current, a) => current + ("\""+Crypt.CreateMd5ForFolder(a) + "\","));
 
-            var retour1 = Database.GetListRequest("classe", new[] { "promotion" }, $"`hash` NOT IN ({request0}0)");
+            var retour1 = Database.GetListRequest("classe", new[] { "promotion" },
+                String.Format("`hash` NOT IN ({0}0)", request0));
             var retour2 = retour1.ToList();
 
             return retour2;
@@ -32,7 +33,8 @@ namespace WindowsFormsApplication2
             foreach (var a in CheckPromo())
             {
                 // pour tous les dossiers qui ont étés modifiés
-                MessageBox.Show($"C:\\Users\\geekg\\Desktop\\PDF\\2017{Environment.NewLine}{(_rootFolder + @"\" + a)}");
+                MessageBox.Show(String.Format("C:\\Users\\geekg\\Desktop\\PDF\\2017{0}{1}", Environment.NewLine,
+                    _rootFolder + @"\" + a));
                 //foreach (var file in Directory.GetFiles("C:\\Users\\geekg\\Desktop\\PDF\\2017"))
                 foreach (var file in Directory.GetFiles(_rootFolder+@"\"+a))
                 {
