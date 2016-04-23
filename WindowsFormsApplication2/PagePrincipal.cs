@@ -263,6 +263,9 @@ namespace WindowsFormsApplication2
         private void ajouterUnPDFToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+            var a = new ImportTp();
+            var b = new Thread(new ThreadStart(a.Go));
+            b.Start();
         }
 
         private void changerDeMotDePasseToolStripMenuItem_Click(object sender, EventArgs e)
