@@ -97,12 +97,18 @@ namespace WindowsFormsApplication2
 
             while (r.Read())
             {
-                var toReturn = columns.Aggregate(string.Empty, (current, c) => current + r[c].ToString() + " ");
-                retour.Add(toReturn);
+                try
+                {
+                    var toReturn = columns.Aggregate(string.Empty, (current, c) => current + r[c].ToString() + " ");
+                    retour.Add(toReturn);
+                }
+                catch (Exception)
+                {
+                    return retour;
+                }
             }
             r.Close();
             return retour;
-            //COMMENTAIRE
         }
 
         public static void DelRequest(string table, Tuple<string, string>[] where_clause)
