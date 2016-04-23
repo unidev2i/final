@@ -178,6 +178,7 @@ namespace WindowsFormsApplication2
             for (var a = 0; a != array.Count; a++)
             {
                 chart1.Series.Add(new Series(array[a]));
+                //chart1.Series[a]["PointWidth"] = "1.3";
             }
 
             var i = 0;
@@ -193,6 +194,7 @@ namespace WindowsFormsApplication2
             {
                 chart2.Series[0].Points.AddXY(a.Item1 + Environment.NewLine + a.Item3.ToString(), a.Item3);
             }
+
         }
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
