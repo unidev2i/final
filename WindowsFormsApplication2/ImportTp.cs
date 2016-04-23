@@ -8,16 +8,17 @@ using WL;
 
 namespace WindowsFormsApplication2
 {
-    public partial class ImportTp
+    public static class ImportTp
     {
-        private readonly string _rootFolder;
+        private static readonly string _rootFolder;
+        private static string _errMssg = string.Empty;
 
-        public ImportTp()
+        static ImportTp()
         {
             _rootFolder = WindowsFormsApplication2.Properties.Settings.Default.repoPath;
         }
 
-        private List<string> CheckPromo()
+        private static List<string> CheckPromo()
         {
             var request0 = Directory.GetDirectories(_rootFolder).Aggregate(string.Empty, (current, a) => current + ("\""+Crypt.CreateMd5ForFolder(a) + "\","));
 
@@ -28,23 +29,45 @@ namespace WindowsFormsApplication2
             return retour2;
         }
 
-        public void Go()
+        public static void Go()
         {
-            foreach (var a in CheckPromo())
+            var cp = CheckPromo();
+            Program.ac.graphic.setBarmax(cp.Count);
+            foreach (var a in cp)
             {
+                // MessageBox.Show(a);
                 // pour tous les dossiers qui ont étés modifiés
-                MessageBox.Show(String.Format("C:\\Users\\geekg\\Desktop\\PDF\\2017{0}{1}", Environment.NewLine,
-                    _rootFolder + @"\" + a));
+
+                var dir = _rootFolder + "\\" + a.Remove(a.Length-1, 1);
+                // var dic = "C:\\Users\\geekg\\Desktop\\PDF\\2017";
+
                 //foreach (var file in Directory.GetFiles("C:\\Users\\geekg\\Desktop\\PDF\\2017"))
-                foreach (var file in Directory.GetFiles(_rootFolder+@"\"+a))
+                if (!Directory.Exists(dir))
                 {
-                    if (!file.Contains(".pdf")) continue;
+                    var dialogResult = MessageBox.Show(
+                        String.Format(
+                            "Le répertoire \"{0}\" n'existe pas. Voulez-vous supprimer les données de la base de données ?",
+                            dir), @"ATTENTION !", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        // TODO : supprimer promo
+                    }
+                    else if (dialogResult == DialogResult.No)
+                    {
+                        // do nothing
+                    }
+                }
+                foreach (var file in Directory.GetFiles(dir))
+                {
+                    if (!file.Contains(".pdf"))
+                    {
+                        _errMssg += file + " : Le fichier est au mauvais format. Attendu : pdf"+Environment.NewLine;
+                    }
                     var infos = GetInfos(file);
                     if (infos == null) continue;
-                    //MessageBox.Show("0");
                     var value = GetValue(file);
-                    //MessageBox.Show("l");
                 }
+                Program.ac.graphic.setBarval(Program.ac.graphic.getBarValue()+1);
             }
         }
 
@@ -66,6 +89,7 @@ namespace WindowsFormsApplication2
             {
                 //MessageBox.Show(
                 //    $@"Mauvais type de fichier. Veuillez vérifier qu'il est sous la forme{Environment.NewLine}NOM_PRENOM_TPXX.pdf");
+                _errMssg += file + " : Nom du fichier non reconnu. Attendu : NOM_PRENOM_TPXX.pdf"+Environment.NewLine;
                 return null;
             }
         }
@@ -76,7 +100,7 @@ namespace WindowsFormsApplication2
                 return null;
 
             var b = file;
-            var a = new pdfHandler(sFile: ref b);
+            var a = new pdfHandler(ref b);
             var c = (string)a.readPDF();
 
             //MessageBox.Show(c);
@@ -107,7 +131,7 @@ namespace WindowsFormsApplication2
             for (var index = 0; index < skills.Count; index++)
             {
                 var z = mark[index] + "->" + maxMark[index];
-                MessageBox.Show(z+"aa");
+                //MessageBox.Show(z+"aa");
 
                 tempReturn.Add(new Tuple<string, string>(mark[index], maxMark[index]));
             }
