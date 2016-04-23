@@ -355,5 +355,11 @@ namespace WindowsFormsApplication2
             var b = new Thread(new ThreadStart(a.Go));
             b.Start();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            MaximumCP MaxCPForm = new MaximumCP();
+            MaxCPForm.ShowDialog();
+        }
     }
 }

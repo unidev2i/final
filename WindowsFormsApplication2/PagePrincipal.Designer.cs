@@ -68,6 +68,7 @@
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chart3 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.button1 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -149,7 +150,7 @@
             this.dataGridView1.Location = new System.Drawing.Point(12, 307);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(517, 323);
+            this.dataGridView1.Size = new System.Drawing.Size(560, 323);
             this.dataGridView1.TabIndex = 0;
             // 
             // menuStrip1
@@ -358,12 +359,23 @@
             this.chart3.Visible = false;
             this.chart3.Click += new System.EventHandler(this.chart3_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(1054, 439);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(119, 40);
+            this.button1.TabIndex = 9;
+            this.button1.Text = "Modifier maximum";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // PagePrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(1185, 642);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.chart2);
             this.Controls.Add(this.chart1);
             this.Controls.Add(this.chart3);
@@ -419,5 +431,6 @@
         private System.Windows.Forms.ToolStripMenuItem compteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem changerDeLoginToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem changerDeMotDePasseToolStripMenuItem;
+        private System.Windows.Forms.Button button1;
     }
 }

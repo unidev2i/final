@@ -292,6 +292,32 @@ namespace WindowsFormsApplication2
             return promo2;
         }
 
+        public static string getMaxCP(string idCompetence)
+        {
+            string comp = "";
+            var command = _conn.CreateCommand();
+            command.CommandText = "SELECT maxEchelle FROM competence WHERE idCompetence ='" + idCompetence + "'";
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                comp = reader["maxEchelle"].ToString();
+            }
+            var comp2 = comp;
+            //MessageBox.Show(id);
+            reader.Close();
+
+            return comp2;
+        }
+        public static void setMaxCP(string idCompetence, string maxCP)
+        {
+            var command = _conn.CreateCommand();
+            command.CommandText = "UPDATE competence SET maxEchelle = " + maxCP + " WHERE idCompetence = '" + idCompetence + "'";
+            MySqlDataReader reader = command.ExecuteReader();
+            //MessageBox.Show(id);
+            reader.Close();
+        }
+
+
         public static void BackupDatabase(string backUpFile = "C:/databackup/database.sql")
         {
             using (_conn)
