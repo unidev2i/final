@@ -576,15 +576,16 @@ namespace WindowsFormsApplication2
 
         public static void AjouteEleve(string nom, string prenom, string promo)
         {
-            MessageBox.Show("INSERT INTO " + TAB_ELEVE + " (Nom, Prenom, idClasse) VALUES (\"" + nom + "\", \"" + prenom + "\", (SELECT idClasse FROM classe WHERE Promotion = \"" + promo + "\"))");
-            ("INSERT INTO "+TAB_ELEVE+" (Nom, Prenom, idClasse) VALUES (\""+nom+"\", \""+prenom+"\", (SELECT idClasse FROM classe WHERE Promotion = \""+promo+"\"))").SimpleRequest();
+            //MessageBox.Show("INSERT INTO " + TAB_ELEVE + " (Nom, Prenom, idClasse) VALUES (\"" + nom + "\", \"" + prenom + "\", (SELECT idClasse FROM classe WHERE Promotion = \"" + promo + "\"))");
+            ("INSERT INTO "+TAB_ELEVE+" (Nom, Prenom, idClasse) VALUES (\""+nom+"\", \""+prenom+"\", ( SELECT idClasse FROM classe WHERE Promotion = \""+promo+"\"))").SimpleRequest();
         }
 
-        public static void AddTp(string tpname, string idEleve, string idCorrecteur)
+        public static void AddTp(string tpname, string idEleve, string login_correcteur, string hash)
         {
-            MessageBox.Show("INSERT INTO " + TAB_TP + "(idTp, idEleve, idcorrecteur) VALUES (\"" + tpname + "\", \"" +
-                            idEleve + "\", \"" + idCorrecteur + "\")");
-            ("INSERT INTO " + TAB_TP + "(idTp, idEleve, idcorrecteur) VALUES (\"" + tpname + "\", \"" + idEleve + "\", \"" + idCorrecteur + "\")").SimpleRequest();
+            /*MessageBox.Show("INSERT INTO tp (idTp, idEleve, idcorrecteur, hashTp) VALUES(\"" + tpname + "\", \"" +
+                            idEleve + "\", (SELECT idUser FROM user WHERE Login = \"" + login_correcteur + "\"), \"" +
+                            hash + "\")"); */
+            ("INSERT INTO tp (idTp, idEleve, idcorrecteur, hashTp) VALUES(\""+tpname+"\", \""+idEleve+"\", (SELECT idUser FROM user WHERE Login = \""+login_correcteur+"\"), \""+hash+"\")").SimpleRequest();
         }
 
         public static string GetLastPdfId()
@@ -606,9 +607,9 @@ namespace WindowsFormsApplication2
 
         public static void AddNote(string idPdf, string idCompetence, string Note, string maxNote)
         {
-            MessageBox.Show("INSERT INTO note (idPdf, idCompetence, note, maxnote) VALUES (\"" + idPdf + "\", \"" +
-                            idCompetence +
-                            "\", \"" + Note + "\", \"" + maxNote + "\")");
+            //MessageBox.Show("INSERT INTO note (idPdf, idCompetence, note, maxnote) VALUES (\"" + idPdf + "\", \"" +
+                           // idCompetence +
+                      //      "\", \"" + Note + "\", \"" + maxNote + "\")");
             ("INSERT INTO note (idPdf, idCompetence, note, maxnote) VALUES (\"" + idPdf + "\", \"" + idCompetence +
              "\", \"" + Note + "\", \""+maxNote+"\")").SimpleRequest();
         }

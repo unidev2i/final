@@ -107,7 +107,7 @@ namespace WindowsFormsApplication2
 
             // ETAPE 1 : Créer le TP
             var mdr = Program.ac.graphic.login;
-            Database.AddTp(infos.Item3, idEleve, mdr);
+            Database.AddTp(infos.Item3, idEleve, mdr, Crypt.Md5(file));
 
             // ETAPE 1' : Recup id tp
             var idPdf = Database.GetLastPdfId();
