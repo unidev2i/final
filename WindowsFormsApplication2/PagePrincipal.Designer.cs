@@ -71,6 +71,7 @@
             this.chart3 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.button1 = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.label2 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -217,7 +218,7 @@
             this.supprimerToolStripMenuItem,
             this.modifierToolStripMenuItem});
             this.utilisateurToolStripMenuItem.Name = "utilisateurToolStripMenuItem";
-            this.utilisateurToolStripMenuItem.Size = new System.Drawing.Size(149, 24);
+            this.utilisateurToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
             this.utilisateurToolStripMenuItem.Text = "Professeur";
             // 
             // ajouterToolStripMenuItem1
@@ -245,7 +246,7 @@
             this.eleveToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.supprimerToolStripMenuItem1});
             this.eleveToolStripMenuItem.Name = "eleveToolStripMenuItem";
-            this.eleveToolStripMenuItem.Size = new System.Drawing.Size(149, 24);
+            this.eleveToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
             this.eleveToolStripMenuItem.Text = "Eleve";
             // 
             // supprimerToolStripMenuItem1
@@ -261,7 +262,7 @@
             this.exporterToolStripMenuItem,
             this.importerToolStripMenuItem});
             this.sauvegardeToolStripMenuItem.Name = "sauvegardeToolStripMenuItem";
-            this.sauvegardeToolStripMenuItem.Size = new System.Drawing.Size(149, 24);
+            this.sauvegardeToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
             this.sauvegardeToolStripMenuItem.Text = "Sauvegarde";
             // 
             // exporterToolStripMenuItem
@@ -347,7 +348,7 @@
             legend3.Enabled = false;
             legend3.Name = "Legend1";
             this.chart3.Legends.Add(legend3);
-            this.chart3.Location = new System.Drawing.Point(578, 295);
+            this.chart3.Location = new System.Drawing.Point(578, 307);
             this.chart3.Name = "chart3";
             series3.ChartArea = "ChartArea1";
             series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Radar;
@@ -362,7 +363,7 @@
             series4.Name = "Series2";
             this.chart3.Series.Add(series3);
             this.chart3.Series.Add(series4);
-            this.chart3.Size = new System.Drawing.Size(470, 335);
+            this.chart3.Size = new System.Drawing.Size(470, 323);
             this.chart3.TabIndex = 3;
             this.chart3.Text = "chart3";
             this.chart3.Visible = false;
@@ -385,12 +386,24 @@
             this.progressBar1.Size = new System.Drawing.Size(1185, 23);
             this.progressBar1.TabIndex = 10;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.label2.Location = new System.Drawing.Point(689, 287);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(46, 17);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "label2";
+            // 
             // PagePrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(1185, 651);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.chart2);
@@ -450,5 +463,6 @@
         private System.Windows.Forms.Button button1;
         public System.Windows.Forms.ProgressBar progressBar1;
         public System.Windows.Forms.Label label4;
+        public System.Windows.Forms.Label label2;
     }
 }

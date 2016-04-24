@@ -72,6 +72,7 @@ namespace WindowsFormsApplication2
 
             dataGridView1.DataSource = bindingSource1;
             dataGridView1.RowHeadersVisible = false;
+            label2.Text = "";
 
             foreach (var a in Database.GetListRequest("eleve", new[] {"Prenom", "Nom"}))
                 comboBox1.Items.Add(a);
@@ -148,6 +149,8 @@ namespace WindowsFormsApplication2
             chart2.Visible = true;
             chart3.Visible = true;
             //chart1.ChartAreas[0].AxisX.Maximum = 100;
+
+            label2.Text = "Vous observez les résultats de " + comboBox1.Text;
  
 
         }
@@ -232,6 +235,8 @@ namespace WindowsFormsApplication2
                 foreach (var a in Database.GetListRequest("classe", new[] { "Promotion" }))
                     comboBox3.Items.Add(a);
             }
+
+            label2.Text = "Vous observez les résultats de la promotion " + comboBox3.Text;
        
             
         }
