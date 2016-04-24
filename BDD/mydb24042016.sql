@@ -1,5 +1,5 @@
 -- MySqlBackup.NET 2.0.9.3
--- Dump Time: 2016-04-15 17:00:36
+-- Dump Time: 2016-04-24 12:55:32
 -- --------------------------------------
 -- Server version 5.6.17 MySQL Community Server (GPL)
 
@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS `classe`;
 CREATE TABLE IF NOT EXISTS `classe` (
   `idClasse` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   `Promotion` year(4) NOT NULL,
-  `Location` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `hashClasse` varchar(35) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`idClasse`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COMMENT='une ligne pour chaque classe';
 
@@ -31,10 +31,37 @@ CREATE TABLE IF NOT EXISTS `classe` (
 -- 
 
 /*!40000 ALTER TABLE `classe` DISABLE KEYS */;
-INSERT INTO `classe`(`idClasse`,`Promotion`,`Location`) VALUES
-(1,2017,'1'),
-(2,2016,'2');
+INSERT INTO `classe`(`idClasse`,`Promotion`,`hashClasse`) VALUES
+(1,2017,'101'),
+(2,2016,'104');
 /*!40000 ALTER TABLE `classe` ENABLE KEYS */;
+
+-- 
+-- Definition of competence
+-- 
+
+DROP TABLE IF EXISTS `competence`;
+CREATE TABLE IF NOT EXISTS `competence` (
+  `idCompetence` varchar(10) CHARACTER SET utf8 NOT NULL,
+  `maxEchelle` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`idCompetence`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- 
+-- Dumping data for table competence
+-- 
+
+/*!40000 ALTER TABLE `competence` DISABLE KEYS */;
+INSERT INTO `competence`(`idCompetence`,`maxEchelle`) VALUES
+('CP1.1',20),
+('CP1.2',20),
+('CP1.3',20),
+('CP2.1',20),
+('CP2.2',20),
+('CP2.3',20),
+('CP3.1',20),
+('CP3.3',20);
+/*!40000 ALTER TABLE `competence` ENABLE KEYS */;
 
 -- 
 -- Definition of eleve
@@ -58,10 +85,10 @@ CREATE TABLE IF NOT EXISTS `eleve` (
 /*!40000 ALTER TABLE `eleve` DISABLE KEYS */;
 INSERT INTO `eleve`(`idEleve`,`Nom`,`Prenom`,`idClasse`) VALUES
 (2,'Daniel','jack',1),
-(4,'Dumortier','Paul',1),
-(5,'Duhamel','Baptiste',1),
+(4,'dumortier','paul',1),
+(5,'Duzamel','baptiste',1),
 (6,'Morand','maxence',2),
-(7,'Vancayzeele','Matthieu',2);
+(7,'Vancayzeele','matthieu',2);
 /*!40000 ALTER TABLE `eleve` ENABLE KEYS */;
 
 -- 
@@ -77,6 +104,7 @@ CREATE TABLE IF NOT EXISTS `note` (
   `maxNote` varchar(10) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `idTp` (`idPdf`),
+  KEY `idCompetence` (`idCompetence`),
   CONSTRAINT `fk_note_tp` FOREIGN KEY (`idPdf`) REFERENCES `tp` (`idPdf`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8 COMMENT='une ligne pour chaque note';
 
@@ -86,12 +114,6 @@ CREATE TABLE IF NOT EXISTS `note` (
 
 /*!40000 ALTER TABLE `note` DISABLE KEYS */;
 INSERT INTO `note`(`ID`,`idPdf`,`idCompetence`,`Note`,`maxNote`) VALUES
-(3,2,'CP2.3','9','11'),
-(4,2,'CP2.4','2.5','3.5'),
-(5,4,'CP2.3','5','10'),
-(6,2,'CP2.5','6','6'),
-(7,4,'CP2.3','42','55'),
-(8,4,'CP2.3','25','47'),
 (9,18,'CP3.1','5.5','8'),
 (10,10,'CP1.1','4','5.5'),
 (11,10,'CP1.2','9','16'),
@@ -148,6 +170,7 @@ CREATE TABLE IF NOT EXISTS `tp` (
   `idEleve` int(10) unsigned NOT NULL,
   `idcorrecteur` int(10) unsigned NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `hashTp` varchar(35) NOT NULL,
   PRIMARY KEY (`idPdf`),
   KEY `idPdf` (`idPdf`),
   KEY `idEleve` (`idEleve`),
@@ -160,26 +183,24 @@ CREATE TABLE IF NOT EXISTS `tp` (
 -- 
 
 /*!40000 ALTER TABLE `tp` DISABLE KEYS */;
-INSERT INTO `tp`(`idPdf`,`idTp`,`idEleve`,`idcorrecteur`,`date`) VALUES
-(2,'4',2,1,'2016-03-02 00:00:00'),
-(4,'2',2,1,'2016-03-10 00:00:00'),
-(5,'2',2,1,'2016-03-31 00:00:00'),
-(10,'TP5',4,1,'2016-03-09 00:00:00'),
-(11,'TP5',5,1,'2016-03-09 00:00:00'),
-(12,'TP carross',2,4,'2016-04-06 00:00:00'),
-(13,'TP verrin',2,3,'2016-04-12 00:00:00'),
-(14,'TP portail',4,2,'2016-03-02 00:00:00'),
-(15,'TP portail',5,2,'2016-03-09 00:00:00'),
-(16,'TP portail',6,2,'2016-03-09 00:00:00'),
-(17,'TP portail',7,2,'2016-03-09 00:00:00'),
-(18,'TP verin',4,3,'2016-03-30 00:00:00'),
-(19,'TP verin',5,3,'2016-03-30 00:00:00'),
-(20,'TP verin',6,3,'2016-03-30 00:00:00'),
-(21,'TP verin',7,3,'2016-03-30 00:00:00'),
-(22,'TP carrosserie',4,4,'2016-07-17 00:00:00'),
-(23,'Tp carrosserie',5,4,'2016-07-17 00:00:00'),
-(24,'TP carrosserie',6,4,'2016-07-17 00:00:00'),
-(25,'TP carrosserie',7,4,'2016-07-17 00:00:00');
+INSERT INTO `tp`(`idPdf`,`idTp`,`idEleve`,`idcorrecteur`,`date`,`hashTp`) VALUES
+(5,'2',2,1,'2016-04-19 19:38:42','1'),
+(10,'TP5',4,1,'2016-04-19 19:38:44','2'),
+(11,'TP5',5,1,'2016-04-19 19:38:48','4'),
+(12,'TP carross',2,4,'2016-04-19 19:38:50','3'),
+(13,'TP verrin',2,3,'2016-04-19 19:38:52','8'),
+(14,'TP portail',4,2,'2016-04-19 19:39:01','11'),
+(15,'TP portail',5,2,'2016-04-19 19:39:05','15'),
+(16,'TP portail',6,2,'2016-04-22 19:42:32','18'),
+(17,'TP portail',7,2,'2016-04-22 19:42:48','12'),
+(18,'TP verin',4,3,'2016-04-22 19:42:52','17'),
+(19,'TP verin',5,3,'2016-04-22 19:42:54','22'),
+(20,'TP verin',6,3,'2016-04-22 19:42:57','17'),
+(21,'TP verin',7,3,'2016-04-22 19:43:06','19'),
+(22,'TP carrosserie',4,4,'2016-04-22 19:43:09','20'),
+(23,'Tp carrosserie',5,4,'2016-04-22 19:43:13','21'),
+(24,'TP carrosserie',6,4,'2016-04-22 19:43:17','54'),
+(25,'TP carrosserie',7,4,'2016-04-22 19:43:20','48');
 /*!40000 ALTER TABLE `tp` ENABLE KEYS */;
 
 -- 
@@ -204,7 +225,6 @@ INSERT INTO `user`(`idUser`,`Login`,`Password`,`Admin`) VALUES
 (1,'Atogue','azerty',1),
 (2,'a','a',1),
 (3,'z','z',0),
-(4,'Pkubiak','root',1),
 (5,'Pkubiak','root',1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
@@ -218,5 +238,5 @@ INSERT INTO `user`(`idUser`,`Login`,`Password`,`Admin`) VALUES
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 
--- Dump completed on 2016-04-15 17:00:36
--- Total time: 0:0:0:0:71 (d:h:m:s:ms)
+-- Dump completed on 2016-04-24 12:55:33
+-- Total time: 0:0:0:0:296 (d:h:m:s:ms)
