@@ -6,22 +6,24 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using WL;
 
+//? IL FAUT QUE LA COMPETENCE EXISTE AVANT D"AJOUTER UN TP !!!
+
 namespace WindowsFormsApplication2
 {
     public static class ImportTp
     {
-        private static readonly string _rootFolder;
+        private static readonly string RootFolder;
         private static string _errMssg = string.Empty;
         private static string _logMssg = string.Empty;
 
         static ImportTp()
         {
-            _rootFolder = WindowsFormsApplication2.Properties.Settings.Default.repoPath;
+            RootFolder = WindowsFormsApplication2.Properties.Settings.Default.repoPath;
         }
 
         private static List<string> CheckPromo()
         {
-            var request0 = Directory.GetDirectories(_rootFolder).Aggregate(string.Empty, (current, a) => current + ("\""+Crypt.CreateMd5ForFolder(a) + "\","));
+            var request0 = Directory.GetDirectories(RootFolder).Aggregate(string.Empty, (current, a) => current + ("\""+Crypt.CreateMd5ForFolder(a) + "\","));
 
             var retour1 = Database.GetListRequest("classe", new[] { "promotion" },
                 String.Format("`hashClasse` NOT IN ({0}0)", request0));
@@ -40,7 +42,11 @@ namespace WindowsFormsApplication2
             Program.ac.graphic.progressBar1.Invoke(
                 (MethodInvoker) (() => Program.ac.graphic.progressBar1.Maximum = cp.Count));
 
-            foreach (var dir in cp.Select(a => _rootFolder + "\\" + a.Remove(a.Length-1, 1)))
+            // y = yes n = no t = traité
+            int yt = 0;
+            int nt = 0;
+
+            foreach (var dir in cp.Select(a => RootFolder + "\\" + a.Remove(a.Length-1, 1)))
             {
                 if (!Directory.Exists(dir))
                 {
@@ -48,34 +54,46 @@ namespace WindowsFormsApplication2
                         String.Format(
                             "Le répertoire \"{0}\" n'existe pas. Voulez-vous supprimer les données de la base de données ?",
                             dir), @"ATTENTION !", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                    if (dialogResult == DialogResult.Yes)
+                    switch (dialogResult)
                     {
-                        Database.DeletePromo(dir.Split('\\')[dir.Split('\\').Length-1]);
-                    }
-                    else if (dialogResult == DialogResult.No)
-                    {
-                        _errMssg += "Le dossier " + dir +
-                                    " n'existe pas, mais il n'a pas été supprimé de la base de données." + Environment.NewLine;
+                        case DialogResult.Yes:
+                            Database.DeletePromo(dir.Split('\\')[dir.Split('\\').Length-1]);
+                            break;
+                        case DialogResult.No:
+                            _errMssg += "Le dossier " + dir +
+                                        " n'existe pas, mais il n'a pas été supprimé de la base de données." + Environment.NewLine;
+                            break;
                     }
                     goto fin;
                 }
 
+                // Récupérer la liste des hash en fonction du nom du dossier (nom dossier = id compétence)
                 var a = Database.GetHashList(dir.Split('\\')[dir.Split('\\').Length - 1]);
+
 
                 foreach (var file in Directory.GetFiles(dir))
                 {
                     var cr = Crypt.Md5(file);
+                    //MessageBox.Show(cr + Environment.NewLine + a[0]+Environment.NewLine+a.Contains(cr));
                     if (a.Contains(cr))
                     {
                         a.Remove(cr);
+                        nt++;
                     }
                     else
                     {
-                        // TODO : AJOUTER LE FICHIER DANS LA BASE DE DONNEES
                         TraiterFichier(file);
+                        yt++;
                     }
                 }
-                var k = a.Aggregate(string.Empty, (current, other) => current + (other + ", "));
+
+                // MessageBox.Show(k);
+                // TODO : SUPPRIMER TOUS LES TP DE LA BDD QUI ONT COMME HASH LE CONTENU DE k
+                /*foreach (var q in a.Aggregate(string.Empty, (current, other) => current + (other + ", ")))
+                {
+                    //MessageBox.Show("kaka");
+                    yt++;
+                } */
 
                 fin:
                 Program.ac.graphic.progressBar1.Invoke(
@@ -83,6 +101,18 @@ namespace WindowsFormsApplication2
             }
             Program.ac.graphic.progressBar1.Invoke(
                  (MethodInvoker)(() => Program.ac.graphic.progressBar1.Visible = false));
+
+            if (!_errMssg.Equals(""))
+            {
+                MessageBox.Show("Terminé avec des erreurs : " + Environment.NewLine + _errMssg);
+            }
+            Program.ac.graphic.LBL_InfoAjoutTp.Invoke(
+                 (MethodInvoker)(() => Program.ac.graphic.LBL_InfoAjoutTp.Text+=Environment.NewLine+"Traités : "+yt.ToString() + "   Ignorés : "+nt.ToString()));
+            Program.ac.graphic.LBL_InfoAjoutTp.Invoke(
+                 (MethodInvoker)(() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = true));
+            System.Threading.Thread.Sleep(3000);
+            Program.ac.graphic.LBL_InfoAjoutTp.Invoke(
+                 (MethodInvoker)(() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = false));
         }
 
         private static void TraiterFichier(string file)
@@ -102,8 +132,6 @@ namespace WindowsFormsApplication2
                 Database.AjouteEleve(infos.Item1, infos.Item2, file.Split('\\')[file.Split('\\').Length-2]);
                 idEleve = Database.GetIdEleveFromName(infos.Item1, infos.Item2);
             }
-
-            // TODO : AJOUTER LE TP
 
             // ETAPE 1 : Créer le TP
             var mdr = Program.ac.graphic.login;

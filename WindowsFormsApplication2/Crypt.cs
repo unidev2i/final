@@ -38,10 +38,13 @@ namespace WindowsFormsApplication2
 
         public static string Md5(string file)
         {
-            var md5 = MD5.Create();
-            var fic = File.ReadAllBytes(file);
-            md5.TransformFinalBlock(fic, 0, fic.Length);
-            return Encoding.UTF8.GetString(md5.Hash);
+            using (var md5 = MD5.Create())
+            {
+                using (var stream = File.OpenRead(file))
+                {
+                    return BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLower();
+                }
+            }
         }
     }
 }

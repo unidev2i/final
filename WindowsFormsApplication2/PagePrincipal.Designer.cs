@@ -72,6 +72,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.label2 = new System.Windows.Forms.Label();
+            this.LBL_InfoAjoutTp = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -218,7 +219,7 @@
             this.supprimerToolStripMenuItem,
             this.modifierToolStripMenuItem});
             this.utilisateurToolStripMenuItem.Name = "utilisateurToolStripMenuItem";
-            this.utilisateurToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.utilisateurToolStripMenuItem.Size = new System.Drawing.Size(149, 24);
             this.utilisateurToolStripMenuItem.Text = "Professeur";
             // 
             // ajouterToolStripMenuItem1
@@ -246,7 +247,7 @@
             this.eleveToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.supprimerToolStripMenuItem1});
             this.eleveToolStripMenuItem.Name = "eleveToolStripMenuItem";
-            this.eleveToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.eleveToolStripMenuItem.Size = new System.Drawing.Size(149, 24);
             this.eleveToolStripMenuItem.Text = "Eleve";
             // 
             // supprimerToolStripMenuItem1
@@ -262,7 +263,7 @@
             this.exporterToolStripMenuItem,
             this.importerToolStripMenuItem});
             this.sauvegardeToolStripMenuItem.Name = "sauvegardeToolStripMenuItem";
-            this.sauvegardeToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.sauvegardeToolStripMenuItem.Size = new System.Drawing.Size(149, 24);
             this.sauvegardeToolStripMenuItem.Text = "Sauvegarde";
             // 
             // exporterToolStripMenuItem
@@ -397,12 +398,26 @@
             this.label2.TabIndex = 10;
             this.label2.Text = "label2";
             // 
+            // LBL_InfoAjoutTp
+            // 
+            this.LBL_InfoAjoutTp.AutoSize = true;
+            this.LBL_InfoAjoutTp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.LBL_InfoAjoutTp.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LBL_InfoAjoutTp.Location = new System.Drawing.Point(881, 27);
+            this.LBL_InfoAjoutTp.Name = "LBL_InfoAjoutTp";
+            this.LBL_InfoAjoutTp.Size = new System.Drawing.Size(304, 24);
+            this.LBL_InfoAjoutTp.TabIndex = 11;
+            this.LBL_InfoAjoutTp.Text = "Ajout des TP effectué avec succès.";
+            this.LBL_InfoAjoutTp.Visible = false;
+            this.LBL_InfoAjoutTp.Click += new System.EventHandler(this.LBL_InfoAjoutTp_Click);
+            // 
             // PagePrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(1185, 651);
+            this.Controls.Add(this.LBL_InfoAjoutTp);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.button1);
@@ -464,5 +479,6 @@
         public System.Windows.Forms.ProgressBar progressBar1;
         public System.Windows.Forms.Label label4;
         public System.Windows.Forms.Label label2;
+        public System.Windows.Forms.Label LBL_InfoAjoutTp;
     }
 }

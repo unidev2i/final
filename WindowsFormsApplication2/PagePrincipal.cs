@@ -389,5 +389,10 @@ namespace WindowsFormsApplication2
         {
             return progressBar1.Value;
         }
+
+        private void LBL_InfoAjoutTp_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
