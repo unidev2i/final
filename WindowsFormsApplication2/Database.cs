@@ -310,7 +310,7 @@ namespace WindowsFormsApplication2
             return promo2;
         }
 
-        public static string getMaxCP(string idCompetence)
+        public static decimal getMaxCP(string idCompetence)
         {
             string comp = "";
             var command = _conn.CreateCommand();
@@ -324,9 +324,9 @@ namespace WindowsFormsApplication2
             //MessageBox.Show(id);
             reader.Close();
 
-            return comp2;
+            return decimal.Parse(comp2);
         }
-        public static void setMaxCP(string idCompetence, string maxCP)
+        public static void setMaxCP(string idCompetence, decimal maxCP)
         {
             var command = _conn.CreateCommand();
             command.CommandText = "UPDATE competence SET maxEchelle = " + maxCP + " WHERE idCompetence = '" + idCompetence + "'";
