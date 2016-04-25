@@ -335,6 +335,14 @@ namespace WindowsFormsApplication2
             reader.Close();
         }
 
+        public static void ajouterPromo(string promo)
+        {
+            var command = _conn.CreateCommand();
+            command.CommandText = "INSERT INTO classe (Promotion) VALUES ('" + promo + "')";
+            MySqlDataReader reader = command.ExecuteReader();
+            reader.Close();
+        }
+
 
         public static void BackupDatabase(string backUpFile = "C:/databackup/database.sql")
         {
@@ -517,10 +525,10 @@ namespace WindowsFormsApplication2
             var id = idclasse;
             //MessageBox.Show(id);
             reader.Close();
-            var Location = 1;
+            //var Location = 1;
             if (id == "")
             {
-                ("INSERT INTO classe (Promotion,Location) VALUES ('" + promo + "','" + Location + "')").SimpleRequest();
+                ("INSERT INTO classe (Promotion,Location) VALUES ('" + promo + "')").SimpleRequest();
 
                 var command2 = _conn.CreateCommand();
                 command2.CommandText = "SELECT idClasse FROM classe WHERE Promotion ='" + promo + "'";
