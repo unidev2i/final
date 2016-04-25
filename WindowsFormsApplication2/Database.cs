@@ -169,7 +169,6 @@ namespace WindowsFormsApplication2
 
             r.Close();
             return a;
-            
         }
 
         public static string ChangerLogin(string login, string pass, string ancienlog)
@@ -567,8 +566,7 @@ namespace WindowsFormsApplication2
 
         public static void DeleteTp(string hashes)
         {
-            MessageBox.Show("DELETE FROM " + TAB_TP + " WHERE hashTp IN " + hashes+"0");
-            ("DELETE FROM " + TAB_TP + " WHERE hashTp IN " + hashes+"0").SimpleRequest();
+            ("DELETE FROM " + TAB_TP + " WHERE hashTp = " + hashes ).SimpleRequest();
         }
 
         public static string GetIdEleveFromName(string nom, string prenom)
@@ -620,6 +618,11 @@ namespace WindowsFormsApplication2
                       //      "\", \"" + Note + "\", \"" + maxNote + "\")");
             ("INSERT INTO note (idPdf, idCompetence, note, maxnote) VALUES (\"" + idPdf + "\", \"" + idCompetence +
              "\", \"" + Note + "\", \""+maxNote+"\")").SimpleRequest();
+        }
+
+        public static void SetHash(string nomColonne, string hash, string condition)
+        {
+            ("UPDATE "+TAB_CLASSE+" SET"+nomColonne+" = '"+hash+"' WHERE "+nomColonne+"="+condition).SimpleRequest();
         }
 
 
