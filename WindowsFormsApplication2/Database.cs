@@ -622,6 +622,35 @@ namespace WindowsFormsApplication2
              "\", \"" + Note + "\", \""+maxNote+"\")").SimpleRequest();
         }
 
+        public static List<string> CPexistInNote()
+        {
+            List<string> listnewCP = new List<string>();
+            var command = _conn.CreateCommand();
+            command.CommandText = "SELECT DISTINCT note.idCompetence FROM note LEFT JOIN competence ON note.idCompetence = competence.idCompetence WHERE competence.idCompetence IS NULL";
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                listnewCP.Add(reader["idCompetence"].ToString());
+            }
+            reader.Close();
+
+            return listnewCP;
+
+        }
+
+        public static void addCPMax(List<string> listCP)
+        {
+            if (listCP.Count != 0)
+            {
+                var command = _conn.CreateCommand();
+                foreach (var idCP in listCP)
+                {
+                    ("INSERT INTO competence (idCompetence) VALUES ('" + idCP + "')").SimpleRequest();                    
+                }
+                
+            }
+        }
+
 
     }
 }
