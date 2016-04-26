@@ -48,7 +48,16 @@ namespace WindowsFormsApplication2
 
             foreach (var dir in cp.Select(a => RootFolder + "\\" + a.Remove(a.Length-1, 1)))
             {
-                if (!Directory.Exists(dir))
+                var x = Database.GetListRequest("note", new []{"Promotion"});
+
+                if (!x.Contains(dir) && Directory.GetFiles(dir).Length != 0)
+                {
+                    // Le dossier existe, mais n'est pas dans la bdd
+                    // Ajouter dans la bdd.
+                    Database.ajouterPromo(dir);
+                }
+
+                if (!Directory.Exists(dir) && Directory.GetFiles(dir).Length != 0)
                 {
                     var dialogResult = MessageBox.Show(
                         String.Format(
@@ -74,7 +83,6 @@ namespace WindowsFormsApplication2
                 foreach (var file in Directory.GetFiles(dir))
                 {
                     var cr = Crypt.Md5(file);
-                    //MessageBox.Show(cr + Environment.NewLine + a[0]+Environment.NewLine+a.Contains(cr));
                     if (a.Contains(cr))
                     {
                         a.Remove(cr);
@@ -87,13 +95,12 @@ namespace WindowsFormsApplication2
                     }
                 }
 
-                // MessageBox.Show(k);
-                // TODO : SUPPRIMER TOUS LES TP DE LA BDD QUI ONT COMME HASH LE CONTENU DE k
-                /*foreach (var q in a.Aggregate(string.Empty, (current, other) => current + (other + ", ")))
+                foreach (var s in a)
                 {
-                    //MessageBox.Show("kaka");
+                    // Supprimer de la bdd les tp de la promo "a" qui ne sont plus dans le répertoire 
                     yt++;
-                } */
+                    Database.DeleteTp(s);
+                }
 
                 fin:
                 Program.ac.graphic.progressBar1.Invoke(
