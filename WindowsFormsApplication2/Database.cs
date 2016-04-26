@@ -641,7 +641,7 @@ namespace WindowsFormsApplication2
 
         }
 
-        public static void addCPMax(List<string> listCP)
+        public static int addCPMax(List<string> listCP)
         {
             if (listCP.Count != 0)
             {
@@ -650,8 +650,10 @@ namespace WindowsFormsApplication2
                 {
                     ("INSERT INTO competence (idCompetence) VALUES ('" + idCP + "')").SimpleRequest();
                 }
-
+                return 0;
             }
+            else
+                return 1;
         }
 
     }

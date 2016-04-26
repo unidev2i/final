@@ -278,6 +278,7 @@ namespace WindowsFormsApplication2
         {
             var b = new Thread(new ThreadStart(ImportTp.Go));
             b.Start();
+            Database.addCPMax(Database.CPexistInNote());
         }
 
         private void changerDeMotDePasseToolStripMenuItem_Click(object sender, EventArgs e)
