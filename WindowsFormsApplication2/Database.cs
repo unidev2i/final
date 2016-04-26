@@ -284,11 +284,28 @@ namespace WindowsFormsApplication2
 
             while (r.Read())
             {
-                retour.Add(new Tuple<string, float>(r[COL_IDSKILL].ToString(), float.Parse(r["maxEchelle"].ToString())));
+                if(CPisInDrawableList(r[COL_IDSKILL].ToString()))
+                    retour.Add(new Tuple<string, float>(r[COL_IDSKILL].ToString(), float.Parse(r["maxEchelle"].ToString())));
             }
 
             r.Close();
             return retour;
+        }
+
+        public static bool CPisInDrawableList(string idCP)
+        {
+            var cpExist = "";
+            var command = _conn.CreateCommand();
+            command.CommandText = "SELECT " + COL_IDSKILL + "FROM note WHERE idCompetence=" + idCP + ""; 
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                cpExist = reader["idCompetence"].ToString();
+            }
+            reader.Close();
+            if (cpExist != "")
+                return true;
+            return false;
         }
  
 
@@ -625,7 +642,7 @@ namespace WindowsFormsApplication2
             ("UPDATE "+TAB_CLASSE+" SET"+nomColonne+" = '"+hash+"' WHERE "+nomColonne+"="+condition).SimpleRequest();
         }
 
-        public static List<string> CPexistInNote()
+        public static List<string> CPsNewInNote()
         {
             List<string> listnewCP = new List<string>();
             var command = _conn.CreateCommand();
