@@ -157,6 +157,11 @@ namespace WindowsFormsApplication2
 
         private void drawWeb(List<Tuple<string, float>> aTuples,int serie)
         {
+            string str = comboBox1.Text;
+            string[] result = Regex.Split(str, " ");
+            string prenom = result[0];
+            string nom = result[1];
+            
             chart3.Series[1]["RadarDrawingStyle"] = "Line";
             chart3.Series[serie].Points.Clear();
             foreach (var a in aTuples)
@@ -166,7 +171,7 @@ namespace WindowsFormsApplication2
                 p.AxisLabel = a.Item1;
                 //p.Label = a.Item1;
             }
-            Database.removeCPFromWeb(aTuples);
+            Database.removeCPFromWeb(aTuples,prenom,nom);
 
         }
 

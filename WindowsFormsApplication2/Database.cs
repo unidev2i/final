@@ -284,7 +284,6 @@ namespace WindowsFormsApplication2
 
             while (r.Read())
             {
-                //if(CPisInDrawableList(r[COL_IDSKILL].ToString()))
                 retour.Add(new Tuple<string, float>(r[COL_IDSKILL].ToString(), float.Parse(r["maxEchelle"].ToString())));
             }
 
@@ -293,18 +292,19 @@ namespace WindowsFormsApplication2
             return retour;
         }
 
-        public static void removeCPFromWeb(List<Tuple<string,float>> listCP)
+        public static void removeCPFromWeb(List<Tuple<string,float>> listCP, string prenom, string nom)
         {
             var command = _conn.CreateCommand();
-            foreach (var idCPMax in listCP)
+            var listCP2 = new List<Tuple<string,float>>(listCP);
+            foreach (var idCPMax in listCP2)
             {
-                command.CommandText = "SELECT DISTINCT idCompetence FROM note WHERE idCompetence='" + idCPMax.Item1 + "'";
+                command.CommandText = "SELECT DISTINCT idCompetence FROM eleve NATURAL JOIN tp NATURAL JOIN note WHERE nom = '"+nom+"' AND prenom='"+prenom+"' AND idCompetence='"+idCPMax.Item1+"'";
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    if (reader["idCompetence"] == null)
-                        listCP.Remove(idCPMax);
+                    continue;                        
                 }
+                listCP.Remove(idCPMax);
                 reader.Close();
             }
         }
