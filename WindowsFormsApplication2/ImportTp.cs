@@ -35,6 +35,31 @@ namespace WindowsFormsApplication2
         public static void Go()
         {
             _logMssg += "Traitement des dossiers démarré." + Environment.NewLine;
+
+
+            #region firstCheck
+            // First check
+            int check = Directory.GetDirectories(RootFolder).SelectMany(Directory.GetFiles).Count();
+            if (check == 0)
+            {
+                var dialogResult = MessageBox.Show(
+                        @"Le dossier est vide, toute la base de données sera effacée si vous continuez. Continuer ? ", @"ATTENTION !", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                switch (dialogResult)
+                {
+                    case DialogResult.None:
+                        break;
+                    case DialogResult.Yes:
+                        // TODO : remove all from db
+                        return;
+                    case DialogResult.No:
+                        return;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+            #endregion
+
+
             var cp = CheckPromo();
 
             Program.ac.graphic.progressBar1.Invoke(
@@ -46,31 +71,32 @@ namespace WindowsFormsApplication2
             int yt = 0;
             int nt = 0;
 
-            foreach (var dir in cp.Select(a => RootFolder + "\\" + a.Remove(a.Length-1, 1)))
+            foreach (var dir in Directory.GetDirectories(RootFolder))
             {
-                var x = Database.GetListRequest("note", new []{"Promotion"});
-
-                if (!x.Contains(dir) && Directory.GetFiles(dir).Length != 0)
+                if (!cp.Contains(dir.Split('\\')[dir.Split('\\').Length - 1]) && Directory.GetFiles(dir).Length != 0)
                 {
                     // Le dossier existe, mais n'est pas dans la bdd
                     // Ajouter dans la bdd.
-                    Database.ajouterPromo(dir);
+                    Database.ajouterPromo(dir.Split('\\')[dir.Split('\\').Length - 1]);
                 }
+            }
+
+            cp = CheckPromo();
+
+            foreach (var dir in cp.Select(a => RootFolder + "\\" + a.Remove(a.Length - 1, 1)))
+            {
+                var x = Database.GetListRequest("note", new[] {"Promotion"});
 
                 if (!Directory.Exists(dir) && Directory.GetFiles(dir).Length != 0)
                 {
-                    var dialogResult = MessageBox.Show(
-                        String.Format(
-                            "Le répertoire \"{0}\" n'existe pas. Voulez-vous supprimer les données de la base de données ?",
-                            dir), @"ATTENTION !", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    var dialogResult = MessageBox.Show(String.Format("Le répertoire \"{0}\" n'existe pas. Voulez-vous supprimer les données de la base de données ?", dir), @"ATTENTION !", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                     switch (dialogResult)
                     {
                         case DialogResult.Yes:
-                            Database.DeletePromo(dir.Split('\\')[dir.Split('\\').Length-1]);
+                            Database.DeletePromo(dir.Split('\\')[dir.Split('\\').Length - 1]);
                             break;
                         case DialogResult.No:
-                            _errMssg += "Le dossier " + dir +
-                                        " n'existe pas, mais il n'a pas été supprimé de la base de données." + Environment.NewLine;
+                            _errMssg += "Le dossier " + dir + " n'existe pas, mais il n'a pas été supprimé de la base de données." + Environment.NewLine;
                             break;
                     }
                     goto fin;
@@ -103,23 +129,18 @@ namespace WindowsFormsApplication2
                 }
 
                 fin:
-                Program.ac.graphic.progressBar1.Invoke(
-                    (MethodInvoker)(() => Program.ac.graphic.progressBar1.Value++));
+                Program.ac.graphic.progressBar1.Invoke((MethodInvoker) (() => Program.ac.graphic.progressBar1.Value++));
             }
-            Program.ac.graphic.progressBar1.Invoke(
-                 (MethodInvoker)(() => Program.ac.graphic.progressBar1.Visible = false));
+            Program.ac.graphic.progressBar1.Invoke((MethodInvoker) (() => Program.ac.graphic.progressBar1.Visible = false));
 
             if (!_errMssg.Equals(""))
             {
-                MessageBox.Show("Terminé avec des erreurs : " + Environment.NewLine + _errMssg);
+                MessageBox.Show(@"Terminé avec des erreurs : " + Environment.NewLine + _errMssg);
             }
-            Program.ac.graphic.LBL_InfoAjoutTp.Invoke(
-                 (MethodInvoker)(() => Program.ac.graphic.LBL_InfoAjoutTp.Text+=Environment.NewLine+"Traités : "+yt.ToString() + "   Ignorés : "+nt.ToString()));
-            Program.ac.graphic.LBL_InfoAjoutTp.Invoke(
-                 (MethodInvoker)(() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = true));
+            Program.ac.graphic.LBL_InfoAjoutTp.Invoke((MethodInvoker) (() => Program.ac.graphic.LBL_InfoAjoutTp.Text += Environment.NewLine + @"Traités : " + yt.ToString() + @"   Ignorés : " + nt.ToString()));
+            Program.ac.graphic.LBL_InfoAjoutTp.Invoke((MethodInvoker) (() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = true));
             System.Threading.Thread.Sleep(3000);
-            Program.ac.graphic.LBL_InfoAjoutTp.Invoke(
-                 (MethodInvoker)(() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = false));
+            Program.ac.graphic.LBL_InfoAjoutTp.Invoke((MethodInvoker) (() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = false));
         }
 
         private static void TraiterFichier(string file)
@@ -134,9 +155,9 @@ namespace WindowsFormsApplication2
 
             var idEleve = Database.GetIdEleveFromName(infos.Item1, infos.Item2);
 
-            if ( idEleve == null)
+            if (idEleve == null)
             {
-                Database.AjouteEleve(infos.Item1, infos.Item2, file.Split('\\')[file.Split('\\').Length-2]);
+                Database.AjouteEleve(infos.Item1, infos.Item2, file.Split('\\')[file.Split('\\').Length - 2]);
                 idEleve = Database.GetIdEleveFromName(infos.Item1, infos.Item2);
             }
 
@@ -152,7 +173,6 @@ namespace WindowsFormsApplication2
             {
                 Database.AddNote(idPdf, a.Item1, a.Item2, a.Item3);
             }
-
         }
 
         private static Tuple<string, string, string> GetInfos(string file)
@@ -161,19 +181,19 @@ namespace WindowsFormsApplication2
             {
                 // Retirer le chemin
                 var pre = file.Split('\\');
-                var deux = file.Split('\\')[pre.Length-1];
+                var deux = file.Split('\\')[pre.Length - 1];
 
                 // Separer les infos
-                var a = deux.Split(new[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
+                var a = deux.Split(new[] {'_'}, StringSplitOptions.RemoveEmptyEntries);
 
                 // Retirer le ".pdf" à la fin
-                return new Tuple<string, string, string>(a[0], a[1], a[2].Remove(a[2].Length-4,4));
+                return new Tuple<string, string, string>(a[0], a[1], a[2].Remove(a[2].Length - 4, 4));
             }
             catch (Exception)
             {
                 //MessageBox.Show(
                 //    $@"Mauvais type de fichier. Veuillez vérifier qu'il est sous la forme{Environment.NewLine}NOM_PRENOM_TPXX.pdf");
-                _errMssg += file + " : Nom du fichier non reconnu. Attendu : NOM_PRENOM_TPXX.pdf"+Environment.NewLine;
+                _errMssg += file + " : Nom du fichier non reconnu. Attendu : NOM_PRENOM_TPXX.pdf" + Environment.NewLine;
                 return null;
             }
         }
@@ -185,7 +205,7 @@ namespace WindowsFormsApplication2
 
             var b = file;
             var a = new pdfHandler(ref b);
-            var c = (string)a.readPDF();
+            var c = (string) a.readPDF();
 
             const string strRegex = @"C[0-9].[0-9]";
             var myRegex = new Regex(strRegex, RegexOptions.None);

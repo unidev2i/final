@@ -337,7 +337,7 @@ namespace WindowsFormsApplication2
         public static void ajouterPromo(string promo)
         {
             var command = _conn.CreateCommand();
-            command.CommandText = "INSERT INTO classe (Promotion) VALUES ('" + promo + "')";
+            command.CommandText = "INSERT INTO classe (Promotion, hashClasse) VALUES ('" + promo + "', '0')";
             MySqlDataReader reader = command.ExecuteReader();
             reader.Close();
         }
