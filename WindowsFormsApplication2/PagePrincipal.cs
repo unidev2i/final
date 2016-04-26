@@ -166,6 +166,8 @@ namespace WindowsFormsApplication2
                 p.AxisLabel = a.Item1;
                 //p.Label = a.Item1;
             }
+            Database.removeCPFromWeb(aTuples);
+
         }
 
 
@@ -392,6 +394,11 @@ namespace WindowsFormsApplication2
         }
 
         private void LBL_InfoAjoutTp_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }

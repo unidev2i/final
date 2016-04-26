@@ -149,6 +149,7 @@ namespace WindowsFormsApplication2
             return a;
         }
 
+
       public static List<Tuple<string,float,int>> GetWthRequest(string idPromo)
       {
             //var req2 =
@@ -276,20 +277,36 @@ namespace WindowsFormsApplication2
         public static List<Tuple<string, float>> GetWebMax()
         {
             var retour = new List<Tuple<string, float>>();
-            var req =
-            "SELECT "+COL_IDSKILL+", maxEchelle FROM competence";
+            var req = "SELECT "+COL_IDSKILL+", maxEchelle FROM competence";
             var command = _conn.CreateCommand();
             command.CommandText = req;
             var r = command.ExecuteReader();
 
             while (r.Read())
             {
-                if(CPisInDrawableList(r[COL_IDSKILL].ToString()))
-                    retour.Add(new Tuple<string, float>(r[COL_IDSKILL].ToString(), float.Parse(r["maxEchelle"].ToString())));
+                //if(CPisInDrawableList(r[COL_IDSKILL].ToString()))
+                retour.Add(new Tuple<string, float>(r[COL_IDSKILL].ToString(), float.Parse(r["maxEchelle"].ToString())));
             }
 
             r.Close();
+            
             return retour;
+        }
+
+        public static void removeCPFromWeb(List<Tuple<string,float>> listCP)
+        {
+            var command = _conn.CreateCommand();
+            foreach (var idCPMax in listCP)
+            {
+                command.CommandText = "SELECT DISTINCT idCompetence FROM note WHERE idCompetence='" + idCPMax.Item1 + "'";
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    if (reader["idCompetence"] == null)
+                        listCP.Remove(idCPMax);
+                }
+                reader.Close();
+            }
         }
 
         public static bool CPisInDrawableList(string idCP)
