@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using WL;
@@ -25,8 +27,8 @@ namespace WindowsFormsApplication2
         {
             var request0 = Directory.GetDirectories(RootFolder).Aggregate(string.Empty, (current, a) => current + ("\""+Crypt.CreateMd5ForFolder(a) + "\","));
 
-            var retour1 = Database.GetListRequest("classe", new[] { "promotion" },
-                String.Format("`hashClasse` NOT IN ({0}0)", request0));
+            var retour1 = Database.GetListRequest("classe", new[] { "promotion" }/*,
+                String.Format("`hashClasse` NOT IN ({0}0)", request0)*/);
             var retour2 = retour1.ToList();
 
             return retour2;
@@ -61,6 +63,10 @@ namespace WindowsFormsApplication2
 
 
             var cp = CheckPromo();
+            for (int i = 0; i < cp.Count; i++)
+            {
+                cp[i] = cp[i].Substring(0, cp[i].Length - 1);
+            }
 
             Program.ac.graphic.progressBar1.Invoke(
                 (MethodInvoker)(() => Program.ac.graphic.progressBar1.Visible = true));
@@ -73,10 +79,9 @@ namespace WindowsFormsApplication2
 
             foreach (var dir in Directory.GetDirectories(RootFolder))
             {
-                if (!cp.Contains(dir.Split('\\')[dir.Split('\\').Length - 1]) && Directory.GetFiles(dir).Length != 0)
+                var temp = dir.Split('\\')[dir.Split('\\').Length - 1];
+                if (!cp.Contains(temp) && Directory.GetFiles(dir).Length != 0)
                 {
-                    // Le dossier existe, mais n'est pas dans la bdd
-                    // Ajouter dans la bdd.
                     Database.ajouterPromo(dir.Split('\\')[dir.Split('\\').Length - 1]);
                 }
             }
@@ -129,9 +134,25 @@ namespace WindowsFormsApplication2
                 }
 
                 fin:
-                Program.ac.graphic.progressBar1.Invoke((MethodInvoker) (() => Program.ac.graphic.progressBar1.Value++));
+                try
+                {
+                    Program.ac.graphic.progressBar1.Invoke(
+                        (MethodInvoker) (() => Program.ac.graphic.progressBar1.Value++));
+                }
+                catch
+                {
+                    // ignored
+                }
             }
-            Program.ac.graphic.progressBar1.Invoke((MethodInvoker) (() => Program.ac.graphic.progressBar1.Visible = false));
+            try
+            {
+                Program.ac.graphic.progressBar1.Invoke(
+                    (MethodInvoker) (() => Program.ac.graphic.progressBar1.Visible = false));
+            }
+            catch
+            {
+                // ignored
+            }
 
             if (!_errMssg.Equals(""))
             {
@@ -207,7 +228,7 @@ namespace WindowsFormsApplication2
             var a = new pdfHandler(ref b);
             var c = (string) a.readPDF();
 
-            const string strRegex = @"C[0-9].[0-9]";
+            const string strRegex = @"CP[0-9].[0-9]";
             var myRegex = new Regex(strRegex, RegexOptions.None);
             const string strRegex2 = @"[0-9]{1,2}\.{0,1}[0-9]{0,3}\s{0,2}\/[0-9]{1,2}\.{0,1}[0-9]{0,1}\s";
             var myRegex2 = new Regex(strRegex2, RegexOptions.None);
@@ -238,6 +259,7 @@ namespace WindowsFormsApplication2
 
             a = null;
             GC.Collect();
+
             return tempReturn;
         }
     }
@@ -253,6 +275,23 @@ namespace WindowsFormsApplication2
                     a.Remove(a.IndexOf(b, StringComparison.Ordinal));
             }
             return a;
+        }
+
+        public static string Md5(this string x)
+        {
+
+            // byte array representation of that string
+            byte[] encodedPassword = new UTF8Encoding().GetBytes(x);
+
+            // need MD5 to calculate the hash
+            byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(encodedPassword);
+
+            // string representation (similar to UNIX format)
+            return BitConverter.ToString(hash)
+               // without dashes
+               .Replace("-", string.Empty)
+               // make lowercase
+               .ToLower();
         }
     }
 }
