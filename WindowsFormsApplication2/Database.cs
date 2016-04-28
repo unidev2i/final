@@ -149,6 +149,7 @@ namespace WindowsFormsApplication2
             return a;
         }
 
+
       public static List<Tuple<string,float,int>> GetWthRequest(string idPromo)
       {
             //var req2 =
@@ -276,8 +277,7 @@ namespace WindowsFormsApplication2
         public static List<Tuple<string, float>> GetWebMax()
         {
             var retour = new List<Tuple<string, float>>();
-            var req =
-            "SELECT "+COL_IDSKILL+", maxEchelle FROM competence";
+            var req = "SELECT "+COL_IDSKILL+", maxEchelle FROM competence";
             var command = _conn.CreateCommand();
             command.CommandText = req;
             var r = command.ExecuteReader();
@@ -288,7 +288,41 @@ namespace WindowsFormsApplication2
             }
 
             r.Close();
+            
             return retour;
+        }
+
+        public static void removeCPFromWeb(List<Tuple<string,float>> listCP, string prenom, string nom)
+        {
+            var command = _conn.CreateCommand();
+            var listCP2 = new List<Tuple<string,float>>(listCP);
+            foreach (var idCPMax in listCP2)
+            {
+                command.CommandText = "SELECT DISTINCT idCompetence FROM eleve NATURAL JOIN tp NATURAL JOIN note WHERE nom = '"+nom+"' AND prenom='"+prenom+"' AND idCompetence='"+idCPMax.Item1+"'";
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    continue;                        
+                }
+                listCP.Remove(idCPMax);
+                reader.Close();
+            }
+        }
+
+        public static bool CPisInDrawableList(string idCP)
+        {
+            var cpExist = "";
+            var command = _conn.CreateCommand();
+            command.CommandText = "SELECT " + COL_IDSKILL + "FROM note WHERE idCompetence=" + idCP + ""; 
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                cpExist = reader["idCompetence"].ToString();
+            }
+            reader.Close();
+            if (cpExist != "")
+                return true;
+            return false;
         }
  
 
@@ -625,7 +659,7 @@ namespace WindowsFormsApplication2
             ("UPDATE "+TAB_CLASSE+" SET"+nomColonne+" = '"+hash+"' WHERE "+nomColonne+"="+condition).SimpleRequest();
         }
 
-        public static List<string> CPexistInNote()
+        public static List<string> CPsNewInNote()
         {
             List<string> listnewCP = new List<string>();
             var command = _conn.CreateCommand();
@@ -641,7 +675,7 @@ namespace WindowsFormsApplication2
 
         }
 
-        public static void addCPMax(List<string> listCP)
+        public static int addCPMax(List<string> listCP)
         {
             if (listCP.Count != 0)
             {
@@ -650,8 +684,10 @@ namespace WindowsFormsApplication2
                 {
                     ("INSERT INTO competence (idCompetence) VALUES ('" + idCP + "')").SimpleRequest();
                 }
-
+                return 0;
             }
+            else
+                return 1;
         }
 
     }
