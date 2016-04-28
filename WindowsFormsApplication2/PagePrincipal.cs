@@ -23,6 +23,8 @@ namespace WindowsFormsApplication2
         DelEleve graphic7 = null;
         DataGridDebug dataForm;
         public string login;
+        public bool isNameSelected = true;
+        public string promotionSelected = "";
         
 
         public PagePrincipal()
@@ -151,6 +153,8 @@ namespace WindowsFormsApplication2
             //chart1.ChartAreas[0].AxisX.Maximum = 100;
 
             label2.Text = "Vous observez les résultats de " + comboBox1.Text;
+
+            isNameSelected = true;
  
 
         }
@@ -244,7 +248,9 @@ namespace WindowsFormsApplication2
             }
 
             label2.Text = "Vous observez les résultats de la promotion " + comboBox3.Text;
-       
+            isNameSelected = false;
+
+            promotionSelected = comboBox3.Text;
             
         }
 
