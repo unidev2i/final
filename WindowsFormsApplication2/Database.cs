@@ -298,32 +298,19 @@ namespace WindowsFormsApplication2
             var listCP2 = new List<Tuple<string,float>>(listCP);
             foreach (var idCPMax in listCP2)
             {
+                bool boule = false;
                 command.CommandText = "SELECT DISTINCT idCompetence FROM eleve NATURAL JOIN tp NATURAL JOIN note WHERE nom = '"+nom+"' AND prenom='"+prenom+"' AND idCompetence='"+idCPMax.Item1+"'";
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    continue;                        
+                    boule = true;                        
                 }
-                listCP.Remove(idCPMax);
+                if(!boule)
+                    listCP.Remove(idCPMax);
                 reader.Close();
             }
         }
 
-        public static bool CPisInDrawableList(string idCP)
-        {
-            var cpExist = "";
-            var command = _conn.CreateCommand();
-            command.CommandText = "SELECT " + COL_IDSKILL + "FROM note WHERE idCompetence=" + idCP + ""; 
-            MySqlDataReader reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                cpExist = reader["idCompetence"].ToString();
-            }
-            reader.Close();
-            if (cpExist != "")
-                return true;
-            return false;
-        }
  
 
         public static string getpromo(string idClasse)

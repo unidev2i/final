@@ -162,6 +162,7 @@ namespace WindowsFormsApplication2
             Program.ac.graphic.LBL_InfoAjoutTp.Invoke((MethodInvoker) (() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = true));
             System.Threading.Thread.Sleep(3000);
             Program.ac.graphic.LBL_InfoAjoutTp.Invoke((MethodInvoker) (() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = false));
+            Database.addCPMax(Database.CPsNewInNote());
         }
 
         private static void TraiterFichier(string file)

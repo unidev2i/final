@@ -164,6 +164,7 @@ namespace WindowsFormsApplication2
             
             chart3.Series[1]["RadarDrawingStyle"] = "Line";
             chart3.Series[serie].Points.Clear();
+            Database.removeCPFromWeb(aTuples, prenom, nom);
             foreach (var a in aTuples)
             {
                 var p = chart3.Series[serie].Points.Add(a.Item2);
@@ -171,7 +172,6 @@ namespace WindowsFormsApplication2
                 p.AxisLabel = a.Item1;
                 //p.Label = a.Item1;
             }
-            Database.removeCPFromWeb(aTuples,prenom,nom);
 
         }
 
@@ -285,7 +285,6 @@ namespace WindowsFormsApplication2
         {
             var b = new Thread(new ThreadStart(ImportTp.Go));
             b.Start();
-            Database.addCPMax(Database.CPsNewInNote());
         }
 
         private void changerDeMotDePasseToolStripMenuItem_Click(object sender, EventArgs e)
