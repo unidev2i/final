@@ -162,6 +162,8 @@ namespace WindowsFormsApplication2
             Program.ac.graphic.LBL_InfoAjoutTp.Invoke((MethodInvoker) (() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = true));
             System.Threading.Thread.Sleep(3000);
             Program.ac.graphic.LBL_InfoAjoutTp.Invoke((MethodInvoker) (() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = false));
+
+
             Database.addCPMax(Database.CPsNewInNote());
         }
 
@@ -229,7 +231,7 @@ namespace WindowsFormsApplication2
             var a = new pdfHandler(ref b);
             var c = (string) a.readPDF();
 
-            const string strRegex = @"CP[0-9].[0-9]";
+            const string strRegex = @"C[0-9].[0-9]";
             var myRegex = new Regex(strRegex, RegexOptions.None);
             const string strRegex2 = @"[0-9]{1,2}\.{0,1}[0-9]{0,3}\s{0,2}\/[0-9]{1,2}\.{0,1}[0-9]{0,1}\s";
             var myRegex2 = new Regex(strRegex2, RegexOptions.None);
