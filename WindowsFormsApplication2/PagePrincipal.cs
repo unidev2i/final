@@ -155,7 +155,8 @@ namespace WindowsFormsApplication2
             label2.Text = "Vous observez les résultats de " + comboBox1.Text;
 
             isNameSelected = true;
- 
+
+            button1.Visible = true;
 
         }
 
@@ -251,7 +252,8 @@ namespace WindowsFormsApplication2
             isNameSelected = false;
 
             promotionSelected = comboBox3.Text;
-            
+
+            button1.Visible = true;
         }
 
         private void ajouterToolStripMenuItem1_Click(object sender, EventArgs e)
