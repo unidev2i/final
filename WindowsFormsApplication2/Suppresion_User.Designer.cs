@@ -88,6 +88,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Suppresion_User";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Suppression utilisateur";
             this.Load += new System.EventHandler(this.Suppresion_User_Load);
             this.ResumeLayout(false);

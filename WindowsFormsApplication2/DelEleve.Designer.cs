@@ -103,7 +103,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBox1);
             this.Name = "DelEleve";
-            this.Text = "DelEleve";
+            this.Text = "DelEleve (unused)";
             this.Load += new System.EventHandler(this.DelEleve_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -140,6 +140,7 @@
             this.Name = "Inscription";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Ajouter un utilisateur du logiciel";
             this.ResumeLayout(false);
             this.PerformLayout();
