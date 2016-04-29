@@ -299,7 +299,10 @@ namespace WindowsFormsApplication2
             foreach (var idCPMax in listCP2)
             {
                 bool boule = false;
-                command.CommandText = "SELECT DISTINCT idCompetence FROM eleve NATURAL JOIN tp NATURAL JOIN note WHERE nom = '"+nom+"' AND prenom='"+prenom+"' AND idCompetence='"+idCPMax.Item1+"'";
+                if(Program.ac.graphic.isNameSelected == true)
+                    command.CommandText = "SELECT DISTINCT idCompetence FROM eleve NATURAL JOIN tp NATURAL JOIN note WHERE nom = '"+nom+"' AND prenom='"+prenom+"' AND idCompetence='"+idCPMax.Item1+"'";
+                if (Program.ac.graphic.isNameSelected == false)
+                    command.CommandText = "SELECT DISTINCT idCompetence FROM eleve NATURAL JOIN tp NATURAL JOIN note WHERE idClasse='" + getidClasse(Program.ac.graphic.promotionSelected) + "' AND idCompetence='" + idCPMax.Item1 + "'";
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
