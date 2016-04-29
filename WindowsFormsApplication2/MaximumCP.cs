@@ -46,5 +46,13 @@ namespace WindowsFormsApplication2
         {
             //
         }
+
+        private void numericUpDown1_Leave(object sender, EventArgs e)
+        {
+            if(numericUpDown1.Value != null)
+                Database.setMaxCP(comboBox1.Text, numericUpDown1.Value);
+            else
+                Database.setMaxCP(comboBox1.Text, 0);
+        }
     }
 }

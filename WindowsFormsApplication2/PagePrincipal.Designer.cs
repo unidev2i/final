@@ -186,7 +186,7 @@
             // 
             this.ajouterUnPDFToolStripMenuItem.Name = "ajouterUnPDFToolStripMenuItem";
             this.ajouterUnPDFToolStripMenuItem.Size = new System.Drawing.Size(213, 24);
-            this.ajouterUnPDFToolStripMenuItem.Text = "Ajouter un TP";
+            this.ajouterUnPDFToolStripMenuItem.Text = "Ajouter les TPs";
             this.ajouterUnPDFToolStripMenuItem.Click += new System.EventHandler(this.ajouterUnPDFToolStripMenuItem_Click);
             // 
             // sélectionnerLeDossierToolStripMenuItem
@@ -220,27 +220,27 @@
             this.supprimerToolStripMenuItem,
             this.modifierToolStripMenuItem});
             this.utilisateurToolStripMenuItem.Name = "utilisateurToolStripMenuItem";
-            this.utilisateurToolStripMenuItem.Size = new System.Drawing.Size(149, 24);
+            this.utilisateurToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
             this.utilisateurToolStripMenuItem.Text = "Professeur";
             // 
             // ajouterToolStripMenuItem1
             // 
             this.ajouterToolStripMenuItem1.Name = "ajouterToolStripMenuItem1";
-            this.ajouterToolStripMenuItem1.Size = new System.Drawing.Size(141, 24);
+            this.ajouterToolStripMenuItem1.Size = new System.Drawing.Size(152, 24);
             this.ajouterToolStripMenuItem1.Text = "Ajouter";
             this.ajouterToolStripMenuItem1.Click += new System.EventHandler(this.ajouterToolStripMenuItem1_Click);
             // 
             // supprimerToolStripMenuItem
             // 
             this.supprimerToolStripMenuItem.Name = "supprimerToolStripMenuItem";
-            this.supprimerToolStripMenuItem.Size = new System.Drawing.Size(141, 24);
+            this.supprimerToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
             this.supprimerToolStripMenuItem.Text = "Supprimer";
             this.supprimerToolStripMenuItem.Click += new System.EventHandler(this.supprimerToolStripMenuItem_Click);
             // 
             // modifierToolStripMenuItem
             // 
             this.modifierToolStripMenuItem.Name = "modifierToolStripMenuItem";
-            this.modifierToolStripMenuItem.Size = new System.Drawing.Size(141, 24);
+            this.modifierToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
             this.modifierToolStripMenuItem.Text = "Modifier";
             // 
             // eleveToolStripMenuItem
@@ -248,7 +248,7 @@
             this.eleveToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.supprimerToolStripMenuItem1});
             this.eleveToolStripMenuItem.Name = "eleveToolStripMenuItem";
-            this.eleveToolStripMenuItem.Size = new System.Drawing.Size(149, 24);
+            this.eleveToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
             this.eleveToolStripMenuItem.Text = "Eleve";
             // 
             // supprimerToolStripMenuItem1
@@ -264,7 +264,7 @@
             this.exporterToolStripMenuItem,
             this.importerToolStripMenuItem});
             this.sauvegardeToolStripMenuItem.Name = "sauvegardeToolStripMenuItem";
-            this.sauvegardeToolStripMenuItem.Size = new System.Drawing.Size(149, 24);
+            this.sauvegardeToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
             this.sauvegardeToolStripMenuItem.Text = "Sauvegarde";
             // 
             // exporterToolStripMenuItem
@@ -379,6 +379,7 @@
             this.button1.TabIndex = 9;
             this.button1.Text = "Modifier maximum";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // progressBar1
