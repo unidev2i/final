@@ -306,13 +306,13 @@ namespace WindowsFormsApplication2
         private void changerDeMotDePasseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             graphic5 = new ChangerMdp(login);
-            graphic5.Show();
+            graphic5.ShowDialog();
         }
 
         private void changerDeLoginToolStripMenuItem_Click(object sender, EventArgs e)
         {
             graphic4 = new ChangerLogin(login, this);
-            graphic4.Show();
+            graphic4.ShowDialog();
         }
 
         public void UpdateLogin(string login)

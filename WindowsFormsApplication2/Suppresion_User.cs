@@ -24,6 +24,12 @@ namespace WindowsFormsApplication2
         private void button2_Click(object sender, EventArgs e)
         {
             var user = comboBox1.Text;
+            if (comboBox1.Items.Count <= 1)
+            {
+                MessageBox.Show("Vous ne pouvez pas supprimer le dernier utilisateur!");
+                return;
+            }
+                
             var result = Database.Delete(user);
             if (result == 1)
             {
