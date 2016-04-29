@@ -38,7 +38,9 @@ namespace WindowsFormsApplication2
 
             if (Directory.GetFiles(RootFolder).Length != 0)
             {
-                
+                _errMssg +=
+                    "<li>Plusieurs fichiers à la racine du répertoire ont étés détectés. Ils ne seront pas traités.</li>" +
+                    Environment.NewLine;
             }
 
             #region firstCheck
@@ -265,6 +267,15 @@ namespace WindowsFormsApplication2
             var skills = (from Match k in myRegex.Matches(sortie) select k.Value).ToList();
 
             var mark = (from Match l in myRegex2.Matches(sortie) select l.Value).ToList();
+
+            var skills2 = new List<string>();
+
+            foreach (var mdr in skills.Where(mdr => !skills2.Contains(mdr)))
+            {
+                skills2.Add(mdr);
+            }
+            skills = skills2;
+            GC.Collect();
 
             var tempReturn = new List<Tuple<string, string, string>>();
 
