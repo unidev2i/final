@@ -80,6 +80,8 @@
             // 
             // comboBox1
             // 
+            this.comboBox1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBox1.Cursor = System.Windows.Forms.Cursors.Default;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(72, 42);
@@ -184,7 +186,7 @@
             // 
             this.ajouterUnPDFToolStripMenuItem.Name = "ajouterUnPDFToolStripMenuItem";
             this.ajouterUnPDFToolStripMenuItem.Size = new System.Drawing.Size(213, 24);
-            this.ajouterUnPDFToolStripMenuItem.Text = "Ajouter les TPs";
+            this.ajouterUnPDFToolStripMenuItem.Text = "Synchroniser les TPs";
             this.ajouterUnPDFToolStripMenuItem.Click += new System.EventHandler(this.ajouterUnPDFToolStripMenuItem_Click);
             // 
             // sélectionnerLeDossierToolStripMenuItem

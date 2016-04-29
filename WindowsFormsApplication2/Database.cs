@@ -672,6 +672,22 @@ namespace WindowsFormsApplication2
 
         }
 
+        public static List<string> CPMaxIsNotinNote()
+        {
+            List<string> listToRemoveCP = new List<string>();
+            var command = _conn.CreateCommand();
+            command.CommandText = "SELECT DISTINCT competence.idCompetence FROM competence LEFT JOIN note ON competence.idCompetence = note.idCompetence WHERE note.idCompetence IS NULL";
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                listToRemoveCP.Add(reader["idCompetence"].ToString());
+            }
+            reader.Close();
+
+            return listToRemoveCP;
+        }
+
+
         public static int addCPMax(List<string> listCP)
         {
             if (listCP.Count != 0)
@@ -680,6 +696,22 @@ namespace WindowsFormsApplication2
                 foreach (var idCP in listCP)
                 {
                     ("INSERT INTO competence (idCompetence) VALUES ('" + idCP + "')").SimpleRequest();
+                }
+                return 0;
+            }
+            else
+                return 1;
+        }
+
+        public static int removeCPMax(List <string> listCP)
+        {
+            if (listCP.Count != 0)
+            {
+                var command = _conn.CreateCommand();
+                foreach (var idCP in listCP)
+                {
+                    ("DELETE FROM `mydb`.`competence` WHERE `competence`.`idCompetence` = \'"+ idCP +"'").SimpleRequest();
+                    
                 }
                 return 0;
             }

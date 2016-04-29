@@ -45,5 +45,10 @@ namespace WindowsFormsApplication2
         }
 
         #endregion Private Methods
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
