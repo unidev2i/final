@@ -185,7 +185,7 @@
             // 
             this.ajouterUnPDFToolStripMenuItem.Name = "ajouterUnPDFToolStripMenuItem";
             this.ajouterUnPDFToolStripMenuItem.Size = new System.Drawing.Size(213, 24);
-            this.ajouterUnPDFToolStripMenuItem.Text = "Ajouter les TPs";
+            this.ajouterUnPDFToolStripMenuItem.Text = "Synchroniser les TPs";
             this.ajouterUnPDFToolStripMenuItem.Click += new System.EventHandler(this.ajouterUnPDFToolStripMenuItem_Click);
             // 
             // sélectionnerLeDossierToolStripMenuItem

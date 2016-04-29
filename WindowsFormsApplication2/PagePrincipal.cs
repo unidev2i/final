@@ -293,6 +293,14 @@ namespace WindowsFormsApplication2
         {
             var b = new Thread(new ThreadStart(ImportTp.Go));
             b.Start();
+            if (!b.IsAlive)
+            {
+                foreach (var a in Database.GetListRequest("eleve", new[] { "Prenom", "Nom" }))
+                    comboBox1.Items.Add(a);
+
+                foreach (var a in Database.GetListRequest("classe", new[] { "Promotion" }))
+                    comboBox3.Items.Add(a);
+            }
         }
 
         private void changerDeMotDePasseToolStripMenuItem_Click(object sender, EventArgs e)

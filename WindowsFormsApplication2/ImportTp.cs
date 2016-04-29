@@ -180,6 +180,7 @@ namespace WindowsFormsApplication2
             //ShowLog();
 
             Database.addCPMax(Database.CPsNewInNote());
+            Database.removeCPMax(Database.CPMaxIsNotinNote());
         }
 
         private static void TraiterFichier(string file)
