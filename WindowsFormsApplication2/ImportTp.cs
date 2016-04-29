@@ -85,9 +85,9 @@ namespace WindowsFormsApplication2
                 (MethodInvoker) (() => Program.ac.graphic.progressBar1.Maximum = cp.Count));
 
             // y = yes n = no t = traité
-            int yt = -6;
+            int yt = 0;
             int nt = 0;
-            int dt = -6;
+            int dt = 0;
 
             foreach (var dir in Directory.GetDirectories(RootFolder))
             {
