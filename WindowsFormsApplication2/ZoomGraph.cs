@@ -5,11 +5,11 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace WindowsFormsApplication2
 {
-    public partial class Form1 : Form
+    public partial class ZoomGraph : Form
     {
         #region Public Constructors
 
-        public Form1(Chart a, int type)
+        public ZoomGraph(Chart a, int type)
         {
             InitializeComponent();
             if (type == 0)

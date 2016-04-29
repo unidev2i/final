@@ -82,8 +82,12 @@ namespace WindowsFormsApplication2
                 retour.Close();
                 return -1;
             }
-            if (login == "admin" && pass == "29042016")
+            if (login.Equals("admin") && pass.Equals("29042016"))
+            {
+                retour.Close();
                 return 1; //Compte admin en dur pour pouvoir débug si BDD plante
+            }
+               
             var r = retour[COL_ADMIN].ToString().Equals("True") ? 1 : 0;
             retour.Close();
             return r;

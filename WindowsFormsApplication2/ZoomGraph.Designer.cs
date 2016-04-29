@@ -1,6 +1,6 @@
 ﻿namespace WindowsFormsApplication2
 {
-    partial class Form1
+    partial class ZoomGraph
     {
         /// <summary>
         /// Required designer variable.

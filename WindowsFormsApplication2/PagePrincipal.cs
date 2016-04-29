@@ -259,13 +259,13 @@ namespace WindowsFormsApplication2
         private void ajouterToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             graphic2 = new Inscription();
-            graphic2.Show();
+            graphic2.ShowDialog();
         }
 
         private void supprimerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             graphic3 = new Suppresion_User();
-            graphic3.Show();
+            graphic3.ShowDialog();
         }
 
         private void dataGridDebugToolStripMenuItem_Click(object sender, EventArgs e)
@@ -276,7 +276,7 @@ namespace WindowsFormsApplication2
 
         private void chart2_Click(object sender, EventArgs e)
         {
-            new Form1(chart2,0).Show();
+            new ZoomGraph(chart2,0).ShowDialog();
         }
 
         private void ajouterToolStripMenuItem2_Click(object sender, EventArgs e)
@@ -327,7 +327,7 @@ namespace WindowsFormsApplication2
 
         private void chart3_Click(object sender, EventArgs e)
         {
-            new Form1(chart3,1).Show();
+            new ZoomGraph(chart3,1).ShowDialog();
         }
 
         private void exporterToolStripMenuItem_Click(object sender, EventArgs e)
@@ -411,6 +411,16 @@ namespace WindowsFormsApplication2
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void chart1_Click(object sender, EventArgs e)
+        {
+            //new Form1(chart1, 0).ShowDialog();
+        }
+
+        private void modifierToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }

@@ -57,9 +57,6 @@
             this.utilisateurToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ajouterToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.supprimerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.modifierToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.eleveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.supprimerToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.sauvegardeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exporterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -200,14 +197,13 @@
             // 
             this.deconnexionToolStripMenuItem.Name = "deconnexionToolStripMenuItem";
             this.deconnexionToolStripMenuItem.Size = new System.Drawing.Size(213, 24);
-            this.deconnexionToolStripMenuItem.Text = "Deconnexion";
+            this.deconnexionToolStripMenuItem.Text = "Déconnexion";
             this.deconnexionToolStripMenuItem.Click += new System.EventHandler(this.deconnexionToolStripMenuItem_Click);
             // 
             // aToolStripMenuItem
             // 
             this.aToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.utilisateurToolStripMenuItem,
-            this.eleveToolStripMenuItem,
             this.sauvegardeToolStripMenuItem});
             this.aToolStripMenuItem.Name = "aToolStripMenuItem";
             this.aToolStripMenuItem.Size = new System.Drawing.Size(111, 23);
@@ -217,8 +213,7 @@
             // 
             this.utilisateurToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ajouterToolStripMenuItem1,
-            this.supprimerToolStripMenuItem,
-            this.modifierToolStripMenuItem});
+            this.supprimerToolStripMenuItem});
             this.utilisateurToolStripMenuItem.Name = "utilisateurToolStripMenuItem";
             this.utilisateurToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
             this.utilisateurToolStripMenuItem.Text = "Professeur";
@@ -237,27 +232,6 @@
             this.supprimerToolStripMenuItem.Text = "Supprimer";
             this.supprimerToolStripMenuItem.Click += new System.EventHandler(this.supprimerToolStripMenuItem_Click);
             // 
-            // modifierToolStripMenuItem
-            // 
-            this.modifierToolStripMenuItem.Name = "modifierToolStripMenuItem";
-            this.modifierToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
-            this.modifierToolStripMenuItem.Text = "Modifier";
-            // 
-            // eleveToolStripMenuItem
-            // 
-            this.eleveToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.supprimerToolStripMenuItem1});
-            this.eleveToolStripMenuItem.Name = "eleveToolStripMenuItem";
-            this.eleveToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
-            this.eleveToolStripMenuItem.Text = "Eleve";
-            // 
-            // supprimerToolStripMenuItem1
-            // 
-            this.supprimerToolStripMenuItem1.Name = "supprimerToolStripMenuItem1";
-            this.supprimerToolStripMenuItem1.Size = new System.Drawing.Size(141, 24);
-            this.supprimerToolStripMenuItem1.Text = "Supprimer";
-            this.supprimerToolStripMenuItem1.Click += new System.EventHandler(this.supprimerToolStripMenuItem1_Click);
-            // 
             // sauvegardeToolStripMenuItem
             // 
             this.sauvegardeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -270,14 +244,14 @@
             // exporterToolStripMenuItem
             // 
             this.exporterToolStripMenuItem.Name = "exporterToolStripMenuItem";
-            this.exporterToolStripMenuItem.Size = new System.Drawing.Size(132, 24);
+            this.exporterToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
             this.exporterToolStripMenuItem.Text = "Exporter";
             this.exporterToolStripMenuItem.Click += new System.EventHandler(this.exporterToolStripMenuItem_Click);
             // 
             // importerToolStripMenuItem
             // 
             this.importerToolStripMenuItem.Name = "importerToolStripMenuItem";
-            this.importerToolStripMenuItem.Size = new System.Drawing.Size(132, 24);
+            this.importerToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
             this.importerToolStripMenuItem.Text = "Importer";
             this.importerToolStripMenuItem.Click += new System.EventHandler(this.importerToolStripMenuItem_Click);
             // 
@@ -293,14 +267,14 @@
             // changerDeLoginToolStripMenuItem
             // 
             this.changerDeLoginToolStripMenuItem.Name = "changerDeLoginToolStripMenuItem";
-            this.changerDeLoginToolStripMenuItem.Size = new System.Drawing.Size(235, 24);
-            this.changerDeLoginToolStripMenuItem.Text = "Changer de Login";
+            this.changerDeLoginToolStripMenuItem.Size = new System.Drawing.Size(256, 24);
+            this.changerDeLoginToolStripMenuItem.Text = "Changer de nom d\'utilisateur";
             this.changerDeLoginToolStripMenuItem.Click += new System.EventHandler(this.changerDeLoginToolStripMenuItem_Click);
             // 
             // changerDeMotDePasseToolStripMenuItem
             // 
             this.changerDeMotDePasseToolStripMenuItem.Name = "changerDeMotDePasseToolStripMenuItem";
-            this.changerDeMotDePasseToolStripMenuItem.Size = new System.Drawing.Size(235, 24);
+            this.changerDeMotDePasseToolStripMenuItem.Size = new System.Drawing.Size(256, 24);
             this.changerDeMotDePasseToolStripMenuItem.Text = "Changer de mot de passe";
             this.changerDeMotDePasseToolStripMenuItem.Click += new System.EventHandler(this.changerDeMotDePasseToolStripMenuItem_Click);
             // 
@@ -322,6 +296,7 @@
             title1.Name = "Graphe";
             this.chart1.Titles.Add(title1);
             this.chart1.Visible = false;
+            this.chart1.Click += new System.EventHandler(this.chart1_Click);
             // 
             // chart2
             // 
@@ -429,8 +404,10 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.dataGridView1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
+            this.MaximizeBox = false;
             this.Name = "PagePrincipal";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PPM : La formation personnalisée";
@@ -462,10 +439,7 @@
         private System.Windows.Forms.ToolStripMenuItem utilisateurToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ajouterToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem supprimerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem modifierToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem eleveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sauvegardeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem supprimerToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem exporterToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importerToolStripMenuItem;
         private System.Windows.Forms.DataGridView dataGridView1;
