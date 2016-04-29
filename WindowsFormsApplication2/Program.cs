@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
@@ -20,9 +21,9 @@ namespace WindowsFormsApplication2
         {
             try 
             {
-                /*ProcessStartInfo startServ = new ProcessStartInfo("mysql\\start.exe");
+                ProcessStartInfo startServ = new ProcessStartInfo("mysql\\start.exe");
                 Process.Start(startServ);                                           //A décommenter avant mise en oeuvre
-                System.Threading.Thread.Sleep(1000);*/
+                System.Threading.Thread.Sleep(1000);
  
                 Database.Connect();
             }
@@ -33,9 +34,9 @@ namespace WindowsFormsApplication2
             ac = new AssistantConnexion();
             Application.Run(ac);
  
-            /*ProcessStartInfo stopServ = new ProcessStartInfo("mysql\\stop.exe");
+            ProcessStartInfo stopServ = new ProcessStartInfo("mysql\\stop.exe");
             Process.Start(stopServ);                                            //A décommenter avant mise en oeuvre
-            System.Threading.Thread.Sleep(1000); */
+            System.Threading.Thread.Sleep(1000); 
         }
     }
 }
