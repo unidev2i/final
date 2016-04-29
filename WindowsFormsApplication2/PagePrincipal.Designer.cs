@@ -170,6 +170,7 @@
             this.menuStrip1.Size = new System.Drawing.Size(1185, 27);
             this.menuStrip1.TabIndex = 8;
             this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
             // toolStripMenuItem1
             // 
@@ -217,20 +218,20 @@
             this.ajouterToolStripMenuItem1,
             this.supprimerToolStripMenuItem});
             this.utilisateurToolStripMenuItem.Name = "utilisateurToolStripMenuItem";
-            this.utilisateurToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.utilisateurToolStripMenuItem.Size = new System.Drawing.Size(149, 24);
             this.utilisateurToolStripMenuItem.Text = "Professeur";
             // 
             // ajouterToolStripMenuItem1
             // 
             this.ajouterToolStripMenuItem1.Name = "ajouterToolStripMenuItem1";
-            this.ajouterToolStripMenuItem1.Size = new System.Drawing.Size(152, 24);
+            this.ajouterToolStripMenuItem1.Size = new System.Drawing.Size(141, 24);
             this.ajouterToolStripMenuItem1.Text = "Ajouter";
             this.ajouterToolStripMenuItem1.Click += new System.EventHandler(this.ajouterToolStripMenuItem1_Click);
             // 
             // supprimerToolStripMenuItem
             // 
             this.supprimerToolStripMenuItem.Name = "supprimerToolStripMenuItem";
-            this.supprimerToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.supprimerToolStripMenuItem.Size = new System.Drawing.Size(141, 24);
             this.supprimerToolStripMenuItem.Text = "Supprimer";
             this.supprimerToolStripMenuItem.Click += new System.EventHandler(this.supprimerToolStripMenuItem_Click);
             // 
@@ -240,20 +241,20 @@
             this.exporterToolStripMenuItem,
             this.importerToolStripMenuItem});
             this.sauvegardeToolStripMenuItem.Name = "sauvegardeToolStripMenuItem";
-            this.sauvegardeToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.sauvegardeToolStripMenuItem.Size = new System.Drawing.Size(149, 24);
             this.sauvegardeToolStripMenuItem.Text = "Sauvegarde";
             // 
             // exporterToolStripMenuItem
             // 
             this.exporterToolStripMenuItem.Name = "exporterToolStripMenuItem";
-            this.exporterToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.exporterToolStripMenuItem.Size = new System.Drawing.Size(132, 24);
             this.exporterToolStripMenuItem.Text = "Exporter";
             this.exporterToolStripMenuItem.Click += new System.EventHandler(this.exporterToolStripMenuItem_Click);
             // 
             // importerToolStripMenuItem
             // 
             this.importerToolStripMenuItem.Name = "importerToolStripMenuItem";
-            this.importerToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.importerToolStripMenuItem.Size = new System.Drawing.Size(132, 24);
             this.importerToolStripMenuItem.Text = "Importer";
             this.importerToolStripMenuItem.Click += new System.EventHandler(this.importerToolStripMenuItem_Click);
             // 
@@ -382,8 +383,9 @@
             this.LBL_InfoAjoutTp.AutoSize = true;
             this.LBL_InfoAjoutTp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.LBL_InfoAjoutTp.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LBL_InfoAjoutTp.Location = new System.Drawing.Point(881, 27);
+            this.LBL_InfoAjoutTp.Location = new System.Drawing.Point(885, 27);
             this.LBL_InfoAjoutTp.Name = "LBL_InfoAjoutTp";
+            this.LBL_InfoAjoutTp.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.LBL_InfoAjoutTp.Size = new System.Drawing.Size(304, 24);
             this.LBL_InfoAjoutTp.TabIndex = 11;
             this.LBL_InfoAjoutTp.Text = "Ajout des TP effectué avec succès.";
