@@ -270,16 +270,13 @@ namespace WindowsFormsApplication2
 
             var skills2 = new List<string>();
 
-            foreach (var mdr in skills.Where(mdr => !skills2.Contains(mdr)))
-            {
-                skills2.Add(mdr);
-            }
+            skills2 = skills.Distinct().ToList();
             skills = skills2;
             GC.Collect();
 
             var tempReturn = new List<Tuple<string, string, string>>();
 
-            for (var index = 0; index < mark.Count; index++)
+            for (var index = 0; index < skills.Count; index++)
             {
                 var m = mark[index];
 
