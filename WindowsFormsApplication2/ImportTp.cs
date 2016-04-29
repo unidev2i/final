@@ -78,13 +78,16 @@ namespace WindowsFormsApplication2
             }
 
             Program.ac.graphic.progressBar1.Invoke(
+                (MethodInvoker)(() => Program.ac.graphic.progressBar1.Value = 0));
+            Program.ac.graphic.progressBar1.Invoke(
                 (MethodInvoker)(() => Program.ac.graphic.progressBar1.Visible = true));
             Program.ac.graphic.progressBar1.Invoke(
                 (MethodInvoker) (() => Program.ac.graphic.progressBar1.Maximum = cp.Count));
 
             // y = yes n = no t = traité
-            int yt = 0;
+            int yt = -6;
             int nt = 0;
+            int dt = -6;
 
             foreach (var dir in Directory.GetDirectories(RootFolder))
             {
@@ -138,7 +141,7 @@ namespace WindowsFormsApplication2
                 foreach (var s in a)
                 {
                     // Supprimer de la bdd les tp de la promo "a" qui ne sont plus dans le répertoire 
-                    yt++;
+                    dt++;
                     Database.DeleteTp(s);
                 }
 
@@ -170,7 +173,7 @@ namespace WindowsFormsApplication2
             {
                 MessageBox.Show(@"Terminé avec des erreurs : " + Environment.NewLine + _errMssg);
             }
-            Program.ac.graphic.LBL_InfoAjoutTp.Invoke((MethodInvoker) (() => Program.ac.graphic.LBL_InfoAjoutTp.Text += Environment.NewLine + @"Traités : " + yt.ToString() + @"   Ignorés : " + nt.ToString()));
+            Program.ac.graphic.LBL_InfoAjoutTp.Invoke((MethodInvoker) (() => Program.ac.graphic.LBL_InfoAjoutTp.Text += Environment.NewLine + @"Traités : " + yt.ToString() + @"   Ignorés : " + nt.ToString() + "   Supprimés : " + dt.ToString()));
             Program.ac.graphic.LBL_InfoAjoutTp.Invoke((MethodInvoker) (() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = true));
             System.Threading.Thread.Sleep(3000);
             Program.ac.graphic.LBL_InfoAjoutTp.Invoke((MethodInvoker) (() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = false));
@@ -229,7 +232,7 @@ namespace WindowsFormsApplication2
             {
                 //MessageBox.Show(
                 //    $@"Mauvais type de fichier. Veuillez vérifier qu'il est sous la forme{Environment.NewLine}NOM_PRENOM_TPXX.pdf");
-                _errMssg += file + " : Nom du fichier non reconnu. Attendu : NOM_PRENOM_TPXX.pdf" + Environment.NewLine;
+                _errMssg += "<li>" + file + " : Nom du fichier non reconnu. Attendu : NOM_PRENOM_TPXX.pdf</li>" + Environment.NewLine;
                 return null;
             }
         }
