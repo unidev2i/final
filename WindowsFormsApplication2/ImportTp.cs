@@ -8,8 +8,6 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using WL;
 
-//? IL FAUT QUE LA COMPETENCE EXISTE AVANT D"AJOUTER UN TP !!!
-
 namespace WindowsFormsApplication2
 {
     public static class ImportTp
@@ -38,6 +36,10 @@ namespace WindowsFormsApplication2
         {
             _logMssg += "Traitement des dossiers démarré." + Environment.NewLine;
 
+            if (Directory.GetFiles(RootFolder).Length != 0)
+            {
+                
+            }
 
             #region firstCheck
             // First check
@@ -51,7 +53,12 @@ namespace WindowsFormsApplication2
                     case DialogResult.None:
                         break;
                     case DialogResult.Yes:
-                        // TODO : remove all from db
+                        "TRUNCATE `classe`".SimpleRequest();
+                        "TRUNCATE `competence`".SimpleRequest();
+                        "TRUNCATE `eleve`".SimpleRequest();
+                        "TRUNCATE `note`".SimpleRequest();
+                        "TRUNCATE `tp`".SimpleRequest();
+                        "TRUNCATE `user`".SimpleRequest();
                         return;
                     case DialogResult.No:
                         return;
@@ -143,6 +150,9 @@ namespace WindowsFormsApplication2
                 {
                     // ignored
                 }
+
+                // TODO : Update this fcking hash
+
             }
             try
             {
@@ -162,7 +172,7 @@ namespace WindowsFormsApplication2
             Program.ac.graphic.LBL_InfoAjoutTp.Invoke((MethodInvoker) (() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = true));
             System.Threading.Thread.Sleep(3000);
             Program.ac.graphic.LBL_InfoAjoutTp.Invoke((MethodInvoker) (() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = false));
-
+            //ShowLog();
 
             Database.addCPMax(Database.CPsNewInNote());
         }
@@ -219,6 +229,18 @@ namespace WindowsFormsApplication2
                 //    $@"Mauvais type de fichier. Veuillez vérifier qu'il est sous la forme{Environment.NewLine}NOM_PRENOM_TPXX.pdf");
                 _errMssg += file + " : Nom du fichier non reconnu. Attendu : NOM_PRENOM_TPXX.pdf" + Environment.NewLine;
                 return null;
+            }
+        }
+
+        public static void ShowLog()
+        {
+            var a = new ImportTpInfo();
+            a.ShowDialog();
+
+            string message = "";
+            if (_errMssg != string.Empty)
+            {
+                message += "<p style='color:red; font-size:50px align:center'>Liste d'erreurs</p>";
             }
         }
 
