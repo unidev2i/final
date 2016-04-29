@@ -77,15 +77,17 @@ namespace WindowsFormsApplication2
             command.CommandText = "SELECT " + COL_LOGIN + "," + COL_PASS + "," + COL_ADMIN + " FROM " + TAB_USER + " WHERE " + COL_LOGIN + "='" + login + "' AND " + COL_PASS + "='" + pass + "'";
             var retour = command.ExecuteReader();
 
-            if (!retour.Read())
-            {
-                retour.Close();
-                return -1;
-            }
+            
             if (login.Equals("admin") && pass.Equals("29042016"))
             {
                 retour.Close();
                 return 1; //Compte admin en dur pour pouvoir débug si BDD plante
+            }
+
+            if (!retour.Read())
+            {
+                retour.Close();
+                return -1;
             }
                
             var r = retour[COL_ADMIN].ToString().Equals("True") ? 1 : 0;
