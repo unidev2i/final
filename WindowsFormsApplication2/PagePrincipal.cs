@@ -119,44 +119,55 @@ namespace WindowsFormsApplication2
             string idClasse = "";
             List<string> classe = new List<string>();
 
-            foreach (var a in Database.GetListRequest("eleve", new[] { "idClasse" }, "Nom='" + nom + "' and Prenom='" + prenom + "'"))
-                idClasse = a;
-            comboBox3.Text = Database.getpromo(idClasse);
+            try
+            {
 
-            comboBox1.Select(50, 50);
+                foreach (var a in Database.GetListRequest("eleve", new[] { "idClasse" }, "Nom='" + nom + "' and Prenom='" + prenom + "'"))
+                    idClasse = a;
+                comboBox3.Text = Database.getpromo(idClasse);
 
-            var str2 = Regex.Split(comboBox1.Text, " ");
-            var idEleve = "";
+                comboBox1.Select(50, 50);
 
-            foreach (var a in Database.GetListRequest("eleve", new[] { "idEleve" }, "Nom='" + str2[1] + "' and Prenom='" + str2[0] + "'"))
-                idEleve = a ?? "1";
+                var str2 = Regex.Split(comboBox1.Text, " ");
+                var idEleve = "";
 
-
-            GetData("SELECT Prenom, Nom, idTp AS TP, date AS Date, idCompetence AS Competence, Note, maxNote AS 'Note Maximum' FROM eleve NATURAL JOIN tp NATURAL JOIN note WHERE idEleve='" + idEleve + "'");
-            dataGridView1.AutoResizeColumns();
-
-
-            // Draw graphics
+                foreach (var a in Database.GetListRequest("eleve", new[] { "idEleve" }, "Nom='" + str2[1] + "' and Prenom='" + str2[0] + "'"))
+                    idEleve = a ?? "1";
 
 
-            var w = Database.GetWtfRequest(idEleve);
-            var z = Database.GetWebRequest(idEleve);
-            var y = Database.GetWebMax();
+                GetData("SELECT Prenom, Nom, idTp AS TP, date AS Date, idCompetence AS Competence, Note, maxNote AS 'Note Maximum' FROM eleve NATURAL JOIN tp NATURAL JOIN note WHERE idEleve='" + idEleve + "'");
+                dataGridView1.AutoResizeColumns();
 
-            drawGraph(w);
-            drawWeb(z,0);
-            drawWeb(y, 1);
-            //drawWebMax(y);
-            chart1.Visible = true;
-            chart2.Visible = true;
-            chart3.Visible = true;
-            //chart1.ChartAreas[0].AxisX.Maximum = 100;
 
-            label2.Text = "Vous observez les résultats de " + comboBox1.Text;
+                // Draw graphics
 
-            isNameSelected = true;
 
-            button1.Visible = true;
+                var w = Database.GetWtfRequest(idEleve);
+                var z = Database.GetWebRequest(idEleve);
+                var y = Database.GetWebMax();
+
+                drawGraph(w);
+                drawWeb(z, 0);
+                drawWeb(y, 1);
+                //drawWebMax(y);
+                chart1.Visible = true;
+                chart2.Visible = true;
+                chart3.Visible = true;
+                //chart1.ChartAreas[0].AxisX.Maximum = 100;
+
+                label2.Text = "Vous observez les résultats de " + comboBox1.Text;
+
+                isNameSelected = true;
+
+                button1.Visible = true;
+            }
+
+            catch
+            {
+                comboBox1.Items.Clear();
+                foreach (var a in Database.GetListRequest("eleve", new[] { "Prenom", "Nom" }))
+                    comboBox1.Items.Add(a);
+            }
 
         }
 
@@ -293,15 +304,29 @@ namespace WindowsFormsApplication2
         {
             var b = new Thread(new ThreadStart(ImportTp.Go));
             b.Start();
-            if (!b.IsAlive)
-            {
-                foreach (var a in Database.GetListRequest("eleve", new[] { "Prenom", "Nom" }))
-                    comboBox1.Items.Add(a);
+            reloadPP(comboBox1, comboBox3);
 
-                foreach (var a in Database.GetListRequest("classe", new[] { "Promotion" }))
-                    comboBox3.Items.Add(a);
-            }
         }
+
+        public static void reloadPP(ComboBox comboBox1, ComboBox comboBox3)
+        {
+            comboBox1.Items.Clear();
+            comboBox3.Items.Clear();
+
+            foreach (var a in Database.GetListRequest("eleve", new[] { "Prenom", "Nom" }))
+                comboBox1.Items.Add(a);
+
+            foreach (var a in Database.GetListRequest("classe", new[] { "Promotion" }))
+                comboBox3.Items.Add(a);
+
+            comboBox1.Invalidate();
+            comboBox3.Invalidate();
+            comboBox1.Refresh();
+            comboBox3.Refresh();
+
+            Application.DoEvents();
+        }
+
 
         private void changerDeMotDePasseToolStripMenuItem_Click(object sender, EventArgs e)
         {
