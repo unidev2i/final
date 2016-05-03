@@ -5,32 +5,33 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
+using WindowsFormsApplication2.Properties;
 using WL;
 
 namespace WindowsFormsApplication2
 {
     public static class ImportTp
     {
+        #region Public Constructors
+
+        static ImportTp()
+        {
+            RootFolder = Settings.Default.repoPath;
+        }
+
+        #endregion Public Constructors
+
+        #region Private Fields
+
         private static readonly string RootFolder;
         private static string _errMssg = string.Empty;
         private static string _logMssg = string.Empty;
 
-        static ImportTp()
-        {
-            RootFolder = WindowsFormsApplication2.Properties.Settings.Default.repoPath;
-        }
+        #endregion Private Fields
 
-        private static List<string> CheckPromo()
-        {
-            var request0 = Directory.GetDirectories(RootFolder).Aggregate(string.Empty, (current, a) => current + ("\""+Crypt.CreateMd5ForFolder(a) + "\","));
-
-            var retour1 = Database.GetListRequest("classe", new[] { "promotion" }/*,
-                String.Format("`hashClasse` NOT IN ({0}0)", request0)*/);
-            var retour2 = retour1.ToList();
-
-            return retour2;
-        }
+        #region Public Methods
 
         public static void Go()
         {
@@ -44,16 +45,19 @@ namespace WindowsFormsApplication2
             }
 
             #region firstCheck
+
             // First check
-            int check = Directory.GetDirectories(RootFolder).SelectMany(Directory.GetFiles).Count();
+            var check = Directory.GetDirectories(RootFolder).SelectMany(Directory.GetFiles).Count();
             if (check == 0)
             {
                 var dialogResult = MessageBox.Show(
-                        @"Le dossier est vide, toute la base de données sera effacée si vous continuez. Continuer ? ", @"ATTENTION !", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    @"Le dossier est vide, toute la base de données sera effacée si vous continuez. Continuer ? ",
+                    @"ATTENTION !", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 switch (dialogResult)
                 {
                     case DialogResult.None:
                         break;
+
                     case DialogResult.Yes:
                         "TRUNCATE `classe`".SimpleRequest();
                         "TRUNCATE `competence`".SimpleRequest();
@@ -62,37 +66,39 @@ namespace WindowsFormsApplication2
                         "TRUNCATE `tp`".SimpleRequest();
                         "TRUNCATE `user`".SimpleRequest();
                         return;
+
                     case DialogResult.No:
                         return;
+
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
             }
-            #endregion
 
+            #endregion firstCheck
 
             var cp = CheckPromo();
-            for (int i = 0; i < cp.Count; i++)
+            for (var i = 0; i < cp.Count; i++)
             {
                 cp[i] = cp[i].Substring(0, cp[i].Length - 1);
             }
 
             Program.ac.graphic.progressBar1.Invoke(
-                (MethodInvoker)(() => Program.ac.graphic.progressBar1.Value = 0));
+                (MethodInvoker) (() => Program.ac.graphic.progressBar1.Value = 0));
             Program.ac.graphic.progressBar1.Invoke(
-                (MethodInvoker)(() => Program.ac.graphic.progressBar1.Visible = true));
+                (MethodInvoker) (() => Program.ac.graphic.progressBar1.Visible = true));
             Program.ac.graphic.progressBar1.Invoke(
                 (MethodInvoker) (() => Program.ac.graphic.progressBar1.Maximum = cp.Count));
 
             // y = yes n = no t = traité
-            int yt = 0;
-            int nt = 0;
-            int dt = 0;
+            var yt = 0;
+            var nt = 0;
+            var dt = 0;
 
             foreach (var dir in Directory.GetDirectories(RootFolder))
             {
                 var temp = dir.Split('\\')[dir.Split('\\').Length - 1];
-                if (!cp.Contains(temp) && Directory.GetFiles(dir).Length != 0)
+                if (!cp.Contains(temp) && (Directory.GetFiles(dir).Length != 0))
                 {
                     Database.ajouterPromo(dir.Split('\\')[dir.Split('\\').Length - 1]);
                 }
@@ -104,16 +110,23 @@ namespace WindowsFormsApplication2
             {
                 var x = Database.GetListRequest("note", new[] {"Promotion"});
 
-                if (!Directory.Exists(dir) && Directory.GetFiles(dir).Length != 0)
+                if (!Directory.Exists(dir) && (Directory.GetFiles(dir).Length != 0))
                 {
-                    var dialogResult = MessageBox.Show(String.Format("Le répertoire \"{0}\" n'existe pas. Voulez-vous supprimer les données de la base de données ?", dir), @"ATTENTION !", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    var dialogResult =
+                        MessageBox.Show(
+                            string.Format(
+                                "Le répertoire \"{0}\" n'existe pas. Voulez-vous supprimer les données de la base de données ?",
+                                dir), @"ATTENTION !", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                     switch (dialogResult)
                     {
                         case DialogResult.Yes:
                             Database.DeletePromo(dir.Split('\\')[dir.Split('\\').Length - 1]);
                             break;
+
                         case DialogResult.No:
-                            _errMssg += "Le dossier " + dir + " n'existe pas, mais il n'a pas été supprimé de la base de données." + Environment.NewLine;
+                            _errMssg += "Le dossier " + dir +
+                                        " n'existe pas, mais il n'a pas été supprimé de la base de données." +
+                                        Environment.NewLine;
                             break;
                     }
                     goto fin;
@@ -121,7 +134,6 @@ namespace WindowsFormsApplication2
 
                 // Récupérer la liste des hash en fonction du nom du dossier (nom dossier = id compétence)
                 var a = Database.GetHashList(dir.Split('\\')[dir.Split('\\').Length - 1]);
-
 
                 foreach (var file in Directory.GetFiles(dir))
                 {
@@ -140,7 +152,7 @@ namespace WindowsFormsApplication2
 
                 foreach (var s in a)
                 {
-                    // Supprimer de la bdd les tp de la promo "a" qui ne sont plus dans le répertoire 
+                    // Supprimer de la bdd les tp de la promo "a" qui ne sont plus dans le répertoire
                     dt++;
                     Database.DeleteTp(s);
                 }
@@ -157,7 +169,6 @@ namespace WindowsFormsApplication2
                 }
 
                 // TODO : Update this fcking hash
-
             }
             try
             {
@@ -173,46 +184,48 @@ namespace WindowsFormsApplication2
             {
                 MessageBox.Show(@"Terminé avec des erreurs : " + Environment.NewLine + _errMssg);
             }
-            Program.ac.graphic.LBL_InfoAjoutTp.Invoke((MethodInvoker) (() => Program.ac.graphic.LBL_InfoAjoutTp.Text += Environment.NewLine + @"Traités : " + yt.ToString() + @"   Ignorés : " + nt.ToString() + "   Supprimés : " + dt.ToString()));
-            Program.ac.graphic.LBL_InfoAjoutTp.Invoke((MethodInvoker) (() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = true));
-            System.Threading.Thread.Sleep(3000);
-            Program.ac.graphic.LBL_InfoAjoutTp.Invoke((MethodInvoker) (() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = false));
+            Program.ac.graphic.LBL_InfoAjoutTp.Invoke(
+                (MethodInvoker)
+                    (() =>
+                        Program.ac.graphic.LBL_InfoAjoutTp.Text +=
+                            Environment.NewLine + @"Traités : " + yt + @"   Ignorés : " + nt + "   Supprimés : " + dt));
+            Program.ac.graphic.LBL_InfoAjoutTp.Invoke(
+                (MethodInvoker) (() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = true));
+            Thread.Sleep(3000);
+            Program.ac.graphic.LBL_InfoAjoutTp.Invoke(
+                (MethodInvoker) (() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = false));
             //ShowLog();
 
             Database.addCPMax(Database.CPsNewInNote());
             Database.removeCPMax(Database.CPMaxIsNotinNote());
         }
 
-        private static void TraiterFichier(string file)
+        public static void ShowLog()
         {
-            if (!file.Contains(".pdf"))
+            var a = new ImportTpInfo();
+            a.ShowDialog();
+
+            var message = "";
+            if (_errMssg != string.Empty)
             {
-                _errMssg += file + " : Le fichier est au mauvais format. Attendu : pdf" + Environment.NewLine;
+                message += "<p style='color:red; font-size:50px align:center'>Liste d'erreurs</p>";
             }
-            var infos = GetInfos(file);
-            if (infos == null) return;
-            var value = GetValue(file);
+        }
 
-            var idEleve = Database.GetIdEleveFromName(infos.Item1, infos.Item2);
+        #endregion Public Methods
 
-            if (idEleve == null)
-            {
-                Database.AjouteEleve(infos.Item1, infos.Item2, file.Split('\\')[file.Split('\\').Length - 2]);
-                idEleve = Database.GetIdEleveFromName(infos.Item1, infos.Item2);
-            }
+        #region Private Methods
 
-            // ETAPE 1 : Créer le TP
-            var mdr = Program.ac.graphic.login;
-            Database.AddTp(infos.Item3, idEleve, mdr, Crypt.Md5(file));
+        private static List<string> CheckPromo()
+        {
+            var request0 = Directory.GetDirectories(RootFolder)
+                .Aggregate(string.Empty, (current, a) => current + "\"" + Crypt.CreateMd5ForFolder(a) + "\",");
 
-            // ETAPE 1' : Recup id tp
-            var idPdf = Database.GetLastPdfId();
+            var retour1 = Database.GetListRequest("classe", new[] {"promotion"} /*,
+                String.Format("`hashClasse` NOT IN ({0}0)", request0)*/);
+            var retour2 = retour1.ToList();
 
-            // ETAPE 2 : Insérer note
-            foreach (var a in value)
-            {
-                Database.AddNote(idPdf, a.Item1, a.Item2, a.Item3);
-            }
+            return retour2;
         }
 
         private static Tuple<string, string, string> GetInfos(string file)
@@ -233,20 +246,9 @@ namespace WindowsFormsApplication2
             {
                 //MessageBox.Show(
                 //    $@"Mauvais type de fichier. Veuillez vérifier qu'il est sous la forme{Environment.NewLine}NOM_PRENOM_TPXX.pdf");
-                _errMssg += "<li>" + file + " : Nom du fichier non reconnu. Attendu : NOM_PRENOM_TPXX.pdf</li>" + Environment.NewLine;
+                _errMssg += "<li>" + file + " : Nom du fichier non reconnu. Attendu : NOM_PRENOM_TPXX.pdf</li>" +
+                            Environment.NewLine;
                 return null;
-            }
-        }
-
-        public static void ShowLog()
-        {
-            var a = new ImportTpInfo();
-            a.ShowDialog();
-
-            string message = "";
-            if (_errMssg != string.Empty)
-            {
-                message += "<p style='color:red; font-size:50px align:center'>Liste d'erreurs</p>";
             }
         }
 
@@ -299,10 +301,62 @@ namespace WindowsFormsApplication2
 
             return tempReturn;
         }
+
+        private static void TraiterFichier(string file)
+        {
+            if (!file.Contains(".pdf"))
+            {
+                _errMssg += file + " : Le fichier est au mauvais format. Attendu : pdf" + Environment.NewLine;
+            }
+            var infos = GetInfos(file);
+            if (infos == null) return;
+            var value = GetValue(file);
+
+            var idEleve = Database.GetIdEleveFromName(infos.Item1, infos.Item2);
+
+            if (idEleve == null)
+            {
+                Database.AjouteEleve(infos.Item1, infos.Item2, file.Split('\\')[file.Split('\\').Length - 2]);
+                idEleve = Database.GetIdEleveFromName(infos.Item1, infos.Item2);
+            }
+
+            // ETAPE 1 : Créer le TP
+            var mdr = Program.ac.graphic.login;
+            Database.AddTp(infos.Item3, idEleve, mdr, Crypt.Md5(file));
+
+            // ETAPE 1' : Recup id tp
+            var idPdf = Database.GetLastPdfId();
+
+            // ETAPE 2 : Insérer note
+            foreach (var a in value)
+            {
+                Database.AddNote(idPdf, a.Item1, a.Item2, a.Item3);
+            }
+        }
+
+        #endregion Private Methods
     }
 
     public static class MyString
     {
+        #region Public Methods
+
+        public static string Md5(this string x)
+        {
+            // byte array representation of that string
+            var encodedPassword = new UTF8Encoding().GetBytes(x);
+
+            // need MD5 to calculate the hash
+            var hash = ((HashAlgorithm) CryptoConfig.CreateFromName("MD5")).ComputeHash(encodedPassword);
+
+            // string representation (similar to UNIX format)
+            return BitConverter.ToString(hash)
+                // without dashes
+                .Replace("-", string.Empty)
+                // make lowercase
+                .ToLower();
+        }
+
         public static string RemoveChar(this string x, string b)
         {
             var a = x;
@@ -314,21 +368,6 @@ namespace WindowsFormsApplication2
             return a;
         }
 
-        public static string Md5(this string x)
-        {
-
-            // byte array representation of that string
-            byte[] encodedPassword = new UTF8Encoding().GetBytes(x);
-
-            // need MD5 to calculate the hash
-            byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(encodedPassword);
-
-            // string representation (similar to UNIX format)
-            return BitConverter.ToString(hash)
-               // without dashes
-               .Replace("-", string.Empty)
-               // make lowercase
-               .ToLower();
-        }
+        #endregion Public Methods
     }
 }

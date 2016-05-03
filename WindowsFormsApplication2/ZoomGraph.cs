@@ -23,7 +23,7 @@ namespace WindowsFormsApplication2
                     chart1.Series[0].Points.Add(b);
                 }
             }
-            if(type==1)
+            if (type == 1)
             {
                 chart1.Series[0].Points.Clear();
                 chart1.Series[0].ChartType = a.Series[0].ChartType;
@@ -43,7 +43,7 @@ namespace WindowsFormsApplication2
                 foreach (var c in a.Series[1].Points)
                 {
                     chart1.Series[1].Points.Add(c);
-                }     
+                }
             }
         }
 
@@ -59,7 +59,6 @@ namespace WindowsFormsApplication2
 
         private void chart1_Click(object sender, EventArgs e)
         {
-
         }
     }
 }

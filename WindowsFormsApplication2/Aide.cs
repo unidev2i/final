@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace WindowsFormsApplication2
@@ -15,6 +14,10 @@ namespace WindowsFormsApplication2
 
         #endregion Public Constructors
 
+        private void Aide_Load(object sender, EventArgs e)
+        {
+        }
+
         #region Private Methods
 
         private void label1_Click(object sender, EventArgs e)
@@ -29,10 +32,5 @@ namespace WindowsFormsApplication2
         }
 
         #endregion Private Methods
-
-        private void Aide_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

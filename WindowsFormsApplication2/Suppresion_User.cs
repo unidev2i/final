@@ -16,6 +16,14 @@ namespace WindowsFormsApplication2
 
         #region Private Methods
 
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+        }
+
+        #endregion Private Methods
+
+        #region Private Methods
+
         private void button1_Click(object sender, EventArgs e)
         {
             Close();
@@ -29,7 +37,7 @@ namespace WindowsFormsApplication2
                 MessageBox.Show("Vous ne pouvez pas supprimer le dernier utilisateur!");
                 return;
             }
-                
+
             var result = Database.Delete(user);
             if (result == 1)
             {
@@ -51,10 +59,5 @@ namespace WindowsFormsApplication2
         }
 
         #endregion Private Methods
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }

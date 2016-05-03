@@ -8,11 +8,13 @@ namespace WindowsFormsApplication2
 {
     internal static class Crypt
     {
+        #region Public Methods
+
         public static string CreateMd5ForFolder(string path)
         {
             // assuming you want to include nested folders
             var files = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories)
-                                 .OrderBy(p => p).ToList();
+                .OrderBy(p => p).ToList();
 
             var md5 = MD5.Create();
 
@@ -46,5 +48,7 @@ namespace WindowsFormsApplication2
                 }
             }
         }
+
+        #endregion Public Methods
     }
 }

@@ -1,50 +1,50 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsApplication2.Properties;
 
 namespace WindowsFormsApplication2
 {
     public partial class OptionTP : Form
     {
+        #region Public Constructors
+
         public OptionTP()
         {
             InitializeComponent();
-            if (WindowsFormsApplication2.Properties.Settings.Default.repoPath == String.Empty)
+            if (Settings.Default.repoPath == string.Empty)
             {
-                WindowsFormsApplication2.Properties.Settings.Default.repoPath = "Non défini!";
+                Settings.Default.repoPath = "Non défini!";
             }
-            textBox1.Text = WindowsFormsApplication2.Properties.Settings.Default.repoPath;
+            textBox1.Text = Settings.Default.repoPath;
             //WindowsFormsApplication2.Properties.Settings.Default.Save();
-       
         }
+
+        #endregion Public Constructors
+
+        #region Private Methods
 
         private void button1_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog repo = new FolderBrowserDialog();
+            var repo = new FolderBrowserDialog();
             repo.Description = "Sélectionnez le dossier contenant les promotions";
-            DialogResult result = repo.ShowDialog();
+            var result = repo.ShowDialog();
             if (result == DialogResult.OK)
             {
                 textBox1.Text = repo.SelectedPath;
-                WindowsFormsApplication2.Properties.Settings.Default.repoPath = repo.SelectedPath;
-                WindowsFormsApplication2.Properties.Settings.Default.Save();
+                Settings.Default.repoPath = repo.SelectedPath;
+                Settings.Default.Save();
             }
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        #endregion Private Methods
     }
 }

@@ -1,31 +1,42 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Windows.Forms;
-using System.Text.RegularExpressions;
-using System.Windows.Forms.DataVisualization.Charting;
-using MySql.Data.MySqlClient;
 using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace WindowsFormsApplication2
 {
     public partial class PagePrincipal : Form
     {
-        AjoutEleve graphic = null;
-        ChangerLogin graphic4 = null;
-        ChangerMdp graphic5 = null;
-        private BindingSource bindingSource1 = new BindingSource();
-        private AssistantConnexion form1;
-        Inscription graphic2 = null;
-        Suppresion_User graphic3=null;
-        DelEleve graphic7 = null;
-        DataGridDebug dataForm;
-        public string login;
+        #region Public Fields
+
         public bool isNameSelected = true;
+        public string login;
         public string promotionSelected = "";
-        
+
+        #endregion Public Fields
+
+        #region Private Fields
+
+        private readonly BindingSource bindingSource1 = new BindingSource();
+        private readonly AssistantConnexion form1;
+        private DataGridDebug dataForm;
+        private AjoutEleve graphic;
+        private Inscription graphic2;
+        private Suppresion_User graphic3;
+        private ChangerLogin graphic4;
+        private ChangerMdp graphic5;
+        private DelEleve graphic7;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public PagePrincipal()
         {
@@ -33,9 +44,9 @@ namespace WindowsFormsApplication2
             dataGridView1.AutoResizeColumns();
         }
 
-        public PagePrincipal(AssistantConnexion form1,string login, bool statut)
+        public PagePrincipal(AssistantConnexion form1, string login, bool statut)
         {
-            InitializeComponent(); 
+            InitializeComponent();
             this.form1 = form1;
             if (statut == false)
             {
@@ -45,81 +56,126 @@ namespace WindowsFormsApplication2
             HelloBox(login);
         }
 
-        private void GetData(string selectCommand)
+        #endregion Public Constructors
+
+        #region Public Methods
+
+        public int getBarValue()
         {
-
-            String connectionString = "Server="+Database.Server+";Uid="+Database.Username+";Database="+Database.DatabaseName+";Password="+Database.Password+";";
-            MySqlConnection connection = new MySqlConnection(connectionString);
-            try
-            {
-                MySqlDataAdapter dataAdapter = new MySqlDataAdapter(selectCommand, connectionString);
-                MySqlCommandBuilder commandBuilder = new MySqlCommandBuilder(dataAdapter);
-
-                DataTable table = new DataTable();
-                table.Locale = System.Globalization.CultureInfo.InvariantCulture;
-                dataAdapter.Fill(table);
-                bindingSource1.DataSource = table;
-
-                dataGridView1.AutoResizeColumns(
-                    DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            connection.Close();
+            return progressBar1.Value;
         }
-        private void Form3_Load_1(object sender, EventArgs e)
+
+        public void HelloBox(string nom)
         {
+            label4.Text = "Professeur connecté: " + nom;
+            login = nom;
+        }
 
-            dataGridView1.DataSource = bindingSource1;
-            dataGridView1.RowHeadersVisible = false;
-            label2.Text = "";
+        public void Majlog(string newlog)
+        {
+            login = newlog;
+            HelloBox(login);
+        }
 
+        public void setBarmax(int max)
+        {
+            progressBar1.Maximum = max;
+        }
+
+        public void setBarval(int val)
+        {
+            progressBar1.Value = val;
+        }
+
+        public void UpdateLogin(string login)
+        {
+            this.login = login;
+            label4.Text = "Professeur connecté: " + login;
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private void ajouterToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            graphic2 = new Inscription();
+            graphic2.ShowDialog();
+        }
+
+        private void ajouterToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            //BOUTON POUR AJOUTER UN ELEVE
+            graphic = new AjoutEleve();
+            graphic.ShowDialog();
+            comboBox1.Items.Clear();
             foreach (var a in Database.GetListRequest("eleve", new[] {"Prenom", "Nom"}))
                 comboBox1.Items.Add(a);
-            
-            foreach (var a in Database.GetListRequest("classe", new[] {"Promotion"}))
-                comboBox3.Items.Add(a);
         }
 
-        private void Form3_FormClosing_1(object sender, FormClosingEventArgs e)
+        private void ajouterUnPDFToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            form1.Close();
+            var b = new Thread(ImportTp.Go);
+            b.Start();
+            if (!b.IsAlive)
+            {
+                foreach (var a in Database.GetListRequest("eleve", new[] {"Prenom", "Nom"}))
+                    comboBox1.Items.Add(a);
+
+                foreach (var a in Database.GetListRequest("classe", new[] {"Promotion"}))
+                    comboBox3.Items.Add(a);
+            }
         }
 
-        private void unEleveToolStripMenuItem_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-            
+            var MaxCPForm = new MaximumCP();
+            MaxCPForm.ShowDialog();
+            var y = Database.GetWebMax();
+            drawWeb(y, 1);
         }
 
-        private void deconnexionToolStripMenuItem_Click(object sender, EventArgs e)
+        private void changerDeLoginToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ProcessStartInfo sgInfo = new ProcessStartInfo("WindowsFormsApplication2.exe");
-            Process.Start(sgInfo);
-            this.Close();
+            graphic4 = new ChangerLogin(login, this);
+            graphic4.ShowDialog();
         }
 
-
-        private void comboBox3_TextUpdate(object sender, EventArgs e)
+        private void changerDeMotDePasseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            comboBox3.Items.Clear();
-            foreach (var a in Database.GetListRequest("classe", new[] { "numClasse" }))
-                comboBox3.Items.Add(a);
-            comboBox3.Select(50, 50);
+            graphic5 = new ChangerMdp(login);
+            graphic5.ShowDialog();
+        }
+
+        private void chart1_Click(object sender, EventArgs e)
+        {
+            //new Form1(chart1, 0).ShowDialog();
+        }
+
+        private void chart2_Click(object sender, EventArgs e)
+        {
+            new ZoomGraph(chart2, 0).ShowDialog();
+        }
+
+        private void chart3_Click(object sender, EventArgs e)
+        {
+            new ZoomGraph(chart3, 1).ShowDialog();
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             //CHANGEMENT D'ELEVE, FAIRE LES MODIFICATIONS DES GRAPHIQUES ...
-            string str = comboBox1.Text;
-            string[] result = Regex.Split(str, " ");
-            string prenom = result[0];
-            string nom = result[1];
-            string idClasse = "";
-            List<string> classe = new List<string>();
+            var str = comboBox1.Text;
+            var result = Regex.Split(str, " ");
+            var prenom = result[0];
+            var nom = result[1];
+            var idClasse = "";
+            var classe = new List<string>();
 
-            foreach (var a in Database.GetListRequest("eleve", new[] { "idClasse" }, "Nom='" + nom + "' and Prenom='" + prenom + "'"))
+            foreach (
+                var a in
+                    Database.GetListRequest("eleve", new[] {"idClasse"}, "Nom='" + nom + "' and Prenom='" + prenom + "'")
+                )
                 idClasse = a;
             comboBox3.Text = Database.getpromo(idClasse);
 
@@ -128,23 +184,25 @@ namespace WindowsFormsApplication2
             var str2 = Regex.Split(comboBox1.Text, " ");
             var idEleve = "";
 
-            foreach (var a in Database.GetListRequest("eleve", new[] { "idEleve" }, "Nom='" + str2[1] + "' and Prenom='" + str2[0] + "'"))
+            foreach (
+                var a in
+                    Database.GetListRequest("eleve", new[] {"idEleve"},
+                        "Nom='" + str2[1] + "' and Prenom='" + str2[0] + "'"))
                 idEleve = a ?? "1";
 
-
-            GetData("SELECT Prenom, Nom, idTp AS TP, date AS Date, idCompetence AS Competence, Note, maxNote AS 'Note Maximum' FROM eleve NATURAL JOIN tp NATURAL JOIN note WHERE idEleve='" + idEleve + "'");
+            GetData(
+                "SELECT Prenom, Nom, idTp AS TP, date AS Date, idCompetence AS Competence, Note, maxNote AS 'Note Maximum' FROM eleve NATURAL JOIN tp NATURAL JOIN note WHERE idEleve='" +
+                idEleve + "'");
             dataGridView1.AutoResizeColumns();
 
-
             // Draw graphics
-
 
             var w = Database.GetWtfRequest(idEleve);
             var z = Database.GetWebRequest(idEleve);
             var y = Database.GetWebMax();
 
             drawGraph(w);
-            drawWeb(z,0);
+            drawWeb(z, 0);
             drawWeb(y, 1);
             //drawWebMax(y);
             chart1.Visible = true;
@@ -157,29 +215,95 @@ namespace WindowsFormsApplication2
             isNameSelected = true;
 
             button1.Visible = true;
-
         }
 
-        private void drawWeb(List<Tuple<string, float>> aTuples,int serie)
+        private void comboBox1_TextUpdate(object sender, EventArgs e)
         {
-            string str = comboBox1.Text;
-            string[] result = Regex.Split(str, " ");
-            string prenom = result[0];
-            string nom = result[1];
-            
-            chart3.Series[1]["RadarDrawingStyle"] = "Line";
-            chart3.Series[serie].Points.Clear();
-            Database.removeCPFromWeb(aTuples, prenom, nom);
-            foreach (var a in aTuples)
+            comboBox1.Items.Clear();
+            var concatenate = comboBox1.Text;
+            var i = 0;
+            var eleve = new string[1000];
+            eleve = Database.EcritureInteligente(concatenate);
+            if (eleve != null)
             {
-                var p = chart3.Series[serie].Points.Add(a.Item2);
-                p.Name = a.Item1;
-                p.AxisLabel = a.Item1;
-                //p.Label = a.Item1;
+                for (i = 0; (i < eleve.Length) && (eleve[i] != null); i++)
+                {
+                    //MessageBox.Show(eleve[i]);
+                    comboBox1.Items.Add(eleve[i]);
+                }
+            }
+            comboBox1.Select(50, 50);
+            comboBox3.Select(50, 50);
+        }
+
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //REFAIRE PAREIL QUE POUR LE NIVEAU
+            var i = 0;
+            var promo = comboBox3.Text;
+            var eleve = new string[1000];
+            try
+            {
+                eleve = Database.RecupEleveAvecPromo(promo);
+                comboBox1.Items.Clear();
+                if (eleve != null)
+                {
+                    for (i = 0; (i < eleve.Length) && (eleve[i] != null); i++)
+                    {
+                        //MessageBox.Show(eleve[i]);
+                        comboBox1.Items.Add(eleve[i]);
+                    }
+                }
+                var w = Database.GetWthRequest(promo);
+                var z = Database.GetWebClasseRequest(promo);
+                var y = Database.GetWebMax();
+
+                drawGraph(w);
+                drawWeb(z, 0);
+                drawWeb(y, 1);
+                chart1.Visible = true;
+                chart2.Visible = true;
+                chart3.Visible = true;
+            }
+            catch
+            {
+                comboBox3.Items.Clear();
+                foreach (var a in Database.GetListRequest("classe", new[] {"Promotion"}))
+                    comboBox3.Items.Add(a);
             }
 
+            label2.Text = "Vous observez les résultats de la promotion " + comboBox3.Text;
+            isNameSelected = false;
+
+            promotionSelected = comboBox3.Text;
+
+            button1.Visible = true;
         }
 
+        private void comboBox3_TextUpdate(object sender, EventArgs e)
+        {
+            comboBox3.Items.Clear();
+            foreach (var a in Database.GetListRequest("classe", new[] {"numClasse"}))
+                comboBox3.Items.Add(a);
+            comboBox3.Select(50, 50);
+        }
+
+        private void dataGridDebugToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dataForm = new DataGridDebug();
+            dataForm.Show();
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+        }
+
+        private void deconnexionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var sgInfo = new ProcessStartInfo("WindowsFormsApplication2.exe");
+            Process.Start(sgInfo);
+            Close();
+        }
 
         private void drawGraph(List<Tuple<string, float, int>> tuples)
         {
@@ -204,62 +328,112 @@ namespace WindowsFormsApplication2
             }
 
             chart2.Series[0].Points.Clear();
-                                                           
+
             foreach (var a in tuples)
             {
-                chart2.Series[0].Points.AddXY(a.Item1 + Environment.NewLine + a.Item3.ToString(), a.Item3);
+                chart2.Series[0].Points.AddXY(a.Item1 + Environment.NewLine + a.Item3, a.Item3);
             }
-
         }
 
-        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        private void drawWeb(List<Tuple<string, float>> aTuples, int serie)
         {
-            //REFAIRE PAREIL QUE POUR LE NIVEAU
-            var i = 0;
-            string promo = comboBox3.Text;
-            string[] eleve = new String[1000];
-            try 
-            { 
-                eleve = Database.RecupEleveAvecPromo(promo);
-                comboBox1.Items.Clear();
-                if (eleve != null)
-                {
-                    for (i = 0; i < eleve.Length && eleve[i] != null; i++)
-                    {
-                        //MessageBox.Show(eleve[i]);
-                        comboBox1.Items.Add(eleve[i]);
-                    }
-                }
-                var w = Database.GetWthRequest(promo);
-                var z = Database.GetWebClasseRequest(promo);
-                var y = Database.GetWebMax();
+            var str = comboBox1.Text;
+            var result = Regex.Split(str, " ");
+            var prenom = result[0];
+            var nom = result[1];
 
-                drawGraph(w);
-                drawWeb(z,0);
-                drawWeb(y, 1);
-                chart1.Visible = true;
-                chart2.Visible = true;
-                chart3.Visible = true;
+            chart3.Series[1]["RadarDrawingStyle"] = "Line";
+            chart3.Series[serie].Points.Clear();
+            Database.removeCPFromWeb(aTuples, prenom, nom);
+            foreach (var a in aTuples)
+            {
+                var p = chart3.Series[serie].Points.Add(a.Item2);
+                p.Name = a.Item1;
+                p.AxisLabel = a.Item1;
+                //p.Label = a.Item1;
             }
-            catch {
-
-                comboBox3.Items.Clear();
-                foreach (var a in Database.GetListRequest("classe", new[] { "Promotion" }))
-                    comboBox3.Items.Add(a);
-            }
-
-            label2.Text = "Vous observez les résultats de la promotion " + comboBox3.Text;
-            isNameSelected = false;
-
-            promotionSelected = comboBox3.Text;
-
-            button1.Visible = true;
         }
 
-        private void ajouterToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void exporterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            graphic2 = new Inscription();
-            graphic2.ShowDialog();
+            Database.BackupDatabase();
+        }
+
+        private void Form3_FormClosing_1(object sender, FormClosingEventArgs e)
+        {
+            form1.Close();
+        }
+
+        private void Form3_Load_1(object sender, EventArgs e)
+        {
+            dataGridView1.DataSource = bindingSource1;
+            dataGridView1.RowHeadersVisible = false;
+            label2.Text = "";
+
+            foreach (var a in Database.GetListRequest("eleve", new[] {"Prenom", "Nom"}))
+                comboBox1.Items.Add(a);
+
+            foreach (var a in Database.GetListRequest("classe", new[] {"Promotion"}))
+                comboBox3.Items.Add(a);
+        }
+
+        private void GetData(string selectCommand)
+        {
+            var connectionString = "Server=" + Database.Server + ";Uid=" + Database.Username + ";Database=" +
+                                   Database.DatabaseName + ";Password=" + Database.Password + ";";
+            var connection = new MySqlConnection(connectionString);
+            try
+            {
+                var dataAdapter = new MySqlDataAdapter(selectCommand, connectionString);
+                var commandBuilder = new MySqlCommandBuilder(dataAdapter);
+
+                var table = new DataTable();
+                table.Locale = CultureInfo.InvariantCulture;
+                dataAdapter.Fill(table);
+                bindingSource1.DataSource = table;
+
+                dataGridView1.AutoResizeColumns(
+                    DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            connection.Close();
+        }
+
+        private void importerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Database.RestoreDatabase() == 0)
+            {
+                var sgInfo = new ProcessStartInfo("WindowsFormsApplication2.exe");
+                Process.Start(sgInfo);
+                Close();
+            }
+        }
+
+        private void importerTPToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var b = new Thread(ImportTp.Go);
+            b.Start();
+        }
+
+        private void LBL_InfoAjoutTp_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+        }
+
+        private void modifierToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void sélectionnerLeDossierToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form OptionTP = new OptionTP();
+            OptionTP.ShowDialog();
         }
 
         private void supprimerToolStripMenuItem_Click(object sender, EventArgs e)
@@ -268,174 +442,16 @@ namespace WindowsFormsApplication2
             graphic3.ShowDialog();
         }
 
-        private void dataGridDebugToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            dataForm = new DataGridDebug();
-            dataForm.Show();
-        }
-
-        private void chart2_Click(object sender, EventArgs e)
-        {
-            new ZoomGraph(chart2,0).ShowDialog();
-        }
-
-        private void ajouterToolStripMenuItem2_Click(object sender, EventArgs e)
-        {
-            //BOUTON POUR AJOUTER UN ELEVE
-            graphic = new AjoutEleve();
-            graphic.ShowDialog();
-            comboBox1.Items.Clear();
-            foreach (var a in Database.GetListRequest("eleve", new[] { "Prenom", "Nom" }))
-                comboBox1.Items.Add(a);
-        }
-
-        private void ajouterUnPDFToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var b = new Thread(new ThreadStart(ImportTp.Go));
-            b.Start();
-            if (!b.IsAlive)
-            {
-                foreach (var a in Database.GetListRequest("eleve", new[] { "Prenom", "Nom" }))
-                    comboBox1.Items.Add(a);
-
-                foreach (var a in Database.GetListRequest("classe", new[] { "Promotion" }))
-                    comboBox3.Items.Add(a);
-            }
-        }
-
-        private void changerDeMotDePasseToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            graphic5 = new ChangerMdp(login);
-            graphic5.ShowDialog();
-        }
-
-        private void changerDeLoginToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            graphic4 = new ChangerLogin(login, this);
-            graphic4.ShowDialog();
-        }
-
-        public void UpdateLogin(string login)
-        {
-            this.login = login;
-            label4.Text = "Professeur connecté: " + login;
-        }
-
-        public void Majlog(string newlog)
-        {
-            this.login = newlog;
-            HelloBox(login);
-        }
-
-        public void HelloBox(string nom)
-        {
-            label4.Text = "Professeur connecté: " + nom;
-            this.login = nom;
-        }
-
-        private void chart3_Click(object sender, EventArgs e)
-        {
-            new ZoomGraph(chart3,1).ShowDialog();
-        }
-
-        private void exporterToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Database.BackupDatabase();
-        }
-
-        private void comboBox1_TextUpdate(object sender, EventArgs e)
-        {
-            comboBox1.Items.Clear();
-            var concatenate = comboBox1.Text;
-            var i = 0;
-            string[] eleve = new String[1000];
-            eleve = Database.EcritureInteligente(concatenate);
-            if (eleve != null)
-            {
-                for (i = 0; i < eleve.Length && eleve[i] != null; i++)
-                {
-                    //MessageBox.Show(eleve[i]);
-                    comboBox1.Items.Add(eleve[i]);
-                }
-            }
-            comboBox1.Select(50, 50);
-            comboBox3.Select(50, 50);
-        }
-
         private void supprimerToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             graphic7 = new DelEleve();
             graphic7.Show();
         }
 
-        private void importerToolStripMenuItem_Click(object sender, EventArgs e)
+        private void unEleveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Database.RestoreDatabase() == 0)
-            {
-                ProcessStartInfo sgInfo = new ProcessStartInfo("WindowsFormsApplication2.exe");
-                Process.Start(sgInfo);
-                this.Close();
-            }
-    }
-
-        private void sélectionnerLeDossierToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Form OptionTP = new OptionTP();
-            OptionTP.ShowDialog();
         }
 
-        private void importerTPToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var b = new Thread(new ThreadStart(ImportTp.Go));
-            b.Start();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            MaximumCP MaxCPForm = new MaximumCP();
-            MaxCPForm.ShowDialog();
-            var y = Database.GetWebMax();
-            drawWeb(y, 1);
-        }
-
-        public void setBarval(int val)
-        {
-            progressBar1.Value = val;
-        }
-
-        public void setBarmax(int max)
-        {
-            progressBar1.Maximum = max;
-        }
-
-        public int getBarValue()
-        {
-            return progressBar1.Value;
-        }
-
-        private void LBL_InfoAjoutTp_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void chart1_Click(object sender, EventArgs e)
-        {
-            //new Form1(chart1, 0).ShowDialog();
-        }
-
-        private void modifierToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
+        #endregion Private Methods
     }
 }
