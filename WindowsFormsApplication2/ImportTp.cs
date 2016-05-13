@@ -1,14 +1,9 @@
-// Decompiled with JetBrains decompiler
-// Type: WindowsFormsApplication2.ImportTp
-// Assembly: WindowsFormsApplication2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 6A6DE8D1-7471-4F08-B320-CF44F5361467
-// Assembly location: F:\__P I N F\program\WindowsFormsApplication2.exe
-
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
@@ -17,243 +12,367 @@ using WL;
 
 namespace WindowsFormsApplication2
 {
-  public static class ImportTp
-  {
-    private static string _errMssg = string.Empty;
-    private static string _logMssg = string.Empty;
-    private static readonly string RootFolder = Settings.Default.repoPath;
-
-    public static void Go()
+    public static class ImportTp
     {
-      ImportTp._logMssg = ImportTp._logMssg + "Traitement des dossiers démarré." + Environment.NewLine;
-      if ((uint) Directory.GetFiles(ImportTp.RootFolder).Length > 0U)
-        ImportTp._errMssg = ImportTp._errMssg + "<li>Plusieurs fichiers à la racine du répertoire ont étés détectés. Ils ne seront pas traités.</li>" + Environment.NewLine;
-      if (Enumerable.Count<string>(Enumerable.SelectMany<string, string>((IEnumerable<string>) Directory.GetDirectories(ImportTp.RootFolder), new Func<string, IEnumerable<string>>(Directory.GetFiles))) == 0)
-      {
-        switch (MessageBox.Show("Le dossier est vide, toute la base de données sera effacée si vous continuez. Continuer ? ", "ATTENTION !", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation))
+        #region Public Constructors
+
+        static ImportTp()
         {
-          case DialogResult.None:
-            break;
-          case DialogResult.Yes:
-            Database.SimpleRequest("DELETE FROM `tp` WHERE 1");
-            Database.SimpleRequest("DELETE FROM `eleve` WHERE 1");
-            Database.SimpleRequest("DELETE FROM `competence` WHERE 1");
-            Database.SimpleRequest("DELETE FROM `classe` WHERE 1");
-            Thread.CurrentThread.Abort();
-            break;
-          case DialogResult.No:
-            break;
-          default:
-            throw new ArgumentOutOfRangeException();
+            RootFolder = Settings.Default.repoPath;
         }
-      }
-      else
-      {
-        Database.SimpleRequest("DELETE FROM `tp` WHERE 1");
-        Database.SimpleRequest("DELETE FROM `eleve` WHERE 1");
-        Database.SimpleRequest("DELETE FROM `competence` WHERE 1");
-        Database.SimpleRequest("DELETE FROM `classe` WHERE 1");
-        List<string> cp = ImportTp.CheckPromo();
-        for (int index = 0; index < cp.Count; ++index)
-          cp[index] = cp[index].Substring(0, cp[index].Length - 1);
-        Program.ac.graphic.progressBar1.Invoke((Delegate) (() => Program.ac.graphic.progressBar1.Value = 0));
-        Program.ac.graphic.progressBar1.Invoke((Delegate) (() => Program.ac.graphic.progressBar1.Visible = true));
-        Program.ac.graphic.progressBar1.Invoke((Delegate) (() => Program.ac.graphic.progressBar1.Maximum = cp.Count));
-        int yt = 0;
-        int nt = 0;
-        int dt = 0;
-        foreach (string path in Directory.GetDirectories(ImportTp.RootFolder))
+
+        #endregion Public Constructors
+
+        #region Private Fields
+
+        private static readonly string RootFolder;
+        private static string _errMssg = string.Empty;
+        private static string _logMssg = string.Empty;
+
+        #endregion Private Fields
+
+        #region Public Methods
+
+        public static void Go()
         {
-          string str = path.Split('\\')[path.Split('\\').Length - 1];
-          if (!cp.Contains(str) && (uint) Directory.GetFiles(path).Length > 0U)
-            Database.ajouterPromo(path.Split('\\')[path.Split('\\').Length - 1]);
-        }
-        cp = ImportTp.CheckPromo();
-        foreach (string path in Enumerable.Select<string, string>((IEnumerable<string>) cp, (Func<string, string>) (a => ImportTp.RootFolder + "\\" + a.Remove(a.Length - 1, 1))))
-        {
-          Database.GetListRequest("note", new string[1]
-          {
-            "Promotion"
-          }, "1");
-          if (!Directory.Exists(path) && (uint) Directory.GetFiles(path).Length > 0U)
-          {
-            switch (MessageBox.Show(string.Format("Le répertoire \"{0}\" n'existe pas. Voulez-vous supprimer les données de la base de données ?", (object) path), "ATTENTION !", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation))
+            _logMssg += "Traitement des dossiers démarré." + Environment.NewLine;
+
+            if (Directory.GetFiles(RootFolder).Length != 0)
             {
-              case DialogResult.Yes:
-                Database.DeletePromo(path.Split('\\')[path.Split('\\').Length - 1]);
-                break;
-              case DialogResult.No:
-                ImportTp._errMssg = ImportTp._errMssg + "Le dossier " + path + " n'existe pas, mais il n'a pas été supprimé de la base de données." + Environment.NewLine;
-                break;
+                _errMssg +=
+                    "<li>Plusieurs fichiers à la racine du répertoire ont étés détectés. Ils ne seront pas traités.</li>" +
+                    Environment.NewLine;
             }
-          }
-          else
-          {
-            List<string> hashList = Database.GetHashList(path.Split('\\')[path.Split('\\').Length - 1]);
-            foreach (string file in Directory.GetFiles(path))
+
+            #region firstCheck
+
+            // First check
+            var check = Directory.GetDirectories(RootFolder).SelectMany(Directory.GetFiles).Count();
+            if (check == 0)
             {
-              string str = Crypt.Md5(file);
-              if (hashList.Contains(str))
-              {
-                hashList.Remove(str);
-                ++nt;
-              }
-              else
-              {
-                ImportTp.TraiterFichier(file);
-                ++yt;
-              }
+                var dialogResult = MessageBox.Show(
+                    @"Le dossier est vide, toute la base de données sera effacée si vous continuez. Continuer ? ",
+                    @"ATTENTION !", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                switch (dialogResult)
+                {
+                    case DialogResult.None:
+                        break;
+
+                    case DialogResult.Yes:
+                        "DELETE FROM `tp` WHERE 1".SimpleRequest();
+                        "DELETE FROM `eleve` WHERE 1".SimpleRequest();
+                        "DELETE FROM `competence` WHERE 1".SimpleRequest();
+                        "DELETE FROM `classe` WHERE 1".SimpleRequest();
+                        Thread.CurrentThread.Abort();
+                        return;
+
+                    case DialogResult.No:
+                        return;
+
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
-            foreach (string hashes in hashList)
+
+            #endregion firstCheck
+
+
+            "DELETE FROM `tp` WHERE 1".SimpleRequest();
+            "DELETE FROM `eleve` WHERE 1".SimpleRequest();
+            "DELETE FROM `competence` WHERE 1".SimpleRequest();
+            "DELETE FROM `classe` WHERE 1".SimpleRequest();
+            var cp = CheckPromo();
+            for (var i = 0; i < cp.Count; i++)
             {
-              ++dt;
-              Database.DeleteTp(hashes);
+                cp[i] = cp[i].Substring(0, cp[i].Length - 1);
             }
-          }
-          try
-          {
-            Program.ac.graphic.progressBar1.Invoke((Delegate) (() => ++Program.ac.graphic.progressBar1.Value));
-          }
-          catch
-          {
-          }
+
+            Program.ac.graphic.progressBar1.Invoke(
+                (MethodInvoker)(() => Program.ac.graphic.progressBar1.Value = 0));
+            Program.ac.graphic.progressBar1.Invoke(
+                (MethodInvoker)(() => Program.ac.graphic.progressBar1.Visible = true));
+            Program.ac.graphic.progressBar1.Invoke(
+                (MethodInvoker)(() => Program.ac.graphic.progressBar1.Maximum = cp.Count));
+
+            // y = yes n = no t = traité
+            var yt = 0;
+            var nt = 0;
+            var dt = 0;
+
+            foreach (var dir in Directory.GetDirectories(RootFolder))
+            {
+                var temp = dir.Split('\\')[dir.Split('\\').Length - 1];
+                if (!cp.Contains(temp) && (Directory.GetFiles(dir).Length != 0))
+                {
+                    Database.ajouterPromo(dir.Split('\\')[dir.Split('\\').Length - 1]);
+                }
+            }
+
+            cp = CheckPromo();
+
+            foreach (var dir in cp.Select(a => RootFolder + "\\" + a.Remove(a.Length - 1, 1)))
+            {
+                var x = Database.GetListRequest("note", new[] { "Promotion" });
+
+                if (!Directory.Exists(dir) && (Directory.GetFiles(dir).Length != 0))
+                {
+                    var dialogResult =
+                        MessageBox.Show(
+                            string.Format(
+                                "Le répertoire \"{0}\" n'existe pas. Voulez-vous supprimer les données de la base de données ?",
+                                dir), @"ATTENTION !", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    switch (dialogResult)
+                    {
+                        case DialogResult.Yes:
+                            Database.DeletePromo(dir.Split('\\')[dir.Split('\\').Length - 1]);
+                            break;
+
+                        case DialogResult.No:
+                            _errMssg += "Le dossier " + dir +
+                                        " n'existe pas, mais il n'a pas été supprimé de la base de données." +
+                                        Environment.NewLine;
+                            break;
+                    }
+                    goto fin;
+                }
+
+                // Récupérer la liste des hash en fonction du nom du dossier (nom dossier = id compétence)
+                var a = Database.GetHashList(dir.Split('\\')[dir.Split('\\').Length - 1]);
+
+                foreach (var file in Directory.GetFiles(dir))
+                {
+                    var cr = Crypt.Md5(file);
+                    if (a.Contains(cr))
+                    {
+                        a.Remove(cr);
+                        nt++;
+                    }
+                    else
+                    {
+                        TraiterFichier(file);
+                        yt++;
+                    }
+                }
+
+                foreach (var s in a)
+                {
+                    // Supprimer de la bdd les tp de la promo "a" qui ne sont plus dans le répertoire
+                    dt++;
+                    Database.DeleteTp(s);
+                }
+
+            fin:
+                try
+                {
+                    Program.ac.graphic.progressBar1.Invoke(
+                        (MethodInvoker)(() => Program.ac.graphic.progressBar1.Value++));
+                }
+                catch
+                {
+                    // ignored
+                }
+
+                // TODO : Update this fcking hash NOPE
+            }
+            try
+            {
+                Program.ac.graphic.progressBar1.Invoke(
+                    (MethodInvoker)(() => Program.ac.graphic.progressBar1.Visible = false));
+            }
+            catch
+            {
+                // ignored
+            }
+
+            if (!_errMssg.Equals(""))
+            {
+                MessageBox.Show(@"Terminé avec des erreurs : " + Environment.NewLine + _errMssg);
+            }
+            Program.ac.graphic.LBL_InfoAjoutTp.Invoke(
+                (MethodInvoker)
+                    (() =>
+                        Program.ac.graphic.LBL_InfoAjoutTp.Text +=
+                            Environment.NewLine + @"Traités : " + yt + @"   Ignorés : " + nt + "   Supprimés : " + dt));
+            Program.ac.graphic.LBL_InfoAjoutTp.Invoke(
+                (MethodInvoker)(() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = true));
+            Thread.Sleep(3000);
+            Program.ac.graphic.LBL_InfoAjoutTp.Invoke(
+                (MethodInvoker)(() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = false));
+            //ShowLog();
+
+            Database.addCPMax(Database.CPsNewInNote());
+            Database.removeCPMax(Database.CPMaxIsNotinNote());
         }
-        try
+
+        public static void ShowLog()
         {
-          Program.ac.graphic.progressBar1.Invoke((Delegate) (() => Program.ac.graphic.progressBar1.Visible = false));
+            var a = new ImportTpInfo();
+            a.ShowDialog();
+
+            var message = "";
+            if (_errMssg != string.Empty)
+            {
+                message += "<p style='color:red; font-size:50px align:center'>Liste d'erreurs</p>";
+            }
         }
-        catch
+
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private static List<string> CheckPromo()
         {
+            var request0 = Directory.GetDirectories(RootFolder)
+                .Aggregate(string.Empty, (current, a) => current + "\"" + Crypt.CreateMd5ForFolder(a) + "\",");
+
+            var retour1 = Database.GetListRequest("classe", new[] { "promotion" } /*,
+                String.Format("`hashClasse` NOT IN ({0}0)", request0)*/);
+            var retour2 = retour1.ToList();
+
+            return retour2;
         }
-        if (!ImportTp._errMssg.Equals(""))
+
+        private static Tuple<string, string, string> GetInfos(string file)
         {
-          int num = (int) MessageBox.Show("Terminé avec des erreurs : " + Environment.NewLine + ImportTp._errMssg);
+            try
+            {
+                // Retirer le chemin
+                var pre = file.Split('\\');
+                var deux = file.Split('\\')[pre.Length - 1];
+
+                // Separer les infos
+                var a = deux.Split(new[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
+                var b = a[0].Split(new[] {'.'}, StringSplitOptions.RemoveEmptyEntries);
+
+                // Retirer le ".pdf" à la fin
+                return new Tuple<string, string, string>(b[0], b[1], a[1].Remove(a[1].Length - 4, 4));
+            }
+            catch (Exception)
+            {
+                //MessageBox.Show(
+                //    $@"Mauvais type de fichier. Veuillez vérifier qu'il est sous la forme{Environment.NewLine}NOM_PRENOM_TPXX.pdf");
+                _errMssg += "<li>" + file + " : Nom du fichier non reconnu. Attendu : NOM.PRENOM_NOMDUTP.pdf</li>" +
+                            Environment.NewLine;
+                return null;
+            }
         }
-        try
+
+        private static List<Tuple<string, string, string>> GetValue(string file)
         {
-          Program.ac.graphic.LBL_InfoAjoutTp.Invoke((Delegate) (() =>
-          {
-            Label label = Program.ac.graphic.LBL_InfoAjoutTp;
-            label.Text = label.Text + (object) Environment.NewLine + "Traités : " + (string) (object) yt + "   Ignorés : " + (string) (object) nt + "   Supprimés : " + (string) (object) dt;
-          }));
-          Program.ac.graphic.LBL_InfoAjoutTp.Invoke((Delegate) (() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = true));
-          Thread.Sleep(3000);
-          Program.ac.graphic.LBL_InfoAjoutTp.Invoke((Delegate) (() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = false));
+            if (!file.Contains(".pdf"))
+                return null;
+
+            var b = file;
+            var a = new pdfHandler(ref b);
+            var c = (string)a.readPDF();
+
+            const string strRegex = @"C[0-9].[0-9]";
+            var myRegex = new Regex(strRegex, RegexOptions.None);
+            const string strRegex2 = @"[0-9]{1,2}\.{0,1}[0-9]{0,3}\s{0,2}\/\s{0,2}[0-9]{1,2}\.{0,1}[0-9]{0,1}\s";
+            var myRegex2 = new Regex(strRegex2, RegexOptions.None);
+
+            var maxMark = new List<string>();
+
+            var sortie = c;
+
+            var skills = (from Match k in myRegex.Matches(sortie) select k.Value).ToList();
+
+            var mark = (from Match l in myRegex2.Matches(sortie) select l.Value).ToList();
+
+            var skills2 = new List<string>();
+
+            skills2 = skills.Distinct().ToList();
+            skills = skills2;
+            GC.Collect();
+
+            var tempReturn = new List<Tuple<string, string, string>>();
+
+            for (var index = 0; index < skills.Count; index++)
+            {
+                var m = mark[index];
+
+                mark[index] = mark[index].Split('/')[0];
+                maxMark.Add(m.Split('/')[1]);
+            }
+
+            for (var index = 0; index < skills.Count; index++)
+            {
+                var z = mark[index] + "->" + maxMark[index];
+                tempReturn.Add(new Tuple<string, string, string>(skills[index], mark[index], maxMark[index]));
+            }
+
+            a = null;
+            GC.Collect();
+
+            return tempReturn;
         }
-        catch
+
+        private static void TraiterFichier(string file)
         {
+            if (!file.Contains(".pdf"))
+            {
+                _errMssg += file + " : Le fichier est au mauvais format. Attendu : pdf" + Environment.NewLine;
+            }
+            var infos = GetInfos(file);
+            if (infos == null) return;
+            var value = GetValue(file);
+
+            var idEleve = Database.GetIdEleveFromName(infos.Item1, infos.Item2);
+
+            if (idEleve == null)
+            {
+                Database.AjouteEleve(infos.Item1, infos.Item2, file.Split('\\')[file.Split('\\').Length - 2]);
+                idEleve = Database.GetIdEleveFromName(infos.Item1, infos.Item2);
+            }
+
+            // ETAPE 1 : Créer le TP
+            var mdr = Program.ac.graphic.login;
+            Database.AddTp(infos.Item3, idEleve, mdr, Crypt.Md5(file));
+
+            // ETAPE 1' : Recup id tp
+            var idPdf = Database.GetLastPdfId();
+
+            // ETAPE 2 : Insérer note
+            foreach (var a in value)
+            {
+                Database.AddNote(idPdf, a.Item1, a.Item2, a.Item3);
+            }
         }
-        Database.addCPMax(Database.CPsNewInNote());
-        Database.removeCPMax(Database.CPMaxIsNotinNote());
-        Program.ac.graphic.LBL_InfoAjoutTp.Invoke((Delegate) (() => Program.ac.graphic.comboBox1.Items.Clear()));
-        Program.ac.graphic.LBL_InfoAjoutTp.Invoke((Delegate) (() => Program.ac.graphic.comboBox3.Items.Clear()));
-        foreach (string str in Database.GetListRequest("eleve", new string[2]
-        {
-          "Prenom",
-          "Nom"
-        }, "1"))
-        {
-          string a = str;
-          Program.ac.graphic.LBL_InfoAjoutTp.Invoke((Delegate) (() => Program.ac.graphic.comboBox1.Items.Add((object) a)));
-        }
-        foreach (string str in Database.GetListRequest("classe", new string[1]
-        {
-          "Promotion"
-        }, "1"))
-        {
-          string a = str;
-          Program.ac.graphic.LBL_InfoAjoutTp.Invoke((Delegate) (() => Program.ac.graphic.comboBox3.Items.Add((object) a)));
-        }
-        Thread.CurrentThread.Abort();
-      }
+
+        #endregion Private Methods
     }
 
-    public static void ShowLog()
+    public static class MyString
     {
-      int num = (int) new ImportTpInfo().ShowDialog();
-      string str1 = "";
-      if (!(ImportTp._errMssg != string.Empty))
-        return;
-      string str2 = str1 + "<p style='color:red; font-size:50px align:center'>Liste d'erreurs</p>";
-    }
+        #region Public Methods
 
-    private static List<string> CheckPromo()
-    {
-      Enumerable.Aggregate<string, string>((IEnumerable<string>) Directory.GetDirectories(ImportTp.RootFolder), string.Empty, (Func<string, string, string>) ((current, a) => current + "\"" + Crypt.CreateMd5ForFolder(a) + "\","));
-      return Enumerable.ToList<string>(Database.GetListRequest("classe", new string[1]
-      {
-        "promotion"
-      }, "1"));
-    }
-
-    private static Tuple<string, string, string> GetInfos(string file)
-    {
-      try
-      {
-        string[] strArray1 = file.Split('\\');
-        string[] strArray2 = file.Split('\\')[strArray1.Length - 1].Split(new char[1]
+        public static string Md5(this string x)
         {
-          '_'
-        }, StringSplitOptions.RemoveEmptyEntries);
-        return new Tuple<string, string, string>(strArray2[0], strArray2[1], strArray2[2].Remove(strArray2[2].Length - 4, 4));
-      }
-      catch (Exception ex)
-      {
-        ImportTp._errMssg = ImportTp._errMssg + file + " : Nom du fichier non reconnu. Attendu : NOM_PRENOM_TPXX.pdf" + Environment.NewLine;
-        return (Tuple<string, string, string>) null;
-      }
-    }
+            // byte array representation of that string
+            var encodedPassword = new UTF8Encoding().GetBytes(x);
 
-    private static List<Tuple<string, string, string>> GetValue(string file)
-    {
-      if (!file.Contains(".pdf"))
-        return (List<Tuple<string, string, string>>) null;
-      string sFile = file;
-      string str1 = (string) new pdfHandler(ref sFile).readPDF();
-      Regex regex1 = new Regex("C[0-9].[0-9]", RegexOptions.None);
-      Regex regex2 = new Regex("[0-9]{1,2}\\.{0,1}[0-9]{0,3}\\s{0,2}\\/\\s{0,2}[0-9]{1,2}\\.{0,1}[0-9]{0,1}\\s", RegexOptions.None);
-      List<string> list1 = new List<string>();
-      string input = str1;
-      List<string> list2 = Enumerable.ToList<string>(Enumerable.Select<Match, string>(Enumerable.Cast<Match>((IEnumerable) regex1.Matches(input)), (Func<Match, string>) (k => k.Value)));
-      List<string> list3 = Enumerable.ToList<string>(Enumerable.Select<Match, string>(Enumerable.Cast<Match>((IEnumerable) regex2.Matches(input)), (Func<Match, string>) (l => l.Value)));
-      List<string> list4 = new List<string>();
-      List<string> list5 = Enumerable.ToList<string>(Enumerable.Distinct<string>((IEnumerable<string>) list2));
-      GC.Collect();
-      List<Tuple<string, string, string>> list6 = new List<Tuple<string, string, string>>();
-      for (int index = 0; index < list5.Count; ++index)
-      {
-        string str2 = list3[index];
-        list3[index] = list3[index].Split('/')[0];
-        list1.Add(str2.Split('/')[1]);
-      }
-      for (int index = 0; index < list5.Count; ++index)
-      {
-        string str2 = list3[index] + "->" + list1[index];
-        list6.Add(new Tuple<string, string, string>(list5[index], list3[index], list1[index]));
-      }
-      GC.Collect();
-      return list6;
-    }
+            // need MD5 to calculate the hash
+            var hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(encodedPassword);
 
-    private static void TraiterFichier(string file)
-    {
-      if (!file.Contains(".pdf"))
-        ImportTp._errMssg = ImportTp._errMssg + file + " : Le fichier est au mauvais format. Attendu : pdf" + Environment.NewLine;
-      Tuple<string, string, string> infos = ImportTp.GetInfos(file);
-      if (infos == null)
-        return;
-      List<Tuple<string, string, string>> list = ImportTp.GetValue(file);
-      string idEleveFromName = Database.GetIdEleveFromName(infos.Item1, infos.Item2);
-      if (idEleveFromName == null)
-      {
-        Database.AjouteEleve(infos.Item1, infos.Item2, file.Split('\\')[file.Split('\\').Length - 2]);
-        idEleveFromName = Database.GetIdEleveFromName(infos.Item1, infos.Item2);
-      }
-      string login_correcteur = Program.ac.graphic.login;
-      Database.AddTp(infos.Item3, idEleveFromName, login_correcteur, Crypt.Md5(file));
-      string lastPdfId = Database.GetLastPdfId();
-      foreach (Tuple<string, string, string> tuple in list)
-        Database.AddNote(lastPdfId, tuple.Item1, tuple.Item2, tuple.Item3);
+            // string representation (similar to UNIX format)
+            return BitConverter.ToString(hash)
+                // without dashes
+                .Replace("-", string.Empty)
+                // make lowercase
+                .ToLower();
+        }
+
+        public static string RemoveChar(this string x, string b)
+        {
+            var a = x;
+            while (a.Contains(b))
+            {
+                if (a.Length > a.IndexOf(b, StringComparison.Ordinal))
+                    a.Remove(a.IndexOf(b, StringComparison.Ordinal));
+            }
+            return a;
+        }
+
+        #endregion Public Methods
     }
-  }
 }
