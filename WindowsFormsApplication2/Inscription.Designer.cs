@@ -47,7 +47,6 @@
             this.label1.Size = new System.Drawing.Size(96, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Nom du professeur";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
@@ -57,7 +56,6 @@
             this.label2.Size = new System.Drawing.Size(74, 13);
             this.label2.TabIndex = 1;
             this.label2.Text = "Mot De Passe";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label3
             // 

@@ -34,21 +34,12 @@ namespace WindowsFormsApplication2
             numericUpDown1.Value = Database.getMaxCP(comboBox1.SelectedItem.ToString());
         }
 
-        private void comboBox1_SelectedValueChanged(object sender, EventArgs e)
-        {
-            //
-        }
-
         private void numericUpDown1_Leave(object sender, EventArgs e)
         {
             if (numericUpDown1.Value != null)
                 Database.setMaxCP(comboBox1.Text, numericUpDown1.Value);
             else
                 Database.setMaxCP(comboBox1.Text, 0);
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
         }
 
         #endregion Private Methods
