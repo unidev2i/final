@@ -198,7 +198,7 @@ namespace WindowsFormsApplication2
             // Draw graphics
 
             var w = Database.GetWtfRequest(idEleve);
-            var z = Database.GetWebRequest(idEleve);
+            var z = Database.GetWebRequest(checkBox1,idEleve);
             var y = Database.GetWebMax();
 
             drawGraph(w);
@@ -453,5 +453,10 @@ namespace WindowsFormsApplication2
         }
 
         #endregion Private Methods
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            
+        }
     }
 }
