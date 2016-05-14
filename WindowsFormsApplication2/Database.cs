@@ -192,7 +192,7 @@ namespace WindowsFormsApplication2
         }
 
         public static void Connect(string ip = "localhost", string login = "root", string pass = "",
-            string database = "mydb")
+            string database = "mydb_debug")
         {
             var builder = new MySqlConnectionStringBuilder
             {
@@ -416,6 +416,31 @@ namespace WindowsFormsApplication2
             return retour;
         }
 
+        public static IEnumerable<string> GetDistinctRequest(string table,string element, string[] columns,
+            string additional_where_clause = "1")
+        {
+            var retour = new List<string>();
+            var command = _conn.CreateCommand();
+            command.CommandText = "SELECT DISTINCT " + element + " FROM " + table + " WHERE " + additional_where_clause;
+            var r = command.ExecuteReader();
+
+            while (r.Read())
+            {
+                try
+                {
+                    var toReturn = columns.Aggregate(string.Empty, (current, c) => current + r[c].ToString() + " ");
+                    retour.Add(toReturn);
+                }
+                catch (Exception)
+                {
+                    r.Close();
+                    return retour;
+                }
+            }
+            r.Close();
+            return retour;
+        }
+
         public static decimal getMaxCP(string idCompetence)
         {
             var comp = "";
@@ -535,6 +560,24 @@ namespace WindowsFormsApplication2
             {
                 a.Add(new Tuple<string, float, int>(r[COL_IDSKILL].ToString(), float.Parse(r["moyenne"].ToString()),
                     int.Parse(r["quantite"].ToString())));
+            }
+
+            r.Close();
+            return a;
+        }
+
+        public static List<Tuple<float,string>> GetCourbeRequest(string idEleve, string idComp ="C1.1")
+        {
+            var req = "SELECT date, note FROM tp NATURAL JOIN note WHERE idEleve=" + idEleve + " AND idCompetence = '" + idComp + "'";
+            var command = _conn.CreateCommand();
+            command.CommandText = req;
+            var r = command.ExecuteReader();
+
+            var a = new List<Tuple<float,string>>();
+
+            while (r.Read())
+            {
+                a.Add(new Tuple<float,string>(float.Parse(r["note"].ToString()),r["date"].ToString()));
             }
 
             r.Close();

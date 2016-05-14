@@ -19,6 +19,7 @@ namespace WindowsFormsApplication2
         public bool isNameSelected = true;
         public string login;
         public string promotionSelected = "";
+        public string idEleveSelected = "";
 
         #endregion Public Fields
 
@@ -195,20 +196,25 @@ namespace WindowsFormsApplication2
                 idEleve + "'");
             dataGridView1.AutoResizeColumns();
 
+            idEleve = idEleveSelected;
+
             // Draw graphics
+
+            if (comboBox2.Text == "")
+                comboBox2.Text = comboBox2.Items[0].ToString();
 
             var w = Database.GetWtfRequest(idEleve);
             var z = Database.GetWebRequest(checkBox1,idEleve);
             var y = Database.GetWebMax();
+            var x = Database.GetCourbeRequest(idEleve, comboBox2.Text);
 
             drawGraph(w);
             drawWeb(z, 0);
             drawWeb(y, 1);
-            //drawWebMax(y);
+            drawCourbe(x);
             chart1.Visible = true;
             chart2.Visible = true;
             chart3.Visible = true;
-            //chart1.ChartAreas[0].AxisX.Maximum = 100;
 
             label2.Text = "Vous observez les résultats de " + comboBox1.Text;
 
@@ -247,6 +253,7 @@ namespace WindowsFormsApplication2
                 drawGraph(w);
                 drawWeb(z, 0);
                 drawWeb(y, 1);
+               //drawCourbe(x);
                 chart1.Visible = true;
                 chart2.Visible = true;
                 chart3.Visible = true;
@@ -298,13 +305,13 @@ namespace WindowsFormsApplication2
             var xarray = tuples.Select(a => a.Item3).ToList();
 
             //chart1.Palette = ChartColorPalette.Excel;
-            chart1.Series.Clear();
+            /*chart1.Series.Clear();
 
             for (var a = 0; a != array.Count; a++)
             {
                 chart1.Series.Add(new Series(array[a]));
                 chart1.Series[a]["PointWidth"] = "1";
-            }
+            }*/
 
             var i = 0;
             foreach (var tSeries in from tSeries in chart1.Series let a = tSeries select tSeries)
@@ -319,6 +326,20 @@ namespace WindowsFormsApplication2
             {
                 chart2.Series[0].Points.AddXY(a.Item1 + Environment.NewLine + a.Item3, a.Item3);
             }
+        }
+
+        private void drawCourbe(List<Tuple<float,string>> aTuples)
+        {
+            chart1.Series[0].Points.Clear();
+            chart1.Series[0].Name = comboBox2.Text;
+            foreach (var a in aTuples)
+            {
+                var p = chart1.Series[0].Points.Add(a.Item1);
+                p.Name = a.Item1.ToString();
+                p.AxisLabel = a.Item2;
+                //p.Label = a.Item1;
+            }
+
         }
 
         private void drawWeb(List<Tuple<string, float>> aTuples, int serie)
@@ -358,9 +379,10 @@ namespace WindowsFormsApplication2
 
             foreach (var a in Database.GetListRequest("eleve", new[] {"Prenom", "Nom"}))
                 comboBox1.Items.Add(a);
-
             foreach (var a in Database.GetListRequest("classe", new[] {"Promotion"}))
                 comboBox3.Items.Add(a);
+            foreach (var a in Database.GetDistinctRequest("note", "idCompetence", new[] { "idCompetence" }))
+                comboBox2.Items.Add(a);
         }
 
         private void GetData(string selectCommand)
@@ -432,6 +454,13 @@ namespace WindowsFormsApplication2
 
         private void unEleveToolStripMenuItem_Click(object sender, EventArgs e)
         {
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var x = Database.GetCourbeRequest(idEleveSelected, comboBox2.Text);
+            drawCourbe(x);
+            chart1.Visible = true;
         }
 
         #endregion Private Methods
