@@ -186,21 +186,21 @@
             // ajouterUnPDFToolStripMenuItem
             // 
             this.ajouterUnPDFToolStripMenuItem.Name = "ajouterUnPDFToolStripMenuItem";
-            this.ajouterUnPDFToolStripMenuItem.Size = new System.Drawing.Size(213, 24);
-            this.ajouterUnPDFToolStripMenuItem.Text = "Synchroniser les TPs";
+            this.ajouterUnPDFToolStripMenuItem.Size = new System.Drawing.Size(231, 24);
+            this.ajouterUnPDFToolStripMenuItem.Text = "Synchroniser les Activités";
             this.ajouterUnPDFToolStripMenuItem.Click += new System.EventHandler(this.ajouterUnPDFToolStripMenuItem_Click);
             // 
             // sélectionnerLeDossierToolStripMenuItem
             // 
             this.sélectionnerLeDossierToolStripMenuItem.Name = "sélectionnerLeDossierToolStripMenuItem";
-            this.sélectionnerLeDossierToolStripMenuItem.Size = new System.Drawing.Size(213, 24);
+            this.sélectionnerLeDossierToolStripMenuItem.Size = new System.Drawing.Size(231, 24);
             this.sélectionnerLeDossierToolStripMenuItem.Text = "Sélectionner le dossier";
             this.sélectionnerLeDossierToolStripMenuItem.Click += new System.EventHandler(this.sélectionnerLeDossierToolStripMenuItem_Click);
             // 
             // deconnexionToolStripMenuItem
             // 
             this.deconnexionToolStripMenuItem.Name = "deconnexionToolStripMenuItem";
-            this.deconnexionToolStripMenuItem.Size = new System.Drawing.Size(213, 24);
+            this.deconnexionToolStripMenuItem.Size = new System.Drawing.Size(231, 24);
             this.deconnexionToolStripMenuItem.Text = "Déconnexion";
             this.deconnexionToolStripMenuItem.Click += new System.EventHandler(this.deconnexionToolStripMenuItem_Click);
             // 

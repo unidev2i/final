@@ -312,26 +312,6 @@ namespace WindowsFormsApplication2
             command.ExecuteNonQuery();
         }
 
-        public static string[] EcritureInteligente(string concatenate)
-        {
-            var retour = new string[1000];
-            var i = 0;
-            var command = _conn.CreateCommand();
-            command.CommandText = "SELECT Prenom,Nom FROM eleve";
-            var reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                var concatenate2 = reader["Prenom"] + " " + reader["Nom"];
-                if (concatenate2.Contains(concatenate))
-                {
-                    retour[i] = concatenate2;
-                    i++;
-                }
-            }
-            reader.Close();
-            return retour;
-        }
-
         public static List<string> GetHashList(string promo)
         {
             var a = new List<string>();
