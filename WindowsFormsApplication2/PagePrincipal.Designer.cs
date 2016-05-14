@@ -391,7 +391,6 @@
             this.LBL_InfoAjoutTp.TabIndex = 11;
             this.LBL_InfoAjoutTp.Text = "Ajout des TP effectué avec succès.";
             this.LBL_InfoAjoutTp.Visible = false;
-            this.LBL_InfoAjoutTp.Click += new System.EventHandler(this.LBL_InfoAjoutTp_Click);
             // 
             // checkBox1
             // 
@@ -402,7 +401,6 @@
             this.checkBox1.TabIndex = 12;
             this.checkBox1.Text = "Résultat dans la promotion actuelle";
             this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // PagePrincipal
             // 

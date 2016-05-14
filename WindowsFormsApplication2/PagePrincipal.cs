@@ -404,10 +404,6 @@ namespace WindowsFormsApplication2
             b.Start();
         }
 
-        private void LBL_InfoAjoutTp_Click(object sender, EventArgs e)
-        {
-        }
-
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
         }
@@ -439,10 +435,5 @@ namespace WindowsFormsApplication2
         }
 
         #endregion Private Methods
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            
-        }
     }
 }
