@@ -184,11 +184,10 @@ namespace WindowsFormsApplication2
 
             var str2 = Regex.Split(comboBox1.Text, " ");
             var idEleve = "";
+            idEleve = Database.GetIdEleveFromName(str2[1], str2[0]);
+            idEleveSelected = idEleve;
 
-            foreach (
-                var a in
-                    Database.GetListRequest("eleve", new[] {"idEleve"},
-                        "Nom='" + str2[1] + "' and Prenom='" + str2[0] + "'"))
+            foreach (var a in Database.GetListRequest("eleve", new[] {"idEleve"},"Nom='" + str2[1] + "' and Prenom='" + str2[0] + "'"))
                 idEleve = a ?? "1";
 
             GetData(
@@ -196,12 +195,9 @@ namespace WindowsFormsApplication2
                 idEleve + "'");
             dataGridView1.AutoResizeColumns();
 
-            idEleve = idEleveSelected;
+            
 
             // Draw graphics
-
-            if (comboBox2.Text == "")
-                comboBox2.Text = comboBox2.Items[0].ToString();
 
             var w = Database.GetWtfRequest(idEleve);
             var z = Database.GetWebRequest(checkBox1,idEleve);
@@ -221,6 +217,10 @@ namespace WindowsFormsApplication2
             isNameSelected = true;
 
             button1.Visible = true;
+
+            if (comboBox2.Text == "")
+                comboBox2.Text = comboBox2.Items[0].ToString();
+
         }
 
         private void comboBox1_TextUpdate(object sender, EventArgs e)
@@ -383,6 +383,7 @@ namespace WindowsFormsApplication2
                 comboBox3.Items.Add(a);
             foreach (var a in Database.GetDistinctRequest("note", "idCompetence", new[] { "idCompetence" }))
                 comboBox2.Items.Add(a);
+
         }
 
         private void GetData(string selectCommand)

@@ -568,7 +568,7 @@ namespace WindowsFormsApplication2
 
         public static List<Tuple<float,string>> GetCourbeRequest(string idEleve, string idComp ="C1.1")
         {
-            var req = "SELECT date, note FROM tp NATURAL JOIN note WHERE idEleve=" + idEleve + " AND idCompetence = '" + idComp + "'";
+            var req = "SELECT date, note FROM tp NATURAL JOIN note WHERE idEleve='" + idEleve + "' AND idCompetence ='" + idComp + "'";
             var command = _conn.CreateCommand();
             command.CommandText = req;
             var r = command.ExecuteReader();
