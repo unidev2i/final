@@ -328,15 +328,17 @@ namespace WindowsFormsApplication2
             }
         }
 
-        private void drawCourbe(List<Tuple<float,string>> aTuples)
+
+        private void drawCourbe(List<Tuple<float,DateTime>> aTuples)
         {
             chart1.Series[0].Points.Clear();
+            chart1.Series[0].XValueType = ChartValueType.DateTime;
             chart1.Series[0].Name = comboBox2.Text;
             foreach (var a in aTuples)
             {
                 var p = chart1.Series[0].Points.Add(a.Item1);
                 p.Name = a.Item1.ToString();
-                p.AxisLabel = a.Item2;
+                p.AxisLabel = a.Item2.ToString();
                 //p.Label = a.Item1;
             }
 

@@ -566,23 +566,26 @@ namespace WindowsFormsApplication2
             return a;
         }
 
-        public static List<Tuple<float,string>> GetCourbeRequest(string idEleve, string idComp ="C1.1")
+        public static List<Tuple<float,DateTime>> GetCourbeRequest(string idEleve, string idComp ="C1.1")
         {
             var req = "SELECT date, note FROM tp NATURAL JOIN note WHERE idEleve='" + idEleve + "' AND idCompetence ='" + idComp + "'";
             var command = _conn.CreateCommand();
             command.CommandText = req;
             var r = command.ExecuteReader();
 
-            var a = new List<Tuple<float,string>>();
+            var a = new List<Tuple<float,DateTime>>();
 
             while (r.Read())
             {
-                a.Add(new Tuple<float,string>(float.Parse(r["note"].ToString()),r["date"].ToString()));
+                a.Add(new Tuple<float,DateTime>(float.Parse(r["note"].ToString()),DateTime.Parse(r["date"].ToString())));
             }
+
+            a.OrderByDescending(b => b.Item2);
 
             r.Close();
             return a;
         }
+        
 
         public static List<Tuple<string, float, int>> GetWthRequest(string idPromo)
         {
