@@ -7,8 +7,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Diagnostics;
-
 namespace WindowsFormsApplication2
 {
     using System;
@@ -45,6 +43,7 @@ namespace WindowsFormsApplication2
         /// The _log mssg.
         /// </summary>
         // ReSharper disable once InconsistentNaming
+        // ReSharper disable once NotAccessedField.Local
         private static string logMssg = string.Empty;
 
         #endregion Private Fields
@@ -69,6 +68,7 @@ namespace WindowsFormsApplication2
         /// <exception cref="ArgumentOutOfRangeException">
         /// folder contains only empty folders
         /// </exception>
+        // ReSharper disable once CyclomaticComplexity
         public static void Go()
         {
             logMssg += "Traitement des dossiers démarré." + Environment.NewLine;
@@ -108,7 +108,6 @@ namespace WindowsFormsApplication2
                 }
             }
 
-
             "DELETE FROM `tp` WHERE 1".SimpleRequest();
             "DELETE FROM `eleve` WHERE 1".SimpleRequest();
             "DELETE FROM `competence` WHERE 1".SimpleRequest();
@@ -123,15 +122,17 @@ namespace WindowsFormsApplication2
                 (MethodInvoker)(() => Program.ac.graphic.progressBar1.Value = 0));
             Program.ac.graphic.progressBar1.Invoke(
                 (MethodInvoker)(() => Program.ac.graphic.progressBar1.Visible = true));
+            var cp1 = cp;
             Program.ac.graphic.progressBar1.Invoke(
-                (MethodInvoker)(() => Program.ac.graphic.progressBar1.Maximum = cp.Count));
+                (MethodInvoker)(() => Program.ac.graphic.progressBar1.Maximum = cp1.Count));
 
             // y = yes n = no t = traité
             var yt = 0;
             var nt = 0;
             var dt = 0;
 
-            foreach (var dir in from dir in Directory.GetDirectories(RootFolder) let temp = dir.Split('\\')[dir.Split('\\').Length - 1] where !cp.Contains(temp) && (Directory.GetFiles(dir).Length != 0) select dir)
+            var cp2 = cp;
+            foreach (var dir in from dir in Directory.GetDirectories(RootFolder) let temp = dir.Split('\\')[dir.Split('\\').Length - 1] where !cp2.Contains(temp) && (Directory.GetFiles(dir).Length != 0) select dir)
             {
                 Database.ajouterPromo(dir.Split('\\')[dir.Split('\\').Length - 1]);
             }
@@ -140,15 +141,17 @@ namespace WindowsFormsApplication2
 
             foreach (var dir in cp.Select(a => RootFolder + "\\" + a.Remove(a.Length - 1, 1)))
             {
-                var x = Database.GetListRequest("note", new[] { "Promotion" });
-
+                // var x = Database.GetListRequest("note", new[] { "Promotion" });
                 if (!Directory.Exists(dir) && (Directory.GetFiles(dir).Length != 0))
                 {
                     var dialogResult =
                         MessageBox.Show(
-                            String.Format(
+                            string.Format(
                                 "Le répertoire \"{0}\" n'existe pas. Voulez-vous supprimer les données de la base de données ?",
-                                dir), @"ATTENTION !", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                                dir),
+                            @"ATTENTION !",
+                            MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Warning);
 
                     switch (dialogResult)
                     {
@@ -176,6 +179,7 @@ namespace WindowsFormsApplication2
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
+
                     goto fin;
                 }
 
@@ -207,45 +211,59 @@ namespace WindowsFormsApplication2
                 fin:
                 try
                 {
-                    Program.ac.graphic.progressBar1.Invoke((MethodInvoker) (() => Program.ac.graphic.progressBar1.Value++));
+                    Program.ac.graphic.progressBar1.Invoke((MethodInvoker)(() => Program.ac.graphic.progressBar1.Value++));
                 }
                 catch
                 {
                     // ignored
                 }
+
                 // If you want update hashs do it here
             }
+
             try
             {
-                Program.ac.graphic.progressBar1.Invoke((MethodInvoker) (() => Program.ac.graphic.progressBar1.Visible = false));
+                Program.ac.graphic.progressBar1.Invoke((MethodInvoker)(() => Program.ac.graphic.progressBar1.Visible = false));
             }
             catch
             {
                 // ignored
             }
 
-            if (!errMssg.Equals(""))
+            if (!errMssg.Equals(string.Empty))
             {
                 MessageBox.Show(@"Terminé avec des erreurs : " + Environment.NewLine + errMssg);
             }
-            Program.ac.graphic.LBL_InfoAjoutTp.Invoke((MethodInvoker) (() => Program.ac.graphic.LBL_InfoAjoutTp.Text += Environment.NewLine + @"Traités : " + yt + @"   Ignorés : " + nt + @"   Supprimés : " + dt));
-            Program.ac.graphic.LBL_InfoAjoutTp.Invoke((MethodInvoker) (() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = true));
-            Thread.Sleep(3000);
-            Program.ac.graphic.LBL_InfoAjoutTp.Invoke((MethodInvoker) (() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = false));
-            //ShowLog();
 
+            Program.ac.graphic.LBL_InfoAjoutTp.Invoke(
+                (MethodInvoker)
+                    (() =>
+                        Program.ac.graphic.LBL_InfoAjoutTp.Text +=
+                            Environment.NewLine + @"Traités : " + yt + @"   Ignorés : " + nt + @"   Supprimés : " + dt));
+            Program.ac.graphic.LBL_InfoAjoutTp.Invoke(
+                (MethodInvoker)(() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = true));
+            Thread.Sleep(3000);
+            Program.ac.graphic.LBL_InfoAjoutTp.Invoke(
+                (MethodInvoker)(() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = false));
+
+            // ShowLog();
             Database.addCPMax(Database.CPsNewInNote());
             Database.removeCPMax(Database.CPMaxIsNotinNote());
         }
 
+        /// <summary>
+        /// Show the log at the end (NOT USED ACTUALLY)
+        /// </summary>
         public static void ShowLog()
         {
             var a = new ImportTpInfo();
             a.ShowDialog();
 
-            var message = "";
+            // ReSharper disable once NotAccessedVariable
+            var message = string.Empty;
             if (errMssg != string.Empty)
             {
+                // ReSharper disable once RedundantAssignment
                 message += "<p style='color:red; font-size:50px align:center'>Liste d'erreurs</p>";
             }
         }
@@ -254,17 +272,35 @@ namespace WindowsFormsApplication2
 
         #region Private Methods
 
+        /// <summary>
+        /// Check promo
+        /// </summary>
+        /// <returns>
+        /// The <see>
+        ///         <cref>List</cref>
+        ///     </see>
+        ///     of promos
+        /// </returns>
         private static List<string> CheckPromo()
         {
+            // ReSharper disable once UnusedVariable
             var request0 = Directory.GetDirectories(RootFolder).Aggregate(string.Empty, (current, a) => current + "\"" + Crypt.CreateMd5ForFolder(a) + "\",");
 
-            var retour1 = Database.GetListRequest("classe", new[] {"promotion"} /*,
-                String.Format("`hashClasse` NOT IN ({0}0)", request0)*/);
+            var retour1 = Database.GetListRequest("classe", new[] { "promotion" } /*,String.Format("`hashClasse` NOT IN ({0}0)", request0)*/);
             var retour2 = retour1.ToList();
 
             return retour2;
         }
 
+        /// <summary>
+        /// The get infos.
+        /// </summary>
+        /// <param name="file">
+        /// The file.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Tuple"/>.
+        /// </returns>
         private static Tuple<string, string, string> GetInfos(string file)
         {
             try
@@ -274,36 +310,49 @@ namespace WindowsFormsApplication2
                 var deux = file.Split('\\')[pre.Length - 1];
 
                 // Separer les infos
-                var a = deux.Split(new[] {'_'});
-                var b = a[0].Split(new[] {'.'});
+                var a = deux.Split('_');
+                var b = a[0].Split('.');
 
                 // Retirer le ".pdf" à la fin
                 return new Tuple<string, string, string>(b[0], b[1], a[1].Remove(a[1].Length - 4, 4));
             }
             catch (Exception)
             {
-                //MessageBox.Show(
+                // MessageBox.Show(
                 //    $@"Mauvais type de fichier. Veuillez vérifier qu'il est sous la forme{Environment.NewLine}NOM_PRENOM_TPXX.pdf");
                 errMssg += "<li>" + file + " : Nom du fichier non reconnu. Attendu : NOM.PRENOM_NOMDUTP.pdf</li>" + Environment.NewLine;
                 return null;
             }
         }
 
+        /// <summary>
+        /// The get value.
+        /// </summary>
+        /// <param name="file">
+        /// The file.
+        /// </param>
+        /// <returns>
+        /// The <see cref="IEnumerable"/>
+        /// values
+        /// </returns>
         private static IEnumerable<Tuple<string, string, string>> GetValue(string file)
         {
             if (!file.Contains(".pdf"))
+            {
                 return null;
+            }
 
             if (File.Exists("temp.pdf"))
             {
                 File.Delete("temp.pdf");
             }
+
             File.Copy(file, "temp.pdf");
 
             var b = "temp.pdf";
             var x = Directory.GetCurrentDirectory() + @"\" + b;
             var a = new pdfHandler(ref x);
-            var c = (string) a.readPDF();
+            var c = (string)a.readPDF();
 
             const string strRegex = @"C[0-9].[0-9]";
             var myRegex = new Regex(strRegex, RegexOptions.None);
@@ -344,13 +393,19 @@ namespace WindowsFormsApplication2
             return tempReturn;
         }
 
+        /// <summary>
+        /// The traiter fichier.
+        /// </summary>
+        /// <param name="file">
+        /// The file.
+        /// </param>
         private static void TraiterFichier(string file)
         {
             if (!file.Contains(".pdf"))
             {
                 errMssg += file + " : Le fichier est au mauvais format. Attendu : pdf" + Environment.NewLine;
             }
-            //? -----------------------------------------
+            ////? -----------------------------------------
             /*
             if (file.IndexOf(".", StringComparison.Ordinal) != file.IndexOf(".pdf", StringComparison.Ordinal))
             {
