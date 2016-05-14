@@ -26,7 +26,7 @@ namespace WindowsFormsApplication2
 
                 if (result == 1)
                 {
-                    MessageBox.Show(" * Inscription réussi * ");
+                    MessageBox.Show(" * Inscription réussie * ");
                     Close();
                 }
                 else
