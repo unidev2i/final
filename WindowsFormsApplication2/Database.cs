@@ -312,26 +312,6 @@ namespace WindowsFormsApplication2
             command.ExecuteNonQuery();
         }
 
-        public static string[] EcritureInteligente(string concatenate)
-        {
-            var retour = new string[1000];
-            var i = 0;
-            var command = _conn.CreateCommand();
-            command.CommandText = "SELECT Prenom,Nom FROM eleve";
-            var reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                var concatenate2 = reader["Prenom"] + " " + reader["Nom"];
-                if (concatenate2.Contains(concatenate))
-                {
-                    retour[i] = concatenate2;
-                    i++;
-                }
-            }
-            reader.Close();
-            return retour;
-        }
-
         public static List<string> GetHashList(string promo)
         {
             var a = new List<string>();
@@ -508,12 +488,23 @@ namespace WindowsFormsApplication2
             return retour;
         }
 
-        public static List<Tuple<string, float>> GetWebRequest(string idEleve = "2")
+        public static List<Tuple<string, float>> GetWebRequest(CheckBox checkBox, string idEleve = "2")
         {
+            var req = "";
             var retour = new List<Tuple<string, float>>();
-            var req =
-                "SELECT " + COL_IDSKILL + ", SUM(" + COL_NOTE + ") FROM " + TAB_ELEVE + " NATURAL JOIN " + TAB_TP +
-                " NATURAL JOIN " + COL_NOTE + " WHERE " + COL_IDELEVE + " = '" + idEleve + "' GROUP BY " + COL_IDSKILL;
+            if (checkBox.Checked == false)
+            {
+                req =
+                    "SELECT " + COL_IDSKILL + ", SUM(" + COL_NOTE + ") FROM " + TAB_ELEVE + " NATURAL JOIN " + TAB_TP +
+                    " NATURAL JOIN " + COL_NOTE + " WHERE " + COL_IDELEVE + " = '" + idEleve + "' GROUP BY " + COL_IDSKILL;
+            }
+            else if (checkBox.Checked == false)
+            {
+                req =
+                    "SELECT " + COL_IDSKILL + ", SUM(" + COL_NOTE + ") FROM " + TAB_ELEVE + " NATURAL JOIN " + TAB_TP +
+                    " NATURAL JOIN " + COL_NOTE + " WHERE " + COL_IDELEVE + " = '" + idEleve + "' GROUP BY " + COL_IDSKILL;
+            }
+
             var command = _conn.CreateCommand();
             command.CommandText = req;
             var r = command.ExecuteReader();

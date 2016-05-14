@@ -198,7 +198,7 @@ namespace WindowsFormsApplication2
             // Draw graphics
 
             var w = Database.GetWtfRequest(idEleve);
-            var z = Database.GetWebRequest(idEleve);
+            var z = Database.GetWebRequest(checkBox1,idEleve);
             var y = Database.GetWebMax();
 
             drawGraph(w);
@@ -219,21 +219,7 @@ namespace WindowsFormsApplication2
 
         private void comboBox1_TextUpdate(object sender, EventArgs e)
         {
-            comboBox1.Items.Clear();
-            var concatenate = comboBox1.Text;
-            var i = 0;
-            var eleve = new string[1000];
-            eleve = Database.EcritureInteligente(concatenate);
-            if (eleve != null)
-            {
-                for (i = 0; (i < eleve.Length) && (eleve[i] != null); i++)
-                {
-                    //MessageBox.Show(eleve[i]);
-                    comboBox1.Items.Add(eleve[i]);
-                }
-            }
-            comboBox1.Select(50, 50);
-            comboBox3.Select(50, 50);
+            
         }
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
@@ -416,10 +402,6 @@ namespace WindowsFormsApplication2
         {
             var b = new Thread(ImportTp.Go);
             b.Start();
-        }
-
-        private void LBL_InfoAjoutTp_Click(object sender, EventArgs e)
-        {
         }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)

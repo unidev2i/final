@@ -89,5 +89,10 @@ namespace WindowsFormsApplication2
                 button1_Click(sender, e);
             }
         }
+
+        private void AssistantConnexion_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

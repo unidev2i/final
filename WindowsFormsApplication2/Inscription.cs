@@ -26,7 +26,7 @@ namespace WindowsFormsApplication2
 
                 if (result == 1)
                 {
-                    MessageBox.Show(" * Inscription réussi * ");
+                    MessageBox.Show(" * Inscription réussie * ");
                     Close();
                 }
                 else
@@ -37,17 +37,6 @@ namespace WindowsFormsApplication2
         }
 
         #endregion Private Methods
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-        }
-
-
-
         #region Public Constructors
 
         public Inscription()

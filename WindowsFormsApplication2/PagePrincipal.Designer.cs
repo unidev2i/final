@@ -70,6 +70,7 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.label2 = new System.Windows.Forms.Label();
             this.LBL_InfoAjoutTp = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -185,21 +186,21 @@
             // ajouterUnPDFToolStripMenuItem
             // 
             this.ajouterUnPDFToolStripMenuItem.Name = "ajouterUnPDFToolStripMenuItem";
-            this.ajouterUnPDFToolStripMenuItem.Size = new System.Drawing.Size(213, 24);
-            this.ajouterUnPDFToolStripMenuItem.Text = "Synchroniser les TPs";
+            this.ajouterUnPDFToolStripMenuItem.Size = new System.Drawing.Size(231, 24);
+            this.ajouterUnPDFToolStripMenuItem.Text = "Synchroniser les Activités";
             this.ajouterUnPDFToolStripMenuItem.Click += new System.EventHandler(this.ajouterUnPDFToolStripMenuItem_Click);
             // 
             // sélectionnerLeDossierToolStripMenuItem
             // 
             this.sélectionnerLeDossierToolStripMenuItem.Name = "sélectionnerLeDossierToolStripMenuItem";
-            this.sélectionnerLeDossierToolStripMenuItem.Size = new System.Drawing.Size(213, 24);
+            this.sélectionnerLeDossierToolStripMenuItem.Size = new System.Drawing.Size(231, 24);
             this.sélectionnerLeDossierToolStripMenuItem.Text = "Sélectionner le dossier";
             this.sélectionnerLeDossierToolStripMenuItem.Click += new System.EventHandler(this.sélectionnerLeDossierToolStripMenuItem_Click);
             // 
             // deconnexionToolStripMenuItem
             // 
             this.deconnexionToolStripMenuItem.Name = "deconnexionToolStripMenuItem";
-            this.deconnexionToolStripMenuItem.Size = new System.Drawing.Size(213, 24);
+            this.deconnexionToolStripMenuItem.Size = new System.Drawing.Size(231, 24);
             this.deconnexionToolStripMenuItem.Text = "Déconnexion";
             this.deconnexionToolStripMenuItem.Click += new System.EventHandler(this.deconnexionToolStripMenuItem_Click);
             // 
@@ -343,7 +344,7 @@
             series4.Name = "Series2";
             this.chart3.Series.Add(series3);
             this.chart3.Series.Add(series4);
-            this.chart3.Size = new System.Drawing.Size(470, 323);
+            this.chart3.Size = new System.Drawing.Size(470, 305);
             this.chart3.TabIndex = 3;
             this.chart3.Text = "chart3";
             this.chart3.Visible = false;
@@ -390,7 +391,16 @@
             this.LBL_InfoAjoutTp.TabIndex = 11;
             this.LBL_InfoAjoutTp.Text = "Ajout des TP effectué avec succès.";
             this.LBL_InfoAjoutTp.Visible = false;
-            this.LBL_InfoAjoutTp.Click += new System.EventHandler(this.LBL_InfoAjoutTp_Click);
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(718, 618);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(191, 17);
+            this.checkBox1.TabIndex = 12;
+            this.checkBox1.Text = "Résultat dans la promotion actuelle";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // PagePrincipal
             // 
@@ -398,6 +408,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(1185, 651);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.LBL_InfoAjoutTp);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.progressBar1);
@@ -460,5 +471,6 @@
         public System.Windows.Forms.Label label4;
         public System.Windows.Forms.Label label2;
         public System.Windows.Forms.Label LBL_InfoAjoutTp;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
