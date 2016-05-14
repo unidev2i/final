@@ -146,7 +146,9 @@ namespace WindowsFormsApplication2
                 {
                     var dialogResult =
                         MessageBox.Show(
-                            $"Le répertoire \"{dir}\" n'existe pas. Voulez-vous supprimer les données de la base de données ?", @"ATTENTION !", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                            String.Format(
+                                "Le répertoire \"{0}\" n'existe pas. Voulez-vous supprimer les données de la base de données ?",
+                                dir), @"ATTENTION !", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
                     switch (dialogResult)
                     {
