@@ -448,10 +448,22 @@ namespace WindowsFormsApplication2
         #endregion Private Methods
     }
 
+    /// <summary>
+    /// The my string.
+    /// </summary>
     public static class MyString
     {
         #region Public Methods
 
+        /// <summary>
+        /// The md 5.
+        /// </summary>
+        /// <param name="x">
+        /// The x.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string Md5(this string x)
         {
             // byte array representation of that string
@@ -462,19 +474,35 @@ namespace WindowsFormsApplication2
 
             // string representation (similar to UNIX format)
             return BitConverter.ToString(hash)
+
                 // without dashes
                 .Replace("-", string.Empty)
+
                 // make lowercase
                 .ToLower();
         }
 
+        /// <summary>
+        /// The remove char.
+        /// </summary>
+        /// <param name="x">
+        /// The x.
+        /// </param>
+        /// <param name="b">
+        /// The b.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string RemoveChar(this string x, string b)
         {
             var a = x;
             while (a.Contains(b))
             {
                 if (a.Length > a.IndexOf(b, StringComparison.Ordinal))
+                {
                     a.Remove(a.IndexOf(b, StringComparison.Ordinal));
+                }
             }
             return a;
         }
