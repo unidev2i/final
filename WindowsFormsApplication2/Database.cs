@@ -192,7 +192,7 @@ namespace WindowsFormsApplication2
         }
 
         public static void Connect(string ip = "localhost", string login = "root", string pass = "",
-            string database = "mydb_debug")
+            string database = "mydb")
         {
             var builder = new MySqlConnectionStringBuilder
             {

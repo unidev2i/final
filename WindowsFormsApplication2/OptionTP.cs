@@ -15,7 +15,15 @@ namespace WindowsFormsApplication2
             {
                 Settings.Default.repoPath = "Non défini!";
             }
+            if (Settings.Default.GetInNomFichier == string.Empty)
+            {
+                Settings.Default.GetInNomFichier = "false";
+            }
             textBox1.Text = Settings.Default.repoPath;
+            if (Settings.Default.GetInNomFichier == "True")
+                checkBox1.Checked = true;
+            else
+                checkBox1.Checked = false;
             //WindowsFormsApplication2.Properties.Settings.Default.Save();
         }
 
@@ -43,5 +51,14 @@ namespace WindowsFormsApplication2
 
 
         #endregion Private Methods
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked)
+                Settings.Default.GetInNomFichier = "True";
+            else
+                Settings.Default.GetInNomFichier = "False";
+            Settings.Default.Save();
+        }
     }
 }

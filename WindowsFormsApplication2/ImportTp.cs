@@ -325,6 +325,30 @@ namespace WindowsFormsApplication2
             }
         }
 
+        private static Tuple<string, string> GetInfos2(string file)
+        {
+            if (!file.Contains(".pdf"))
+            {
+                return null;
+            }
+
+            if (File.Exists("temp.pdf"))
+            {
+                File.Delete("temp.pdf");
+            }
+
+            File.Copy(file, "temp.pdf");
+            
+            var x = Directory.GetCurrentDirectory() + @"\" + "temp.pdf";
+            var c = (string)new pdfHandler(ref x).readPDF();
+            foreach (var sor in new Regex(@"Nom Prénom\s*\w*\s*\w*").Matches(c))
+            {
+                return new Tuple<string, string>(sor.ToString().Split(' ')[1].Split(new string[] { "Prénom" }, StringSplitOptions.None)[1], sor.ToString().Split(' ')[2]);
+            }
+            return null;
+
+        }
+
         /// <summary>
         /// The get value.
         /// </summary>
@@ -353,7 +377,15 @@ namespace WindowsFormsApplication2
             var x = Directory.GetCurrentDirectory() + @"\" + b;
             var a = new pdfHandler(ref x);
             var c = (string)a.readPDF();
-
+            String nom;
+            String prenom;
+            MessageBox.Show(Settings.Default.GetInNomFichier);
+            if (Settings.Default.GetInNomFichier=="True")
+                foreach(var sor in new Regex(@"Nom Prénom\s*\w*\s*\w*").Matches(c))
+                {
+                    nom=sor.ToString().Split(' ')[1].Split(new string[] { "Prénom" }, StringSplitOptions.None)[1];
+                    prenom=sor.ToString().Split(' ')[2];
+                }
             const string strRegex = @"C[0-9].[0-9]";
             var myRegex = new Regex(strRegex, RegexOptions.None);
             const string strRegex2 = @"[0-9]{1,2}\.{0,1}[0-9]{0,3}\s{0,2}\/\s{0,2}[0-9]{1,2}\.{0,1}[0-9]{0,1}\s";
@@ -418,19 +450,33 @@ namespace WindowsFormsApplication2
                 File.Move(filetempo,file);
             }
             */
-
-            var infos = GetInfos(file);
-            if (infos == null) return;
+            Tuple<String,String,String> infos;
+            Tuple<String, String> infos2;
             var value = GetValue(file);
-
-            var idEleve = Database.GetIdEleveFromName(infos.Item1, infos.Item2);
-
-            if (idEleve == null)
+            string idEleve;
+            infos = GetInfos(file);
+            if (infos == null) return;
+            if (Settings.Default.GetInNomFichier == "False")
             {
-                Database.AjouteEleve(infos.Item1, infos.Item2, file.Split('\\')[file.Split('\\').Length - 2]);
                 idEleve = Database.GetIdEleveFromName(infos.Item1, infos.Item2);
-            }
 
+                if (idEleve == null)
+                {
+                    Database.AjouteEleve(infos.Item1, infos.Item2, file.Split('\\')[file.Split('\\').Length - 2]);
+                    idEleve = Database.GetIdEleveFromName(infos.Item1, infos.Item2);
+                }
+            }
+            else
+            {
+                infos2 = GetInfos2(file);
+                if (infos2 == null) return;
+                idEleve = Database.GetIdEleveFromName(infos2.Item1, infos2.Item2);
+                if (idEleve == null)
+                {
+                    Database.AjouteEleve(infos2.Item1, infos2.Item2, file.Split('\\')[file.Split('\\').Length - 2]);
+                    idEleve = Database.GetIdEleveFromName(infos2.Item1, infos2.Item2);
+                }
+            }
             // ETAPE 1 : Créer le TP
             var mdr = Program.ac.graphic.login;
             Database.AddTp(infos.Item3, idEleve, mdr, Crypt.Md5(file));
