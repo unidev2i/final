@@ -70,9 +70,9 @@
             this.checkBox1.AutoSize = true;
             this.checkBox1.Location = new System.Drawing.Point(43, 96);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(174, 17);
+            this.checkBox1.Size = new System.Drawing.Size(224, 17);
             this.checkBox1.TabIndex = 4;
-            this.checkBox1.Text = "Check = Dans le nom du fichier";
+            this.checkBox1.Text = "Appuyé ==> Nom + Prénom dans le fichier";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
