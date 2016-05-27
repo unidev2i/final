@@ -1,11 +1,11 @@
-﻿using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
-
-namespace WindowsFormsApplication2
+﻿namespace WindowsFormsApplication2
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Windows.Forms;
+    using MySql.Data.MySqlClient;
+
     public static class Database
     {
         #region Private Fields
