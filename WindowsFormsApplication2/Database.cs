@@ -580,9 +580,11 @@ namespace WindowsFormsApplication2
                 a.Add(new Tuple<float,DateTime>(float.Parse(r["note"].ToString()),DateTime.Parse(r["date"].ToString())));
             }
 
-            a.OrderByDescending(b => b.Item2);
+            a.OrderBy(b => b.Item2);
+            a.Clear();
 
             r.Close();
+
             return a;
         }
         
