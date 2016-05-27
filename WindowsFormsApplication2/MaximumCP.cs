@@ -31,7 +31,7 @@ namespace WindowsFormsApplication2
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            numericUpDown1.Value = Database.getMaxCP(comboBox1.SelectedItem.ToString());
+            numericUpDown1.Value = Database.GetMaxCp(comboBox1.SelectedItem.ToString());
         }
 
         private void numericUpDown1_Leave(object sender, EventArgs e)

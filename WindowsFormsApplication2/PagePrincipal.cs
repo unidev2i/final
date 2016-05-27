@@ -178,7 +178,7 @@ namespace WindowsFormsApplication2
                     Database.GetListRequest("eleve", new[] {"idClasse"}, "Nom='" + nom + "' and Prenom='" + prenom + "'")
                 )
                 idClasse = a;
-            comboBox3.Text = Database.getpromo(idClasse);
+            comboBox3.Text = Database.Getpromo(idClasse);
 
             comboBox1.Select(50, 50);
 
@@ -329,7 +329,7 @@ namespace WindowsFormsApplication2
         }
 
 
-        private void drawCourbe(List<Tuple<float,DateTime>> aTuples)
+        private void drawCourbe(IOrderedEnumerable<Tuple<float, DateTime>> aTuples)
         {
             chart1.Series[0].Points.Clear();
             chart1.Series[0].XValueType = ChartValueType.DateTime;

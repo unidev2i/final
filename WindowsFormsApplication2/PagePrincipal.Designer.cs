@@ -44,6 +44,8 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -71,8 +73,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.LBL_InfoAjoutTp = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -120,6 +120,25 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(297, 259);
             this.panel1.TabIndex = 6;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(19, 151);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(108, 13);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "Compétence affichée";
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.Cursor = System.Windows.Forms.Cursors.Default;
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(133, 148);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(142, 21);
+            this.comboBox2.TabIndex = 10;
+            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
             // label4
             // 
@@ -407,25 +426,6 @@
             this.checkBox1.Text = "Résultat dans la promotion actuelle";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(19, 151);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(108, 13);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "Compétence affichée";
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.Cursor = System.Windows.Forms.Cursors.Default;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(133, 148);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(142, 21);
-            this.comboBox2.TabIndex = 10;
-            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
-            // 
             // PagePrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -446,7 +446,6 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.MaximizeBox = false;
             this.Name = "PagePrincipal";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PPM : La formation personnalisée";
