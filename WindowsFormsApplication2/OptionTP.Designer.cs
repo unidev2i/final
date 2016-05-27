@@ -68,11 +68,11 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(43, 96);
+            this.checkBox1.Location = new System.Drawing.Point(12, 96);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(234, 17);
+            this.checkBox1.Size = new System.Drawing.Size(296, 17);
             this.checkBox1.TabIndex = 4;
-            this.checkBox1.Text = "On récupère le nom + prénom dans le fichier";
+            this.checkBox1.Text = "Récupérer le nom et le prénom dans le fichier de l\'Activité";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
