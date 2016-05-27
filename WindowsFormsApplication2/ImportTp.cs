@@ -377,6 +377,7 @@ namespace WindowsFormsApplication2
             var x = Directory.GetCurrentDirectory() + @"\" + b;
             var a = new pdfHandler(ref x);
             var c = (string)a.readPDF();
+
             String nom;
             String prenom;
             MessageBox.Show(Settings.Default.GetInNomFichier);
@@ -386,6 +387,7 @@ namespace WindowsFormsApplication2
                     nom=sor.ToString().Split(' ')[1].Split(new string[] { "Prénom" }, StringSplitOptions.None)[1];
                     prenom=sor.ToString().Split(' ')[2];
                 }
+
             const string strRegex = @"C[0-9].[0-9]";
             var myRegex = new Regex(strRegex, RegexOptions.None);
             const string strRegex2 = @"[0-9]{1,2}\.{0,1}[0-9]{0,3}\s{0,2}\/\s{0,2}[0-9]{1,2}\.{0,1}[0-9]{0,1}\s";
@@ -479,7 +481,7 @@ namespace WindowsFormsApplication2
             }
             // ETAPE 1 : Créer le TP
             var mdr = Program.ac.graphic.login;
-            Database.AddTp(infos.Item3, idEleve, mdr, Crypt.Md5(file));
+            Database.AddTp(infos.Item3, idEleve, mdr, Crypt.Md5(file), File.GetLastWriteTime(file));
 
             // ETAPE 1' : Recup id tp
             var idPdf = Database.GetLastPdfId();

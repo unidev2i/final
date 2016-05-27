@@ -61,13 +61,13 @@ namespace WindowsFormsApplication2
              "\", \"" + Note + "\", \"" + maxNote + "\")").SimpleRequest();
         }
 
-        public static void AddTp(string tpname, string idEleve, string login_correcteur, string hash)
+        public static void AddTp(string tpname, string idEleve, string login_correcteur, string hash, DateTime dt)
         {
             /*MessageBox.Show("INSERT INTO tp (idTp, idEleve, idcorrecteur, hashTp) VALUES(\"" + tpname + "\", \"" +
                             idEleve + "\", (SELECT idUser FROM user WHERE Login = \"" + login_correcteur + "\"), \"" +
                             hash + "\")"); */
-            ("INSERT INTO tp (idTp, idEleve, idcorrecteur, hashTp) VALUES(\"" + tpname + "\", \"" + idEleve +
-             "\", (SELECT idUser FROM user WHERE Login = \"" + login_correcteur + "\"), \"" + hash + "\")")
+            ("INSERT INTO tp (idTp, idEleve, idcorrecteur, hashTp, date) VALUES(\"" + tpname + "\", \"" + idEleve +
+             "\", (SELECT idUser FROM user WHERE Login = \"" + login_correcteur + "\"), \"" + hash + "\"), " + dt)
                 .SimpleRequest();
         }
 
