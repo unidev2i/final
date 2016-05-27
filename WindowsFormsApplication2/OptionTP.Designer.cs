@@ -48,7 +48,7 @@
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button2.Location = new System.Drawing.Point(267, 92);
+            this.button2.Location = new System.Drawing.Point(319, 92);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 2;
@@ -68,11 +68,11 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(43, 96);
+            this.checkBox1.Location = new System.Drawing.Point(12, 96);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(174, 17);
+            this.checkBox1.Size = new System.Drawing.Size(296, 17);
             this.checkBox1.TabIndex = 4;
-            this.checkBox1.Text = "Check = Dans le nom du fichier";
+            this.checkBox1.Text = "Récupérer le nom et le prénom dans le fichier de l\'Activité";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 

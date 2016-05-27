@@ -581,7 +581,7 @@ namespace WindowsFormsApplication2
             }
 
             a.OrderBy(b => b.Item2);
-            a.Clear();
+            //a.Clear();
 
             r.Close();
 

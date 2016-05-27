@@ -380,7 +380,6 @@ namespace WindowsFormsApplication2
 
             String nom;
             String prenom;
-            MessageBox.Show(Settings.Default.GetInNomFichier);
             if (Settings.Default.GetInNomFichier=="True")
                 foreach(var sor in new Regex(@"Nom Prénom\s*\w*\s*\w*").Matches(c))
                 {
