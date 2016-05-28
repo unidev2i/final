@@ -186,8 +186,10 @@ namespace WindowsFormsApplication2
             /* MessageBox.Show("INSERT INTO tp (idTp, idEleve, idcorrecteur, hashTp) VALUES(\"" + tpname + "\", \"" +
                             idEleve + "\", (SELECT idUser FROM user WHERE Login = \"" + login_correcteur + "\"), \"" +
                             hash + "\")"); */
+            //MessageBox.Show(dt.ToString("yyyy-MM-dd HH:mm:ss"));
+
             ("INSERT INTO tp (idTp, idEleve, idcorrecteur, hashTp, date) VALUES(\"" + tpname + "\", \"" + idEleve +
-             "\", (SELECT idUser FROM user WHERE Login = \"" + loginCorrecteur + "\"), \"" + hash + "\", \"" + dt + "\" )")
+             "\", (SELECT idUser FROM user WHERE Login = \"" + loginCorrecteur + "\"), \"" + hash + "\",'" + dt.ToString("yyyy-MM-dd HH:mm:ss") + "')")
                 .SimpleRequest();
         }
 
