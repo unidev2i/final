@@ -187,7 +187,7 @@ namespace WindowsFormsApplication2
                             idEleve + "\", (SELECT idUser FROM user WHERE Login = \"" + login_correcteur + "\"), \"" +
                             hash + "\")"); */
             ("INSERT INTO tp (idTp, idEleve, idcorrecteur, hashTp, date) VALUES(\"" + tpname + "\", \"" + idEleve +
-             "\", (SELECT idUser FROM user WHERE Login = \"" + loginCorrecteur + "\"), \"" + hash + "\"), " + dt)
+             "\", (SELECT idUser FROM user WHERE Login = \"" + loginCorrecteur + "\"), \"" + hash + "\", \"" + dt + "\" )")
                 .SimpleRequest();
         }
 
@@ -399,7 +399,7 @@ namespace WindowsFormsApplication2
         /// <param name="database">
         /// The database.
         /// </param>
-        public static void Connect(string ip = "localhost", string login = "root", string pass = "", string database = "mydb")
+        public static void Connect(string ip = "localhost", string login = "root", string pass = "", string database = "mydb_debug")
         {
             var builder = new MySqlConnectionStringBuilder
             {
@@ -1020,8 +1020,6 @@ namespace WindowsFormsApplication2
             }
 
             var x = a.OrderBy(b => b.Item2);
-
-// a.Clear();
             r.Close();
 
             return x;

@@ -403,7 +403,7 @@ namespace WindowsFormsApplication2
 
             string nom;
             string prenom;
-            if (Settings.Default.GetInNomFichier == "True")
+            if (Settings.Default.GetInNomFichier == "true")
                 foreach (var sor in new Regex(@"Nom Prénom\s*\w*\s*\w*").Matches(c))
                 {
                     nom = sor.ToString().Split(' ')[1].Split(new[] {"Prénom"}, StringSplitOptions.None)[1];
@@ -481,7 +481,7 @@ namespace WindowsFormsApplication2
             string idEleve;
             infos = GetInfos(file);
             if (infos == null) return;
-            if (Settings.Default.GetInNomFichier == "False")
+            if (Settings.Default.GetInNomFichier == "false")
             {
                 idEleve = Database.GetIdEleveFromName(infos.Item1, infos.Item2);
 

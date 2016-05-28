@@ -20,7 +20,7 @@ namespace WindowsFormsApplication2
                 Settings.Default.GetInNomFichier = "false";
             }
             textBox1.Text = Settings.Default.repoPath;
-            if (Settings.Default.GetInNomFichier == "True")
+            if (Settings.Default.GetInNomFichier == "true")
                 checkBox1.Checked = true;
             else
                 checkBox1.Checked = false;
@@ -55,9 +55,9 @@ namespace WindowsFormsApplication2
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBox1.Checked)
-                Settings.Default.GetInNomFichier = "True";
+                Settings.Default.GetInNomFichier = "true";
             else
-                Settings.Default.GetInNomFichier = "False";
+                Settings.Default.GetInNomFichier = "false";
             Settings.Default.Save();
         }
     }
