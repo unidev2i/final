@@ -72,7 +72,6 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.label2 = new System.Windows.Forms.Label();
             this.LBL_InfoAjoutTp = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -416,23 +415,12 @@
             this.LBL_InfoAjoutTp.Text = "Ajout des TP effectué avec succès.";
             this.LBL_InfoAjoutTp.Visible = false;
             // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(718, 618);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(191, 17);
-            this.checkBox1.TabIndex = 12;
-            this.checkBox1.Text = "Résultat dans la promotion actuelle";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
             // PagePrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(1185, 651);
-            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.LBL_InfoAjoutTp);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.progressBar1);
@@ -494,7 +482,6 @@
         public System.Windows.Forms.Label label4;
         public System.Windows.Forms.Label label2;
         public System.Windows.Forms.Label LBL_InfoAjoutTp;
-        private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox comboBox2;
     }
