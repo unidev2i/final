@@ -1,125 +1,287 @@
-﻿using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Database.cs" company="ig2i">
+//   Unidev
+// </copyright>
+// <summary>
+//   The database.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace WindowsFormsApplication2
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Windows.Forms;
+    using MySql.Data.MySqlClient;
+
+    /// <summary>
+    /// The database.
+    /// </summary>
     public static class Database
     {
         #region Private Fields
 
-        private const string COL_ADMIN = "Admin";
-        private const string COL_IDELEVE = "idEleve";
-        private const string COL_IDSKILL = "idCompetence";
-        private const string COL_LOGIN = "Login";
-        private const string COL_MAXNOTE = "maxNote";
-        private const string COL_NOTE = "Note";
-        private const string COL_PASS = "Password";
-        private const string COL_PROMO = "Promotion";
-        private const string TAB_CLASSE = "classe";
-        private const string TAB_ELEVE = "eleve";
-        private const string TAB_TP = "tp";
-        private const string TAB_USER = "user";
-        private static MySqlConnection _conn;
+        /// <summary>
+        /// The co l_ admin.
+        /// </summary>
+        private const string ColAdmin = "Admin";
+
+        /// <summary>
+        /// The co l_ ideleve.
+        /// </summary>
+        private const string ColIdeleve = "idEleve";
+
+        /// <summary>
+        /// The co l_ idskill.
+        /// </summary>
+        private const string ColIdskill = "idCompetence";
+
+        /// <summary>
+        /// The co l_ login.
+        /// </summary>
+        private const string ColLogin = "Login";
+
+        /// <summary>
+        /// The co l_ maxnote.
+        /// </summary>
+        private const string ColMaxnote = "maxNote";
+
+        /// <summary>
+        /// The co l_ note.
+        /// </summary>
+        private const string ColNote = "Note";
+
+        /// <summary>
+        /// The co l_ pass.
+        /// </summary>
+        private const string ColPass = "Password";
+
+        /// <summary>
+        /// The co l_ promo.
+        /// </summary>
+        private const string ColPromo = "Promotion";
+
+        /// <summary>
+        /// The ta b_ classe.
+        /// </summary>
+        private const string TabClasse = "classe";
+
+        /// <summary>
+        /// The ta b_ eleve.
+        /// </summary>
+        private const string TabEleve = "eleve";
+
+        /// <summary>
+        /// The ta b_ tp.
+        /// </summary>
+        private const string TabTp = "tp";
+
+        /// <summary>
+        /// The ta b_ user.
+        /// </summary>
+        private const string TabUser = "user";
+
+        /// <summary>
+        /// The conn.
+        /// </summary>
+        private static MySqlConnection conn;
 
         #endregion Private Fields
 
         #region Public Properties
 
+        /// <summary>
+        /// Gets the database name.
+        /// </summary>
         public static string DatabaseName { get; private set; }
+
+        /// <summary>
+        /// Gets the password.
+        /// </summary>
         public static string Password { get; private set; }
+
+        /// <summary>
+        /// Gets the server.
+        /// </summary>
         public static string Server { get; private set; }
 
+        /// <summary>
+        /// Gets the username.
+        /// </summary>
         public static string Username { get; private set; }
 
         #endregion Public Properties
 
         #region Public Methods
 
-        public static int addCPMax(List<string> listCP)
+        /// <summary>
+        /// The add cp max.
+        /// </summary>
+        /// <param name="listCp">
+        /// The list cp.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        public static int AddCpMax(List<string> listCp)
         {
-            if (listCP.Count != 0)
+            if (listCp.Count == 0)
             {
-                var command = _conn.CreateCommand();
-                foreach (var idCP in listCP)
-                {
-                    ("INSERT INTO competence (idCompetence) VALUES ('" + idCP + "')").SimpleRequest();
-                }
-                return 0;
+                return 1;
             }
-            return 1;
+            var command = conn.CreateCommand();
+            foreach (var idCp in listCp)
+            {
+                ("INSERT INTO competence (idCompetence) VALUES ('" + idCp + "')").SimpleRequest();
+            }
+
+            return 0;
         }
 
-        public static void AddNote(string idPdf, string idCompetence, string Note, string maxNote)
+        /// <summary>
+        /// The add note.
+        /// </summary>
+        /// <param name="idPdf">
+        /// The id pdf.
+        /// </param>
+        /// <param name="idCompetence">
+        /// The id competence.
+        /// </param>
+        /// <param name="note">
+        /// The note.
+        /// </param>
+        /// <param name="maxNote">
+        /// The max note.
+        /// </param>
+        public static void AddNote(string idPdf, string idCompetence, string note, string maxNote)
         {
-            //MessageBox.Show("INSERT INTO note (idPdf, idCompetence, note, maxnote) VALUES (\"" + idPdf + "\", \"" +
+            // MessageBox.Show("INSERT INTO note (idPdf, idCompetence, note, maxnote) VALUES (\"" + idPdf + "\", \"" +
             // idCompetence +
-            //      "\", \"" + Note + "\", \"" + maxNote + "\")");
+            // "\", \"" + Note + "\", \"" + maxNote + "\")");
             ("INSERT INTO note (idPdf, idCompetence, note, maxnote) VALUES (\"" + idPdf + "\", \"" + idCompetence +
-             "\", \"" + Note + "\", \"" + maxNote + "\")").SimpleRequest();
+             "\", \"" + note + "\", \"" + maxNote + "\")").SimpleRequest();
         }
 
-        public static void AddTp(string tpname, string idEleve, string login_correcteur, string hash, DateTime dt)
+        /// <summary>
+        /// The add tp.
+        /// </summary>
+        /// <param name="tpname">
+        /// The tpname.
+        /// </param>
+        /// <param name="idEleve">
+        /// The id eleve.
+        /// </param>
+        /// <param name="loginCorrecteur">
+        /// The login_correcteur.
+        /// </param>
+        /// <param name="hash">
+        /// The hash.
+        /// </param>
+        /// <param name="dt">
+        /// The dt.
+        /// </param>
+        public static void AddTp(string tpname, string idEleve, string loginCorrecteur, string hash, DateTime dt)
         {
-            /*MessageBox.Show("INSERT INTO tp (idTp, idEleve, idcorrecteur, hashTp) VALUES(\"" + tpname + "\", \"" +
+            /* MessageBox.Show("INSERT INTO tp (idTp, idEleve, idcorrecteur, hashTp) VALUES(\"" + tpname + "\", \"" +
                             idEleve + "\", (SELECT idUser FROM user WHERE Login = \"" + login_correcteur + "\"), \"" +
                             hash + "\")"); */
             ("INSERT INTO tp (idTp, idEleve, idcorrecteur, hashTp, date) VALUES(\"" + tpname + "\", \"" + idEleve +
-             "\", (SELECT idUser FROM user WHERE Login = \"" + login_correcteur + "\"), \"" + hash + "\"), " + dt)
+             "\", (SELECT idUser FROM user WHERE Login = \"" + loginCorrecteur + "\"), \"" + hash + "\"), " + dt)
                 .SimpleRequest();
         }
 
+        /// <summary>
+        /// The add user.
+        /// </summary>
+        /// <param name="login">
+        /// The login.
+        /// </param>
+        /// <param name="mdp">
+        /// The mdp.
+        /// </param>
+        /// <param name="statut">
+        /// The statut.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
         public static int AddUser(string login, string mdp, int statut)
         {
-            var command = _conn.CreateCommand();
-            command.CommandText = "INSERT INTO " + TAB_USER + "(" + COL_LOGIN + "," + COL_PASS + "," + COL_ADMIN +
+            var command = conn.CreateCommand();
+            command.CommandText = "INSERT INTO " + TabUser + "(" + ColLogin + "," + ColPass + "," + ColAdmin +
                                   ") VALUES ('" + login + "','" + mdp + "','" + statut + "')";
             var retour = command.ExecuteReader();
 
-            if (retour.Read()) // si erreur il y a
+            if (retour.Read())
             {
+// si erreur il y a
                 retour.Close();
                 return 1;
             }
+
             retour.Close();
             return 1;
         }
 
+        /// <summary>
+        /// The ajoute eleve.
+        /// </summary>
+        /// <param name="nom">
+        /// The nom.
+        /// </param>
+        /// <param name="prenom">
+        /// The prenom.
+        /// </param>
+        /// <param name="promo">
+        /// The promo.
+        /// </param>
         public static void AjouteEleve(string nom, string prenom, string promo)
         {
-            //MessageBox.Show("INSERT INTO " + TAB_ELEVE + " (Nom, Prenom, idClasse) VALUES (\"" + nom + "\", \"" + prenom + "\", (SELECT idClasse FROM classe WHERE Promotion = \"" + promo + "\"))");
-            ("INSERT INTO " + TAB_ELEVE + " (Nom, Prenom, idClasse) VALUES (\"" + nom + "\", \"" + prenom +
+            // MessageBox.Show("INSERT INTO " + TAB_ELEVE + " (Nom, Prenom, idClasse) VALUES (\"" + nom + "\", \"" + prenom + "\", (SELECT idClasse FROM classe WHERE Promotion = \"" + promo + "\"))");
+            ("INSERT INTO " + TabEleve + " (Nom, Prenom, idClasse) VALUES (\"" + nom + "\", \"" + prenom +
              "\", ( SELECT idClasse FROM classe WHERE Promotion = \"" + promo + "\"))").SimpleRequest();
         }
 
-        public static void ajouterPromo(string promo)
+        /// <summary>
+        /// The ajouter promo.
+        /// </summary>
+        /// <param name="promo">
+        /// The promo.
+        /// </param>
+        public static void AjouterPromo(string promo)
         {
-            var command = _conn.CreateCommand();
+            var command = conn.CreateCommand();
             command.CommandText = "INSERT INTO classe (Promotion, hashClasse) VALUES ('" + promo + "', '0')";
             var reader = command.ExecuteReader();
             reader.Close();
         }
 
+        /// <summary>
+        /// The backup database.
+        /// </summary>
+        /// <param name="backUpFile">
+        /// The back up file.
+        /// </param>
         public static void BackupDatabase(string backUpFile = "C:/databackup/database.sql")
         {
-            using (_conn)
+            using (conn)
             {
                 using (var cmd = new MySqlCommand())
                 {
                     using (var mb = new MySqlBackup(cmd))
                     {
                         var fileData = new SaveFileDialog();
-                        fileData.Title = "Exporter la base de données";
+                        fileData.Title = @"Exporter la base de données";
                         fileData.DefaultExt = "sql";
-                        fileData.Filter = "Fichier SQL (*.sql)|*.sql";
+                        fileData.Filter = @"Fichier SQL (*.sql)|*.sql";
                         var result = fileData.ShowDialog();
                         if (result == DialogResult.OK)
                         {
                             backUpFile = fileData.FileName;
                         }
-                        cmd.Connection = _conn;
+
+                        cmd.Connection = conn;
                         mb.ExportToFile(backUpFile);
                         Connect();
                     }
@@ -127,72 +289,117 @@ namespace WindowsFormsApplication2
             }
         }
 
+        /// <summary>
+        /// The changer login.
+        /// </summary>
+        /// <param name="login">
+        /// The login.
+        /// </param>
+        /// <param name="pass">
+        /// The pass.
+        /// </param>
+        /// <param name="ancienlog">
+        /// The ancienlog.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string ChangerLogin(string login, string pass, string ancienlog)
         {
-            var command = _conn.CreateCommand();
-            command.CommandText = "SELECT " + COL_PASS + " FROM " + TAB_USER + " WHERE " + COL_LOGIN + "='" + ancienlog +
+            var command = conn.CreateCommand();
+            command.CommandText = "SELECT " + ColPass + " FROM " + TabUser + " WHERE " + ColLogin + "='" + ancienlog +
                                   "'";
 
-            var pass2 = "";
+            var pass2 = string.Empty;
             var retour = command.ExecuteReader();
 
             while (retour.Read())
             {
                 pass2 = retour["Password"].ToString();
             }
+
             retour.Close();
 
-            if ((pass == pass2) && (login != ""))
+            if ((pass == pass2) && (login != string.Empty))
             {
-                var Request = "UPDATE " + TAB_USER + " SET " + COL_LOGIN + "='" + login + "' WHERE " + COL_LOGIN + "='" +
-                              ancienlog + "'";
-                var command2 = _conn.CreateCommand();
-                command2.CommandText = Request;
+                var request = string.Format("UPDATE {0} SET {1}='{2}' WHERE {1}='{3}'", TabUser, ColLogin, login, ancienlog);
+                var command2 = conn.CreateCommand();
+                command2.CommandText = request;
                 command2.ExecuteNonQuery();
 
-                MessageBox.Show("Changement réussi");
+                MessageBox.Show(@"Changement réussi");
                 return login;
             }
 
-            MessageBox.Show("Mot de passe actuel incorrect");
-            return "";
+            MessageBox.Show(@"Mot de passe actuel incorrect");
+            return string.Empty;
         }
 
+        /// <summary>
+        /// The changer mdp.
+        /// </summary>
+        /// <param name="login">
+        /// The login.
+        /// </param>
+        /// <param name="pass">
+        /// The pass.
+        /// </param>
+        /// <param name="ancienmdp">
+        /// The ancienmdp.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
         public static int ChangerMdp(string login, string pass, string ancienmdp)
         {
-            var command = _conn.CreateCommand();
-            command.CommandText = "SELECT " + COL_PASS + " FROM " + TAB_USER + " WHERE " + COL_LOGIN + "='" + login +
+            var command = conn.CreateCommand();
+            command.CommandText = "SELECT " + ColPass + " FROM " + TabUser + " WHERE " + ColLogin + "='" + login +
                                   "'";
 
-            var pass2 = "";
+            var pass2 = string.Empty;
             var retour = command.ExecuteReader();
 
             while (retour.Read())
             {
                 pass2 = retour["Password"].ToString(); // mot de passe récuperé de la BDD
             }
+
             retour.Close();
 
-            if ((ancienmdp == pass2) && (pass != ""))
-                // on compare le mdp récuperé avec celui tapé dans le champ "ancien mot de passe"
+            if ((ancienmdp == pass2) && (pass != string.Empty))
             {
+// on compare le mdp récuperé avec celui tapé dans le champ "ancien mot de passe"
                 // on vérifie que le nouveau mdp ne soit pas vide
-                var Request = "UPDATE " + TAB_USER + " SET " + COL_PASS + "='" + pass + "' WHERE " + COL_LOGIN + "='" +
-                              login + "' AND " + COL_PASS + "='" + ancienmdp + "'";
-                var command2 = _conn.CreateCommand();
-                command2.CommandText = Request;
+                var request = "UPDATE " + TabUser + " SET " + ColPass + "='" + pass + "' WHERE " + ColLogin + "='" +
+                              login + "' AND " + ColPass + "='" + ancienmdp + "'";
+                var command2 = conn.CreateCommand();
+                command2.CommandText = request;
                 command2.ExecuteNonQuery();
 
-                MessageBox.Show("Changement réussi");
+                MessageBox.Show(@"Changement réussi");
                 return 1;
             }
 
-            MessageBox.Show("Ancien mot de passe incorrect");
+            MessageBox.Show(@"Ancien mot de passe incorrect");
             return 0;
         }
 
-        public static void Connect(string ip = "localhost", string login = "root", string pass = "",
-            string database = "mydb")
+        /// <summary>
+        /// The connect.
+        /// </summary>
+        /// <param name="ip">
+        /// The ip.
+        /// </param>
+        /// <param name="login">
+        /// The login.
+        /// </param>
+        /// <param name="pass">
+        /// The pass.
+        /// </param>
+        /// <param name="database">
+        /// The database.
+        /// </param>
+        public static void Connect(string ip = "localhost", string login = "root", string pass = "", string database = "mydb")
         {
             var builder = new MySqlConnectionStringBuilder
             {
@@ -207,10 +414,10 @@ namespace WindowsFormsApplication2
             Password = pass;
             DatabaseName = database;
 
-            _conn = new MySqlConnection(builder.ToString());
+            conn = new MySqlConnection(builder.ToString());
             try
             {
-                _conn.Open();
+                conn.Open();
             }
             catch (Exception ex)
             {
@@ -218,167 +425,269 @@ namespace WindowsFormsApplication2
             }
         }
 
-        public static List<string> CPMaxIsNotinNote()
+        /// <summary>
+        /// The cp max is notin note.
+        /// </summary>
+        /// <returns>
+        /// The <see>
+        ///         <cref>List</cref>
+        ///     </see>
+        ///     .
+        /// </returns>
+        public static List<string> CpMaxIsNotinNote()
         {
-            var listToRemoveCP = new List<string>();
-            var command = _conn.CreateCommand();
+            var listToRemoveCp = new List<string>();
+            var command = conn.CreateCommand();
             command.CommandText =
                 "SELECT DISTINCT competence.idCompetence FROM competence LEFT JOIN note ON competence.idCompetence = note.idCompetence WHERE note.idCompetence IS NULL";
             var reader = command.ExecuteReader();
             while (reader.Read())
             {
-                listToRemoveCP.Add(reader["idCompetence"].ToString());
+                listToRemoveCp.Add(reader["idCompetence"].ToString());
             }
+
             reader.Close();
 
-            return listToRemoveCP;
+            return listToRemoveCp;
         }
 
+        /// <summary>
+        /// The c ps new in note.
+        /// </summary>
+        /// <returns>
+        /// The <see>
+        ///         <cref>List</cref>
+        ///     </see>
+        ///     .
+        /// </returns>
         public static List<string> CPsNewInNote()
         {
-            var listnewCP = new List<string>();
-            var command = _conn.CreateCommand();
+            var listnewCp = new List<string>();
+            var command = conn.CreateCommand();
             command.CommandText =
                 "SELECT DISTINCT note.idCompetence FROM note LEFT JOIN competence ON note.idCompetence = competence.idCompetence WHERE competence.idCompetence IS NULL";
             var reader = command.ExecuteReader();
             while (reader.Read())
             {
-                listnewCP.Add(reader["idCompetence"].ToString());
+                listnewCp.Add(reader["idCompetence"].ToString());
             }
+
             reader.Close();
 
-            return listnewCP;
+            return listnewCp;
         }
 
+        /// <summary>
+        /// The delete.
+        /// </summary>
+        /// <param name="user">
+        /// The user.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
         public static int Delete(string user)
         {
-            var command = _conn.CreateCommand();
-            command.CommandText = "DELETE FROM " + TAB_USER + " WHERE " + COL_LOGIN + "='" + user + "'";
+            var command = conn.CreateCommand();
+            command.CommandText = "DELETE FROM " + TabUser + " WHERE " + ColLogin + "='" + user + "'";
             var retour = command.ExecuteReader();
 
-            if (retour.Read()) // si Erreur il y a
+            if (retour.Read())
             {
+// si Erreur il y a
                 retour.Close();
                 return -1;
             }
+
             retour.Close();
             return 1;
         }
 
+        /// <summary>
+        /// The delete elv.
+        /// </summary>
+        /// <param name="eleve">
+        /// The eleve.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
         public static int DeleteElv(string eleve)
         {
             var eleve2 = eleve.Split(' ');
-            MessageBox.Show(eleve2[0] + "   " + eleve2[1]);
-            var command = _conn.CreateCommand();
-            command.CommandText = "DELETE FROM " + TAB_ELEVE + " WHERE Nom ='" + eleve2[0] + "'AND Prenom='" + eleve2[1] +
+            MessageBox.Show(eleve2[0] + @"   " + eleve2[1]);
+            var command = conn.CreateCommand();
+            command.CommandText = "DELETE FROM " + TabEleve + " WHERE Nom ='" + eleve2[0] + "'AND Prenom='" + eleve2[1] +
                                   "'";
             var retour = command.ExecuteReader();
 
-            if (retour.Read()) // si Erreur il y a
+            if (retour.Read())
             {
+// si Erreur il y a
                 retour.Close();
                 return -1;
             }
+
             retour.Close();
             return 1;
         }
 
+        /// <summary>
+        /// The delete promo.
+        /// </summary>
+        /// <param name="promo">
+        /// The promo.
+        /// </param>
         public static void DeletePromo(string promo)
         {
-            MessageBox.Show("DELETE FROM " + TAB_CLASSE + " WHERE " + COL_PROMO + " = " + promo);
-            ("DELETE FROM " + TAB_CLASSE + " WHERE " + COL_PROMO + " = " + promo).SimpleRequest();
+            MessageBox.Show(string.Format("DELETE FROM {0} WHERE {1} = {2}", TabClasse, ColPromo, promo));
+            ("DELETE FROM " + TabClasse + " WHERE " + ColPromo + " = " + promo).SimpleRequest();
         }
 
+        /// <summary>
+        /// The delete tp.
+        /// </summary>
+        /// <param name="hashes">
+        /// The hashes.
+        /// </param>
         public static void DeleteTp(string hashes)
         {
-            ("DELETE FROM " + TAB_TP + " WHERE hashTp = " + hashes).SimpleRequest();
+            ("DELETE FROM " + TabTp + " WHERE hashTp = " + hashes).SimpleRequest();
         }
 
-        public static void DelRequest(string table, Tuple<string, string>[] where_clause)
+        /// <summary>
+        /// The del request.
+        /// </summary>
+        /// <param name="table">
+        /// The table.
+        /// </param>
+        /// <param name="whereClause">
+        /// The where_clause.
+        /// </param>
+        public static void DelRequest(string table, Tuple<string, string>[] whereClause)
         {
             var request = "DELETE FROM " + table + " WHERE ";
 
             var secondLine = false;
-            foreach (var a in where_clause)
+            foreach (var a in whereClause)
             {
                 if (secondLine)
+                {
                     request += " AND ";
+                }
+
                 request += a.Item1 + "='" + a.Item2 + "'";
                 secondLine = true;
             }
 
-            var command = _conn.CreateCommand();
+            var command = conn.CreateCommand();
             command.CommandText = request;
             command.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// The get hash list.
+        /// </summary>
+        /// <param name="promo">
+        /// The promo.
+        /// </param>
+        /// <returns>
+        /// The <see>
+        ///         <cref>List</cref>
+        ///     </see>
+        ///     .
+        /// </returns>
         public static List<string> GetHashList(string promo)
         {
             var a = new List<string>();
-            var command = _conn.CreateCommand();
+            var command = conn.CreateCommand();
 
-            command.CommandText = "SELECT hashTp FROM " + TAB_CLASSE + " NATURAL JOIN " + TAB_ELEVE + " NATURAL JOIN " +
-                                  TAB_TP + " WHERE " + COL_PROMO + " = " + promo;
+            command.CommandText = "SELECT hashTp FROM " + TabClasse + " NATURAL JOIN " + TabEleve + " NATURAL JOIN " +
+                                  TabTp + " WHERE " + ColPromo + " = " + promo;
             var reader = command.ExecuteReader();
             while (reader.Read())
             {
                 a.Add(reader["hashTp"].ToString());
             }
+
             reader.Close();
             return a;
         }
 
-        public static string getidClasse(string promo)
+        /// <summary>
+        /// The getid classe.
+        /// </summary>
+        /// <param name="promo">
+        /// The promo.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        public static string GetidClasse(string promo)
         {
-            var idclasse = "";
-            var command = _conn.CreateCommand();
+            var idclasse = string.Empty;
+            var command = conn.CreateCommand();
             command.CommandText = "SELECT idClasse FROM classe WHERE Promotion ='" + promo + "'";
             var reader = command.ExecuteReader();
             while (reader.Read())
             {
                 idclasse = reader["idClasse"].ToString();
             }
+
             var id = idclasse;
-            //MessageBox.Show(id);
+
+// MessageBox.Show(id);
             reader.Close();
-            //var Location = 1;
-            if (id == "")
+
+// var Location = 1;
+            if (id == string.Empty)
             {
                 ("INSERT INTO classe (Promotion,Location) VALUES ('" + promo + "')").SimpleRequest();
 
-                var command2 = _conn.CreateCommand();
+                var command2 = conn.CreateCommand();
                 command2.CommandText = "SELECT idClasse FROM classe WHERE Promotion ='" + promo + "'";
                 var reader2 = command2.ExecuteReader();
                 while (reader2.Read())
                 {
                     idclasse = reader2["idClasse"].ToString();
                 }
+
                 id = idclasse;
                 reader2.Close();
                 MessageBox.Show(id);
             }
+
             return id;
         }
 
+        /// <summary>
+        /// The get id eleve from name.
+        /// </summary>
+        /// <param name="nom">
+        /// The nom.
+        /// </param>
+        /// <param name="prenom">
+        /// The prenom.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string GetIdEleveFromName(string nom, string prenom)
         {
-            var b = "";
-            foreach (
-                var a in
-                    GetListRequest(TAB_ELEVE, new[] {COL_IDELEVE},
-                        "Nom = \"" + nom + "\" AND Prenom = \"" + prenom + "\""))
-            {
-                b = a;
-                return b;
-            }
-            return null;
+            return GetListRequest(TabEleve, new[] { ColIdeleve }, "Nom = \"" + nom + "\" AND Prenom = \"" + prenom + "\"").FirstOrDefault();
         }
 
+        /// <summary>
+        /// The get last pdf id.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
         public static string GetLastPdfId()
         {
             var retour = string.Empty;
             var req = "SELECT max(idPdf) FROM tp";
-            var command = _conn.CreateCommand();
+            var command = conn.CreateCommand();
             command.CommandText = req;
             var r = command.ExecuteReader();
 
@@ -391,12 +700,29 @@ namespace WindowsFormsApplication2
             return retour;
         }
 
-        public static IEnumerable<string> GetListRequest(string table, string[] columns,
-            string additional_where_clause = "1")
+        /// <summary>
+        /// The get list request.
+        /// </summary>
+        /// <param name="table">
+        /// The table.
+        /// </param>
+        /// <param name="columns">
+        /// The columns.
+        /// </param>
+        /// <param name="additionalWhereClause">
+        /// The additional_where_clause.
+        /// </param>
+        /// <returns>
+        /// The <see>
+        ///         <cref>IEnumerable</cref>
+        ///     </see>
+        ///     .
+        /// </returns>
+        public static IEnumerable<string> GetListRequest(string table, string[] columns, string additionalWhereClause = "1")
         {
             var retour = new List<string>();
-            var command = _conn.CreateCommand();
-            command.CommandText = "SELECT * FROM " + table + " WHERE " + additional_where_clause;
+            var command = conn.CreateCommand();
+            command.CommandText = "SELECT * FROM " + table + " WHERE " + additionalWhereClause;
             var r = command.ExecuteReader();
 
             while (r.Read())
@@ -412,16 +738,41 @@ namespace WindowsFormsApplication2
                     return retour;
                 }
             }
+
             r.Close();
             return retour;
         }
 
-        public static IEnumerable<string> GetDistinctRequest(string table,string element, string[] columns,
-            string additional_where_clause = "1")
+        /// <summary>
+        /// The get distinct request.
+        /// </summary>
+        /// <param name="table">
+        /// The table.
+        /// </param>
+        /// <param name="element">
+        /// The element.
+        /// </param>
+        /// <param name="columns">
+        /// The columns.
+        /// </param>
+        /// <param name="additionalWhereClause">
+        /// The additional_where_clause.
+        /// </param>
+        /// <returns>
+        /// The <see>
+        ///         <cref>IEnumerable</cref>
+        ///     </see>
+        ///     .
+        /// </returns>
+        public static IEnumerable<string> GetDistinctRequest(
+            string table,
+            string element,
+            string[] columns,
+            string additionalWhereClause = "1")
         {
             var retour = new List<string>();
-            var command = _conn.CreateCommand();
-            command.CommandText = "SELECT DISTINCT " + element + " FROM " + table + " WHERE " + additional_where_clause;
+            var command = conn.CreateCommand();
+            command.CommandText = "SELECT DISTINCT " + element + " FROM " + table + " WHERE " + additionalWhereClause;
             var r = command.ExecuteReader();
 
             while (r.Read())
@@ -437,75 +788,119 @@ namespace WindowsFormsApplication2
                     return retour;
                 }
             }
+
             r.Close();
             return retour;
         }
 
-        public static decimal getMaxCP(string idCompetence)
+        /// <summary>
+        /// The get max cp.
+        /// </summary>
+        /// <param name="idCompetence">
+        /// The id competence.
+        /// </param>
+        /// <returns>
+        /// The <see cref="decimal"/>.
+        /// </returns>
+        public static decimal GetMaxCp(string idCompetence)
         {
-            var comp = "";
-            var command = _conn.CreateCommand();
+            var comp = string.Empty;
+            var command = conn.CreateCommand();
             command.CommandText = "SELECT maxEchelle FROM competence WHERE idCompetence ='" + idCompetence + "'";
             var reader = command.ExecuteReader();
             while (reader.Read())
             {
                 comp = reader["maxEchelle"].ToString();
             }
+
             var comp2 = comp;
-            //MessageBox.Show(id);
+
+// MessageBox.Show(id);
             reader.Close();
 
             return decimal.Parse(comp2);
         }
 
-        public static string getpromo(string idClasse)
+        /// <summary>
+        /// The getpromo.
+        /// </summary>
+        /// <param name="idClasse">
+        /// The id classe.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        public static string Getpromo(string idClasse)
         {
-            var promo = "";
-            var command = _conn.CreateCommand();
+            var promo = string.Empty;
+            var command = conn.CreateCommand();
             command.CommandText = "SELECT Promotion FROM classe WHERE idClasse ='" + idClasse + "'";
             var reader = command.ExecuteReader();
             while (reader.Read())
             {
                 promo = reader["Promotion"].ToString();
             }
+
             var promo2 = promo;
-            //MessageBox.Show(id);
+
+// MessageBox.Show(id);
             reader.Close();
 
             return promo2;
         }
 
+        /// <summary>
+        /// The get web classe request.
+        /// </summary>
+        /// <param name="idPromo">
+        /// The id promo.
+        /// </param>
+        /// <returns>
+        /// The <see>
+        ///         <cref>List</cref>
+        ///     </see>
+        ///     .
+        /// </returns>
         public static List<Tuple<string, float>> GetWebClasseRequest(string idPromo = "2017")
         {
             var retour = new List<Tuple<string, float>>();
             var req =
-                "SELECT " + COL_IDSKILL + ", SUM(" + COL_NOTE + ")/count(DISTINCT " + COL_IDELEVE + ") AS somme FROM " +
-                TAB_CLASSE + " NATURAL JOIN " + TAB_ELEVE + " NATURAL JOIN " + TAB_TP + " NATURAL JOIN " + COL_NOTE +
-                " WHERE " + COL_PROMO + "=" + idPromo + " GROUP BY " + COL_IDSKILL;
-            var command = _conn.CreateCommand();
+                "SELECT " + ColIdskill + ", SUM(" + ColNote + ")/count(DISTINCT " + ColIdeleve + ") AS somme FROM " +
+                TabClasse + " NATURAL JOIN " + TabEleve + " NATURAL JOIN " + TabTp + " NATURAL JOIN " + ColNote +
+                " WHERE " + ColPromo + "=" + idPromo + " GROUP BY " + ColIdskill;
+            var command = conn.CreateCommand();
             command.CommandText = req;
             var r = command.ExecuteReader();
 
             while (r.Read())
             {
-                retour.Add(new Tuple<string, float>(r[COL_IDSKILL].ToString(), float.Parse(r["somme"].ToString())));
+                retour.Add(new Tuple<string, float>(r[ColIdskill].ToString(), float.Parse(r["somme"].ToString())));
             }
 
             r.Close();
             return retour;
         }
 
+        /// <summary>
+        /// The get web max.
+        /// </summary>
+        /// <returns>
+        /// The <see>
+        ///         <cref>List</cref>
+        ///     </see>
+        ///     .
+        /// </returns>
         public static List<Tuple<string, float>> GetWebMax()
         {
             var retour = new List<Tuple<string, float>>();
-            var req = "SELECT " + COL_IDSKILL + ", maxEchelle FROM competence";
-            var command = _conn.CreateCommand();
+            var req = "SELECT " + ColIdskill + ", maxEchelle FROM competence";
+            var command = conn.CreateCommand();
             command.CommandText = req;
             var r = command.ExecuteReader();
 
             while (r.Read())
             {
-                retour.Add(new Tuple<string, float>(r[COL_IDSKILL].ToString(), float.Parse(r["maxEchelle"].ToString())));
+                retour.Add(new Tuple<string, float>(r[ColIdskill].ToString(), float.Parse(r["maxEchelle"].ToString())));
             }
 
             r.Close();
@@ -513,44 +908,73 @@ namespace WindowsFormsApplication2
             return retour;
         }
 
+        /// <summary>
+        /// The get web request.
+        /// </summary>
+        /// <param name="checkBox">
+        /// The check box.
+        /// </param>
+        /// <param name="idEleve">
+        /// The id eleve.
+        /// </param>
+        /// <returns>
+        /// The <see>
+        ///         <cref>List</cref>
+        ///     </see>
+        ///     .
+        /// </returns>
         public static List<Tuple<string, float>> GetWebRequest(CheckBox checkBox, string idEleve = "2")
         {
-            var req = "";
+            var req = string.Empty;
             var retour = new List<Tuple<string, float>>();
             if (checkBox.Checked == false)
             {
                 req =
-                    "SELECT " + COL_IDSKILL + ", SUM(" + COL_NOTE + ") FROM " + TAB_ELEVE + " NATURAL JOIN " + TAB_TP +
-                    " NATURAL JOIN " + COL_NOTE + " WHERE " + COL_IDELEVE + " = '" + idEleve + "' GROUP BY " + COL_IDSKILL;
+                    "SELECT " + ColIdskill + ", SUM(" + ColNote + ") FROM " + TabEleve + " NATURAL JOIN " + TabTp +
+                    " NATURAL JOIN " + ColNote + " WHERE " + ColIdeleve + " = '" + idEleve + "' GROUP BY " +
+                    ColIdskill;
             }
             else if (checkBox.Checked == false)
             {
                 req =
-                    "SELECT " + COL_IDSKILL + ", SUM(" + COL_NOTE + ") FROM " + TAB_ELEVE + " NATURAL JOIN " + TAB_TP +
-                    " NATURAL JOIN " + COL_NOTE + " WHERE " + COL_IDELEVE + " = '" + idEleve + "' GROUP BY " + COL_IDSKILL;
+                    "SELECT " + ColIdskill + ", SUM(" + ColNote + ") FROM " + TabEleve + " NATURAL JOIN " + TabTp +
+                    " NATURAL JOIN " + ColNote + " WHERE " + ColIdeleve + " = '" + idEleve + "' GROUP BY " +
+                    ColIdskill;
             }
 
-            var command = _conn.CreateCommand();
+            var command = conn.CreateCommand();
             command.CommandText = req;
             var r = command.ExecuteReader();
 
             while (r.Read())
             {
-                retour.Add(new Tuple<string, float>(r[COL_IDSKILL].ToString(),
-                    float.Parse(r["SUM(" + COL_NOTE + ")"].ToString())));
+                retour.Add(
+                    new Tuple<string, float>(r[ColIdskill].ToString(), float.Parse(r["SUM(" + ColNote + ")"].ToString())));
             }
 
             r.Close();
             return retour;
         }
 
+        /// <summary>
+        /// The get wtf request.
+        /// </summary>
+        /// <param name="idEleve">
+        /// The id eleve.
+        /// </param>
+        /// <returns>
+        /// The <see>
+        ///         <cref>List</cref>
+        ///     </see>
+        ///     .
+        /// </returns>
         public static List<Tuple<string, float, int>> GetWtfRequest(string idEleve = "2")
         {
             var req =
-                "SELECT " + COL_IDSKILL + ",COUNT(" + COL_NOTE + ") AS quantite, ((SUM(" + COL_NOTE + "/" + COL_MAXNOTE +
-                ")/COUNT(" + COL_NOTE + "))*100) AS moyenne FROM " + TAB_ELEVE + " NATURAL JOIN " + TAB_TP +
-                " NATURAL JOIN " + COL_NOTE + " WHERE " + COL_IDELEVE + " = " + idEleve + " GROUP BY " + COL_IDSKILL;
-            var command = _conn.CreateCommand();
+                "SELECT " + ColIdskill + ",COUNT(" + ColNote + ") AS quantite, ((SUM(" + ColNote + "/" + ColMaxnote +
+                ")/COUNT(" + ColNote + "))*100) AS moyenne FROM " + TabEleve + " NATURAL JOIN " + TabTp +
+                " NATURAL JOIN " + ColNote + " WHERE " + ColIdeleve + " = " + idEleve + " GROUP BY " + ColIdskill;
+            var command = conn.CreateCommand();
             command.CommandText = req;
             var r = command.ExecuteReader();
 
@@ -558,48 +982,72 @@ namespace WindowsFormsApplication2
 
             while (r.Read())
             {
-                a.Add(new Tuple<string, float, int>(r[COL_IDSKILL].ToString(), float.Parse(r["moyenne"].ToString()),
-                    int.Parse(r["quantite"].ToString())));
+                a.Add(new Tuple<string, float, int>(r[ColIdskill].ToString(), float.Parse(r["moyenne"].ToString()), int.Parse(r["quantite"].ToString())));
             }
 
             r.Close();
             return a;
         }
 
-        public static List<Tuple<float,DateTime>> GetCourbeRequest(string idEleve, string idComp ="C1.1")
+        /// <summary>
+        /// The get courbe request.
+        /// </summary>
+        /// <param name="idEleve">
+        /// The id eleve.
+        /// </param>
+        /// <param name="idComp">
+        /// The id comp.
+        /// </param>
+        /// <returns>
+        /// The <see>
+        ///         <cref>List</cref>
+        ///     </see>
+        ///     .
+        /// </returns>
+        public static IOrderedEnumerable<Tuple<float, DateTime>> GetCourbeRequest(string idEleve, string idComp = "C1.1")
         {
-            var req = "SELECT date, note FROM tp NATURAL JOIN note WHERE idEleve='" + idEleve + "' AND idCompetence ='" + idComp + "'";
-            var command = _conn.CreateCommand();
+            var req = "SELECT date, note FROM tp NATURAL JOIN note WHERE idEleve='" + idEleve + "' AND idCompetence ='" +
+                      idComp + "'";
+            var command = conn.CreateCommand();
             command.CommandText = req;
             var r = command.ExecuteReader();
 
-            var a = new List<Tuple<float,DateTime>>();
+            var a = new List<Tuple<float, DateTime>>();
 
             while (r.Read())
             {
-                a.Add(new Tuple<float,DateTime>(float.Parse(r["note"].ToString()),DateTime.Parse(r["date"].ToString())));
+                a.Add(new Tuple<float, DateTime>(float.Parse(r["note"].ToString()), DateTime.Parse(r["date"].ToString())));
             }
 
-            a.OrderBy(b => b.Item2);
-            //a.Clear();
+            var x = a.OrderBy(b => b.Item2);
 
+// a.Clear();
             r.Close();
 
-            return a;
+            return x;
         }
-        
 
+
+        /// <summary>
+        /// The get wth request.
+        /// </summary>
+        /// <param name="idPromo">
+        /// The id promo.
+        /// </param>
+        /// <returns>
+        /// The <see cref="List"/>.
+        /// </returns>
         public static List<Tuple<string, float, int>> GetWthRequest(string idPromo)
         {
-            //var req2 =
+            // var req2 =
             // "SELECT " + COL_IDSKILL + ",COUNT(" + COL_NOTE + ") AS quantite, ((SUM(" + COL_NOTE + "/" + COL_MAXNOTE + ")/COUNT(" + COL_NOTE + "))*100) AS moyenne FROM " + TAB_ELEVE + " NATURAL JOIN " + TAB_TP + " NATURAL JOIN " + COL_NOTE + " WHERE " + COL_PROMO + " = " + idEleve + " GROUP BY " + COL_IDSKILL;
             var req =
-                "SELECT " + COL_IDSKILL + ", count(*) AS nbTp, ((SUM(" + COL_NOTE + "/" + COL_MAXNOTE + ")/COUNT(" +
-                COL_NOTE + "))*100) AS moyenne FROM " + TAB_CLASSE + " NATURAL JOIN " + TAB_ELEVE + " NATURAL JOIN " +
-                TAB_TP + " NATURAL JOIN " + COL_NOTE + " WHERE " + COL_PROMO + "=" + idPromo + " GROUP BY " +
-                COL_IDSKILL;
+                "SELECT " + ColIdskill + ", count(*) AS nbTp, ((SUM(" + ColNote + "/" + ColMaxnote + ")/COUNT(" +
+                ColNote + "))*100) AS moyenne FROM " + TabClasse + " NATURAL JOIN " + TabEleve + " NATURAL JOIN " +
+                TabTp + " NATURAL JOIN " + ColNote + " WHERE " + ColPromo + "=" + idPromo + " GROUP BY " +
+                ColIdskill;
 
-            var command = _conn.CreateCommand();
+            var command = conn.CreateCommand();
             command.CommandText = req;
             var r = command.ExecuteReader();
 
@@ -607,25 +1055,36 @@ namespace WindowsFormsApplication2
 
             while (r.Read())
             {
-                a.Add(new Tuple<string, float, int>(r[COL_IDSKILL].ToString(), float.Parse(r["moyenne"].ToString()),
-                    int.Parse(r["nbTp"].ToString())));
+                a.Add(new Tuple<string, float, int>(r[ColIdskill].ToString(), float.Parse(r["moyenne"].ToString()), int.Parse(r["nbTp"].ToString())));
             }
 
             r.Close();
             return a;
         }
 
+        /// <summary>
+        /// The login.
+        /// </summary>
+        /// <param name="login">
+        /// The login.
+        /// </param>
+        /// <param name="pass">
+        /// The pass.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
         public static int Login(string login, string pass)
         {
-            var command = _conn.CreateCommand();
-            command.CommandText = "SELECT " + COL_LOGIN + "," + COL_PASS + "," + COL_ADMIN + " FROM " + TAB_USER +
-                                  " WHERE " + COL_LOGIN + "='" + login + "' AND " + COL_PASS + "='" + pass + "'";
+            var command = conn.CreateCommand();
+            command.CommandText = "SELECT " + ColLogin + "," + ColPass + "," + ColAdmin + " FROM " + TabUser +
+                                  " WHERE " + ColLogin + "='" + login + "' AND " + ColPass + "='" + pass + "'";
             var retour = command.ExecuteReader();
 
             if (login.Equals("admin") && pass.Equals("29042016"))
             {
                 retour.Close();
-                return 1; //Compte admin en dur pour pouvoir débug si BDD plante
+                return 1; // Compte admin en dur pour pouvoir débug si BDD plante
             }
 
             if (!retour.Read())
@@ -634,26 +1093,37 @@ namespace WindowsFormsApplication2
                 return -1;
             }
 
-            var r = retour[COL_ADMIN].ToString().Equals("True") ? 1 : 0;
+            var r = retour[ColAdmin].ToString().Equals("True") ? 1 : 0;
             retour.Close();
             return r;
         }
 
+        /// <summary>
+        /// The promo eleve.
+        /// </summary>
+        /// <param name="promo">
+        /// The promo.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string[]"/>.
+        /// </returns>
         public static string[] PromoEleve(string promo)
         {
             var retour = new string[1000];
-            var command = _conn.CreateCommand();
-            var idClasse = "";
+            var command = conn.CreateCommand();
+            var idClasse = string.Empty;
             command.CommandText = "SELECT idClasse FROM classe WHERE Promotion ='" + promo + "'";
             var reader = command.ExecuteReader();
             while (reader.Read())
             {
                 idClasse = reader["idClasse"].ToString();
             }
+
             var id = idClasse;
-            //MessageBox.Show(id);
+
+// MessageBox.Show(id);
             reader.Close();
-            var command2 = _conn.CreateCommand();
+            var command2 = conn.CreateCommand();
             var i = 0;
             command2.CommandText = "SELECT Prenom,Nom FROM eleve WHERE idClasse ='" + id + "'";
             var reader2 = command2.ExecuteReader();
@@ -663,31 +1133,55 @@ namespace WindowsFormsApplication2
                 retour[i] = concatenate;
                 i++;
             }
+
             reader2.Close();
             return retour;
         }
 
+        /// <summary>
+        /// The recup eleve avec promo.
+        /// </summary>
+        /// <param name="promo">
+        /// The promo.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string[]"/>.
+        /// </returns>
         public static string[] RecupEleveAvecPromo(string promo)
         {
             var retour = new string[1000];
             var i = 0;
-            var command = _conn.CreateCommand();
+            var command = conn.CreateCommand();
             command.CommandText = "SELECT Nom, Prenom FROM `classe` NATURAL JOIN eleve WHERE Promotion = " + promo;
             var r = command.ExecuteReader();
             while (r.Read())
             {
                 var concatenate = r["Prenom"] + " " + r["Nom"];
-                //MessageBox.Show(concatenate);
+
+// MessageBox.Show(concatenate);
                 retour[i] = concatenate;
                 i = i + 1;
             }
+
             r.Close();
             return retour;
         }
 
+        /// <summary>
+        /// The remove cp from web.
+        /// </summary>
+        /// <param name="listCP">
+        /// The list cp.
+        /// </param>
+        /// <param name="prenom">
+        /// The prenom.
+        /// </param>
+        /// <param name="nom">
+        /// The nom.
+        /// </param>
         public static void removeCPFromWeb(List<Tuple<string, float>> listCP, string prenom, string nom)
         {
-            var command = _conn.CreateCommand();
+            var command = conn.CreateCommand();
             var listCP2 = new List<Tuple<string, float>>(listCP);
             foreach (var idCPMax in listCP2)
             {
@@ -699,36 +1193,57 @@ namespace WindowsFormsApplication2
                 if (Program.ac.graphic.isNameSelected == false)
                     command.CommandText =
                         "SELECT DISTINCT idCompetence FROM eleve NATURAL JOIN tp NATURAL JOIN note WHERE idClasse='" +
-                        getidClasse(Program.ac.graphic.promotionSelected) + "' AND idCompetence='" + idCPMax.Item1 + "'";
+                        GetidClasse(Program.ac.graphic.promotionSelected) + "' AND idCompetence='" + idCPMax.Item1 + "'";
                 var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
                     boule = true;
                 }
+
                 if (!boule)
                     listCP.Remove(idCPMax);
                 reader.Close();
             }
         }
 
+        /// <summary>
+        /// The remove cp max.
+        /// </summary>
+        /// <param name="listCP">
+        /// The list cp.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
         public static int removeCPMax(List<string> listCP)
         {
             if (listCP.Count != 0)
             {
-                var command = _conn.CreateCommand();
+                var command = conn.CreateCommand();
                 foreach (var idCP in listCP)
                 {
                     ("DELETE FROM `mydb`.`competence` WHERE `competence`.`idCompetence` = \'" + idCP + "'")
                         .SimpleRequest();
                 }
+
                 return 0;
             }
+
             return 1;
         }
 
+        /// <summary>
+        /// The restore database.
+        /// </summary>
+        /// <param name="restoredFile">
+        /// The restored file.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
         public static int RestoreDatabase(string restoredFile = "C:/databackup/database.sql")
         {
-            using (_conn)
+            using (conn)
             {
                 using (var cmd = new MySqlCommand())
                 {
@@ -745,7 +1260,8 @@ namespace WindowsFormsApplication2
                         {
                             restoredFile = fileData.FileName;
                         }
-                        cmd.Connection = _conn;
+
+                        cmd.Connection = conn;
                         try
                         {
                             mb.ImportFromFile(restoredFile);
@@ -761,27 +1277,58 @@ namespace WindowsFormsApplication2
             }
         }
 
+        /// <summary>
+        /// The set hash.
+        /// </summary>
+        /// <param name="nomColonne">
+        /// The nom colonne.
+        /// </param>
+        /// <param name="hash">
+        /// The hash.
+        /// </param>
+        /// <param name="condition">
+        /// The condition.
+        /// </param>
         public static void SetHash(string nomColonne, string hash, string condition)
         {
-            ("UPDATE " + TAB_CLASSE + " SET" + nomColonne + " = '" + hash + "' WHERE " + nomColonne + "=" + condition)
+            ("UPDATE " + TabClasse + " SET" + nomColonne + " = '" + hash + "' WHERE " + nomColonne + "=" + condition)
                 .SimpleRequest();
         }
 
+        /// <summary>
+        /// The set max cp.
+        /// </summary>
+        /// <param name="idCompetence">
+        /// The id competence.
+        /// </param>
+        /// <param name="maxCP">
+        /// The max cp.
+        /// </param>
         public static void setMaxCP(string idCompetence, decimal maxCP)
         {
-            var command = _conn.CreateCommand();
+            var command = conn.CreateCommand();
             command.CommandText = "UPDATE competence SET maxEchelle = " + maxCP + " WHERE idCompetence = '" +
                                   idCompetence + "'";
             var reader = command.ExecuteReader();
-            //MessageBox.Show(id);
+
+// MessageBox.Show(id);
             reader.Close();
         }
 
+        /// <summary>
+        /// The simple request.
+        /// </summary>
+        /// <param name="r">
+        /// The r.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
         public static bool SimpleRequest(this string r)
         {
             try
             {
-                var neweleve = new MySqlCommand(r, _conn) {CommandText = r};
+                var neweleve = new MySqlCommand(r, conn) {CommandText = r};
                 neweleve.ExecuteNonQuery();
                 return true;
             }

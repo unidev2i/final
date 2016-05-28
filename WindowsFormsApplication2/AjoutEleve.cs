@@ -26,7 +26,7 @@ namespace WindowsFormsApplication2
             var nom = textBox2.Text;
             var prenom = textBox1.Text;
             var promo = textBox3.Text;
-            var idClasse = Database.getidClasse(promo);
+            var idClasse = Database.GetidClasse(promo);
             MessageBox.Show(idClasse);
 
             ("INSERT INTO eleve (idClasse,Nom,Prenom) VALUES ('" + idClasse + "','" + nom + "','" + prenom + "')")

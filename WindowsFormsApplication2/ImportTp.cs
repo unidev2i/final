@@ -1,57 +1,35 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ImportTp.cs" company="ig2i">
-//   ARR
+// <copyright file="ImportTp.cs" company="">
+//   
 // </copyright>
 // <summary>
 //   Defines the ImportTp type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Windows.Forms;
+using WindowsFormsApplication2.Properties;
+using WL;
+
 namespace WindowsFormsApplication2
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Security.Cryptography;
-    using System.Text;
-    using System.Text.RegularExpressions;
-    using System.Threading;
-    using System.Windows.Forms;
-    using Properties;
-    using WL;
-
     /// <summary>
-    /// The import TP class, who allows to import and update TPs
+    ///     The import TP class, who allows to import and update TPs
     /// </summary>
     public static class ImportTp
     {
-        #region Private Fields
-
-        /// <summary>
-        /// The root folder for TPs.
-        /// </summary>
-        private static readonly string RootFolder;
-
-        /// <summary>
-        /// The _err mssg.
-        /// </summary>
-        // ReSharper disable once InconsistentNaming
-        private static string errMssg = string.Empty;
-
-        /// <summary>
-        /// The _log mssg.
-        /// </summary>
-        // ReSharper disable once InconsistentNaming
-        // ReSharper disable once NotAccessedField.Local
-        private static string logMssg = string.Empty;
-
-        #endregion Private Fields
-
         #region Public Constructors
 
         /// <summary>
-        /// Initializes static members of the <see cref="ImportTp"/> class.
+        ///     Initializes static members of the <see cref="ImportTp" /> class.
         /// </summary>
         static ImportTp()
         {
@@ -60,13 +38,35 @@ namespace WindowsFormsApplication2
 
         #endregion Public Constructors
 
+        #region Private Fields
+
+        /// <summary>
+        ///     The root folder for TPs.
+        /// </summary>
+        private static readonly string RootFolder;
+
+        /// <summary>
+        ///     The _err mssg.
+        /// </summary>
+        // ReSharper disable once InconsistentNaming
+        private static string errMssg = string.Empty;
+
+        /// <summary>
+        ///     The _log mssg.
+        /// </summary>
+        // ReSharper disable once InconsistentNaming
+        // ReSharper disable once NotAccessedField.Local
+        private static string logMssg = string.Empty;
+
+        #endregion Private Fields
+
         #region Public Methods
 
         /// <summary>
-        /// Execute treatements
+        ///     Execute treatements
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// folder contains only empty folders
+        ///     folder contains only empty folders
         /// </exception>
         // ReSharper disable once CyclomaticComplexity
         public static void Go()
@@ -85,7 +85,8 @@ namespace WindowsFormsApplication2
             if (check == 0)
             {
                 var dialogResult = MessageBox.Show(
-                    @"Le dossier est vide, toute la base de données sera effacée si vous continuez. Continuer ? ", @"ATTENTION !", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    @"Le dossier est vide, toute la base de données sera effacée si vous continuez. Continuer ? ",
+                    @"ATTENTION !", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
                 switch (dialogResult)
                 {
@@ -119,12 +120,12 @@ namespace WindowsFormsApplication2
             }
 
             Program.ac.graphic.progressBar1.Invoke(
-                (MethodInvoker)(() => Program.ac.graphic.progressBar1.Value = 0));
+                (MethodInvoker) (() => Program.ac.graphic.progressBar1.Value = 0));
             Program.ac.graphic.progressBar1.Invoke(
-                (MethodInvoker)(() => Program.ac.graphic.progressBar1.Visible = true));
+                (MethodInvoker) (() => Program.ac.graphic.progressBar1.Visible = true));
             var cp1 = cp;
             Program.ac.graphic.progressBar1.Invoke(
-                (MethodInvoker)(() => Program.ac.graphic.progressBar1.Maximum = cp1.Count));
+                (MethodInvoker) (() => Program.ac.graphic.progressBar1.Maximum = cp1.Count));
 
             // y = yes n = no t = traité
             var yt = 0;
@@ -132,9 +133,12 @@ namespace WindowsFormsApplication2
             var dt = 0;
 
             var cp2 = cp;
-            foreach (var dir in from dir in Directory.GetDirectories(RootFolder) let temp = dir.Split('\\')[dir.Split('\\').Length - 1] where !cp2.Contains(temp) && (Directory.GetFiles(dir).Length != 0) select dir)
+            foreach (var dir in from dir in Directory.GetDirectories(RootFolder)
+                let temp = dir.Split('\\')[dir.Split('\\').Length - 1]
+                where !cp2.Contains(temp) && (Directory.GetFiles(dir).Length != 0)
+                select dir)
             {
-                Database.ajouterPromo(dir.Split('\\')[dir.Split('\\').Length - 1]);
+                Database.AjouterPromo(dir.Split('\\')[dir.Split('\\').Length - 1]);
             }
 
             cp = CheckPromo();
@@ -161,8 +165,8 @@ namespace WindowsFormsApplication2
 
                         case DialogResult.No:
                             errMssg += "Le dossier " + dir +
-                                        " n'existe pas, mais il n'a pas été supprimé de la base de données." +
-                                        Environment.NewLine;
+                                       " n'existe pas, mais il n'a pas été supprimé de la base de données." +
+                                       Environment.NewLine;
                             break;
                         case DialogResult.None:
                             break;
@@ -211,7 +215,8 @@ namespace WindowsFormsApplication2
                 fin:
                 try
                 {
-                    Program.ac.graphic.progressBar1.Invoke((MethodInvoker)(() => Program.ac.graphic.progressBar1.Value++));
+                    Program.ac.graphic.progressBar1.Invoke(
+                        (MethodInvoker) (() => Program.ac.graphic.progressBar1.Value++));
                 }
                 catch
                 {
@@ -223,7 +228,8 @@ namespace WindowsFormsApplication2
 
             try
             {
-                Program.ac.graphic.progressBar1.Invoke((MethodInvoker)(() => Program.ac.graphic.progressBar1.Visible = false));
+                Program.ac.graphic.progressBar1.Invoke(
+                    (MethodInvoker) (() => Program.ac.graphic.progressBar1.Visible = false));
             }
             catch
             {
@@ -241,18 +247,18 @@ namespace WindowsFormsApplication2
                         Program.ac.graphic.LBL_InfoAjoutTp.Text +=
                             Environment.NewLine + @"Traités : " + yt + @"   Ignorés : " + nt + @"   Supprimés : " + dt));
             Program.ac.graphic.LBL_InfoAjoutTp.Invoke(
-                (MethodInvoker)(() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = true));
+                (MethodInvoker) (() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = true));
             Thread.Sleep(3000);
             Program.ac.graphic.LBL_InfoAjoutTp.Invoke(
-                (MethodInvoker)(() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = false));
+                (MethodInvoker) (() => Program.ac.graphic.LBL_InfoAjoutTp.Visible = false));
 
             // ShowLog();
-            Database.addCPMax(Database.CPsNewInNote());
-            Database.removeCPMax(Database.CPMaxIsNotinNote());
+            Database.AddCpMax(Database.CPsNewInNote());
+            Database.removeCPMax(Database.CpMaxIsNotinNote());
         }
 
         /// <summary>
-        /// Show the log at the end (NOT USED ACTUALLY)
+        ///     Show the log at the end (NOT USED ACTUALLY)
         /// </summary>
         public static void ShowLog()
         {
@@ -273,10 +279,11 @@ namespace WindowsFormsApplication2
         #region Private Methods
 
         /// <summary>
-        /// Check promo
+        ///     Check promo
         /// </summary>
         /// <returns>
-        /// The <see>
+        ///     The
+        ///     <see>
         ///         <cref>List</cref>
         ///     </see>
         ///     of promos
@@ -284,9 +291,12 @@ namespace WindowsFormsApplication2
         private static List<string> CheckPromo()
         {
             // ReSharper disable once UnusedVariable
-            var request0 = Directory.GetDirectories(RootFolder).Aggregate(string.Empty, (current, a) => current + "\"" + Crypt.CreateMd5ForFolder(a) + "\",");
+            var request0 = Directory.GetDirectories(RootFolder)
+                .Aggregate(string.Empty, (current, a) => current + "\"" + Crypt.CreateMd5ForFolder(a) + "\",");
 
-            var retour1 = Database.GetListRequest("classe", new[] { "promotion" } /*,String.Format("`hashClasse` NOT IN ({0}0)", request0)*/);
+            var retour1 = Database.GetListRequest("classe", new[] {"promotion"}
+                
+/*,String.Format("`hashClasse` NOT IN ({0}0)", request0)*/);
             var retour2 = retour1.ToList();
 
             return retour2;
@@ -319,12 +329,22 @@ namespace WindowsFormsApplication2
             catch (Exception)
             {
                 // MessageBox.Show(
-                //    $@"Mauvais type de fichier. Veuillez vérifier qu'il est sous la forme{Environment.NewLine}NOM_PRENOM_TPXX.pdf");
-                errMssg += "<li>" + file + " : Nom du fichier non reconnu. Attendu : NOM.PRENOM_NOMDUTP.pdf</li>" + Environment.NewLine;
+                // $@"Mauvais type de fichier. Veuillez vérifier qu'il est sous la forme{Environment.NewLine}NOM_PRENOM_TPXX.pdf");
+                errMssg += "<li>" + file + " : Nom du fichier non reconnu. Attendu : NOM.PRENOM_NOMDUTP.pdf</li>" +
+                           Environment.NewLine;
                 return null;
             }
         }
 
+        /// <summary>
+        /// The get infos 2.
+        /// </summary>
+        /// <param name="file">
+        /// The file.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Tuple"/>.
+        /// </returns>
         private static Tuple<string, string> GetInfos2(string file)
         {
             if (!file.Contains(".pdf"))
@@ -338,15 +358,18 @@ namespace WindowsFormsApplication2
             }
 
             File.Copy(file, "temp.pdf");
-            
+
             var x = Directory.GetCurrentDirectory() + @"\" + "temp.pdf";
-            var c = (string)new pdfHandler(ref x).readPDF();
+            var c = (string) new pdfHandler(ref x).readPDF();
             foreach (var sor in new Regex(@"Nom Prénom\s*\w*\s*\w*").Matches(c))
             {
-                return new Tuple<string, string>(sor.ToString().Split(' ')[1].Split(new string[] { "Prénom" }, StringSplitOptions.None)[1], sor.ToString().Split(' ')[2]);
+                return
+                    new Tuple<string, string>(
+                        sor.ToString().Split(' ')[1].Split(new[] {"Prénom"}, StringSplitOptions.None)[1],
+                        sor.ToString().Split(' ')[2]);
             }
-            return null;
 
+            return null;
         }
 
         /// <summary>
@@ -357,7 +380,7 @@ namespace WindowsFormsApplication2
         /// </param>
         /// <returns>
         /// The <see cref="IEnumerable"/>
-        /// values
+        ///     values
         /// </returns>
         private static IEnumerable<Tuple<string, string, string>> GetValue(string file)
         {
@@ -376,15 +399,15 @@ namespace WindowsFormsApplication2
             var b = "temp.pdf";
             var x = Directory.GetCurrentDirectory() + @"\" + b;
             var a = new pdfHandler(ref x);
-            var c = (string)a.readPDF();
+            var c = (string) a.readPDF();
 
-            String nom;
-            String prenom;
-            if (Settings.Default.GetInNomFichier=="True")
-                foreach(var sor in new Regex(@"Nom Prénom\s*\w*\s*\w*").Matches(c))
+            string nom;
+            string prenom;
+            if (Settings.Default.GetInNomFichier == "True")
+                foreach (var sor in new Regex(@"Nom Prénom\s*\w*\s*\w*").Matches(c))
                 {
-                    nom=sor.ToString().Split(' ')[1].Split(new string[] { "Prénom" }, StringSplitOptions.None)[1];
-                    prenom=sor.ToString().Split(' ')[2];
+                    nom = sor.ToString().Split(' ')[1].Split(new[] {"Prénom"}, StringSplitOptions.None)[1];
+                    prenom = sor.ToString().Split(' ')[2];
                 }
 
             const string strRegex = @"C[0-9].[0-9]";
@@ -438,7 +461,8 @@ namespace WindowsFormsApplication2
             {
                 errMssg += file + " : Le fichier est au mauvais format. Attendu : pdf" + Environment.NewLine;
             }
-            ////? -----------------------------------------
+
+////? -----------------------------------------
             /*
             if (file.IndexOf(".", StringComparison.Ordinal) != file.IndexOf(".pdf", StringComparison.Ordinal))
             {
@@ -451,8 +475,8 @@ namespace WindowsFormsApplication2
                 File.Move(filetempo,file);
             }
             */
-            Tuple<String,String,String> infos;
-            Tuple<String, String> infos2;
+            Tuple<string, string, string> infos;
+            Tuple<string, string> infos2;
             var value = GetValue(file);
             string idEleve;
             infos = GetInfos(file);
@@ -478,7 +502,8 @@ namespace WindowsFormsApplication2
                     idEleve = Database.GetIdEleveFromName(infos2.Item1, infos2.Item2);
                 }
             }
-            // ETAPE 1 : Créer le TP
+
+// ETAPE 1 : Créer le TP
             var mdr = Program.ac.graphic.login;
             Database.AddTp(infos.Item3, idEleve, mdr, Crypt.Md5(file), File.GetLastWriteTime(file));
 
@@ -496,7 +521,7 @@ namespace WindowsFormsApplication2
     }
 
     /// <summary>
-    /// The my string.
+    ///     The my string.
     /// </summary>
     public static class MyString
     {
@@ -551,6 +576,7 @@ namespace WindowsFormsApplication2
                     a.Remove(a.IndexOf(b, StringComparison.Ordinal));
                 }
             }
+
             return a;
         }
 
