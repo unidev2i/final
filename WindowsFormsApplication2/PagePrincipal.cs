@@ -472,5 +472,11 @@ namespace WindowsFormsApplication2
         {
 
         }
+
+        private void PagePrincipal_Resize(object sender, EventArgs e)
+        {
+            //Fonction Resize
+            MessageBox.Show("bonjour");
+        }
     }
 }

@@ -118,7 +118,7 @@
             this.panel1.Controls.Add(this.comboBox1);
             this.panel1.Location = new System.Drawing.Point(12, 42);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(297, 259);
+            this.panel1.Size = new System.Drawing.Size(307, 259);
             this.panel1.TabIndex = 6;
             // 
             // label5
@@ -451,6 +451,7 @@
             this.Text = "PPM : La formation personnalisée";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form3_FormClosing_1);
             this.Load += new System.EventHandler(this.Form3_Load_1);
+            this.Resize += new System.EventHandler(this.PagePrincipal_Resize);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

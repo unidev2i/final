@@ -401,7 +401,7 @@ namespace WindowsFormsApplication2
         /// <param name="database">
         /// The database.
         /// </param>
-        public static void Connect(string ip = "localhost", string login = "root", string pass = "", string database = "mydb_debug")
+        public static void Connect(string ip = "localhost", string login = "root", string pass = "", string database = "mydb")
         {
             var builder = new MySqlConnectionStringBuilder
             {
