@@ -20,7 +20,7 @@ namespace WindowsFormsApplication2
         public string login;
         public string promotionSelected = "";
         public string idEleveSelected = "";
-
+        private Boolean maximise=false;
         #endregion Public Fields
 
         #region Private Fields
@@ -475,8 +475,14 @@ namespace WindowsFormsApplication2
 
         private void PagePrincipal_Resize(object sender, EventArgs e)
         {
+            maximise = !maximise;
+            if(maximise)
+            {
+            }
+            else
+            {
+            }
             //Fonction Resize
-            MessageBox.Show("bonjour");
         }
     }
 }
