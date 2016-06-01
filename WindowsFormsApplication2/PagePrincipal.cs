@@ -21,7 +21,6 @@ namespace WindowsFormsApplication2
         public string login;
         public string promotionSelected = "";
         public string idEleveSelected = "";
-        private Boolean maximise=true;
         #endregion Public Fields
 
         #region Private Fields
@@ -35,7 +34,19 @@ namespace WindowsFormsApplication2
         private ChangerLogin graphic4;
         private ChangerMdp graphic5;
         private DelEleve graphic7;
-        private PagePrincipal pageprincip;
+
+        private Size a;
+        private Size b;
+        private Size c;
+        private Size d;
+
+        private Point ef;
+        private Point f;
+        private Point g;
+        private Point h;
+        private Point i;
+        private Point j;
+
         #endregion Private Fields
 
         #region Public Constructors
@@ -469,47 +480,20 @@ namespace WindowsFormsApplication2
 
         #endregion Private Methods
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void PagePrincipal_Resize(object sender, EventArgs e)
-        {
-            if(maximise)
-            {
-
-                progressBar1.Location = new Point(100, 100);
-                /*float widthRatio = Screen.PrimaryScreen.Bounds.Width / (Screen.PrimaryScreen.Bounds.Width*0.7f);
-                float heightRatio = Screen.PrimaryScreen.Bounds.Height / (Screen.PrimaryScreen.Bounds.Height * 0.7f);
-                SizeF scale = new SizeF(widthRatio, heightRatio);
-                this.Scale(scale);
-                foreach (Control control in this.Controls)
-                {
-                    control.Font = new Font("Verdana", control.Font.SizeInPoints * heightRatio * widthRatio);
-                }*/
-            }
-            else
-            {
-                MessageBox.Show("mini");
-                /*float widthRatio = Screen.PrimaryScreen.Bounds.Width / (Screen.PrimaryScreen.Bounds.Width * 1.3f);
-                float heightRatio = Screen.PrimaryScreen.Bounds.Height / (Screen.PrimaryScreen.Bounds.Height * 1.3f);
-                SizeF scale = new SizeF(widthRatio, heightRatio);
-                this.Scale(scale);
-                foreach (Control control in this.Controls)
-                {
-                    control.Font = new Font("Verdana", control.Font.SizeInPoints * heightRatio * widthRatio);
-                }*/
-
-            }
-
-            maximise = !maximise;
-        }
-
         private void PagePrincipal_SizeChanged(object sender, EventArgs e)
         {
             if (WindowState == FormWindowState.Maximized)
             {
+                ef = dataGridView1.Location;
+                f = chart2.Location;
+                g= checkBox1.Location;
+                h= chart3.Location;
+                i= label2.Location;
+                j= button1.Location;
+                a = panel1.Size;
+                b = chart1.Size;
+                c = chart2.Size;
+                d = chart3.Size;
                 dataGridView1.Location = new Point(12, Screen.PrimaryScreen.Bounds.Height-390);
                 panel1.Size = new Size(307,dataGridView1.Location.Y-10-42);
                 chart1.Size = new Size((Screen.PrimaryScreen.Bounds.Width-307)/2,((Screen.PrimaryScreen.Bounds.Height-42)/2)-30);
@@ -524,7 +508,17 @@ namespace WindowsFormsApplication2
             }
             else
             {
-                MessageBox.Show("aaa");
+                dataGridView1.Location=ef;
+                chart2.Location=f;
+                checkBox1.Location=g;
+                chart3.Location=h;
+                label2.Location=i;
+                button1.Location=j;
+                panel1.Size=a;
+                chart1.Size=b;
+                chart2.Size=c;
+                chart3.Size=d;
+                panel1.Controls.Remove(button1);
             }
         }
     }
