@@ -511,11 +511,11 @@ namespace WindowsFormsApplication2
             if (WindowState == FormWindowState.Maximized)
             {
                 dataGridView1.Location = new Point(12, Screen.PrimaryScreen.Bounds.Height-390);
-                panel1.Size = new Size(362,dataGridView1.Location.Y-10-42);
+                panel1.Size = new Size(307,dataGridView1.Location.Y-10-42);
+                chart1.Size = new Size(534+300,259+200);
                 chart2.Size = new Size(chart2.Size.Width+300,chart2.Size.Height+100);
-                chart2.Location = new Point(Screen.PrimaryScreen.Bounds.Width - 652, chart2.Location.Y);
+                chart2.Location = new Point(chart1.Location.X+ 534 + 300+50, chart2.Location.Y);
                 checkBox1.Location = new Point(Screen.PrimaryScreen.Bounds.Width/2, Screen.PrimaryScreen.Bounds.Height - 100);
-                chart3.Size=new Size()
                 chart3.Location = new Point(Screen.PrimaryScreen.Bounds.Width - 470, Screen.PrimaryScreen.Bounds.Height - 360);
                 /*float widthRatio = Screen.PrimaryScreen.Bounds.Width / (Screen.PrimaryScreen.Bounds.Width * 0.7f);
                 float heightRatio = Screen.PrimaryScreen.Bounds.Height / (Screen.PrimaryScreen.Bounds.Height * 0.7f);
