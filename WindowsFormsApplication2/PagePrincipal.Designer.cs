@@ -41,14 +41,6 @@
             System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PagePrincipal));
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label5 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,101 +65,21 @@
             this.label2 = new System.Windows.Forms.Label();
             this.LBL_InfoAjoutTp = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.panel1.SuspendLayout();
+            this.label5 = new System.Windows.Forms.Label();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.panel1 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart3)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.comboBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.comboBox1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(135, 37);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(203, 21);
-            this.comboBox1.TabIndex = 3;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
-            this.comboBox1.TextUpdate += new System.EventHandler(this.comboBox1_TextUpdate);
-            // 
-            // comboBox3
-            // 
-            this.comboBox3.Cursor = System.Windows.Forms.Cursors.Default;
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(135, 96);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(203, 21);
-            this.comboBox3.TabIndex = 5;
-            this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
-            this.comboBox3.TextUpdate += new System.EventHandler(this.comboBox3_TextUpdate);
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.label5);
-            this.panel1.Controls.Add(this.comboBox2);
-            this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.comboBox3);
-            this.panel1.Controls.Add(this.comboBox1);
-            this.panel1.Location = new System.Drawing.Point(12, 42);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(362, 248);
-            this.panel1.TabIndex = 6;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(19, 151);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(108, 13);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "Compétence affichée";
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.Cursor = System.Windows.Forms.Cursors.Default;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(196, 143);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(142, 21);
-            this.comboBox2.TabIndex = 10;
-            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(19, 200);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(45, 16);
-            this.label4.TabIndex = 9;
-            this.label4.Text = "label4";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 99);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(37, 13);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "Promo";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(19, 45);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(34, 13);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Eleve";
             // 
             // dataGridView1
             // 
@@ -311,14 +223,14 @@
             this.chart1.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(380, 42);
+            this.chart1.Location = new System.Drawing.Point(325, 42);
             this.chart1.Name = "chart1";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.chart1.Series.Add(series1);
-            this.chart1.Size = new System.Drawing.Size(479, 259);
+            this.chart1.Size = new System.Drawing.Size(534, 259);
             this.chart1.TabIndex = 1;
             this.chart1.Text = "chart1";
             title1.Name = "Graphe";
@@ -426,12 +338,96 @@
             this.checkBox1.Text = "Résultat dans la promotion actuelle";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(19, 151);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(108, 13);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "Compétence affichée";
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.Cursor = System.Windows.Forms.Cursors.Default;
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(133, 148);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(142, 21);
+            this.comboBox2.TabIndex = 10;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(19, 200);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(45, 16);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "label4";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(19, 99);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(37, 13);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Promo";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(19, 45);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(34, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Eleve";
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.Cursor = System.Windows.Forms.Cursors.Default;
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Location = new System.Drawing.Point(72, 96);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(203, 21);
+            this.comboBox3.TabIndex = 5;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboBox1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(72, 42);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(203, 21);
+            this.comboBox1.TabIndex = 3;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.label5);
+            this.panel1.Controls.Add(this.comboBox2);
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.comboBox3);
+            this.panel1.Controls.Add(this.comboBox1);
+            this.panel1.Location = new System.Drawing.Point(12, 42);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(307, 259);
+            this.panel1.TabIndex = 13;
+            // 
             // PagePrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(1185, 651);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.LBL_InfoAjoutTp);
             this.Controls.Add(this.label2);
@@ -440,7 +436,6 @@
             this.Controls.Add(this.chart2);
             this.Controls.Add(this.chart1);
             this.Controls.Add(this.chart3);
-            this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.dataGridView1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -453,25 +448,21 @@
             this.Load += new System.EventHandler(this.Form3_Load_1);
             this.ResizeEnd += new System.EventHandler(this.PagePrincipal_ResizeEnd);
             this.SizeChanged += new System.EventHandler(this.PagePrincipal_SizeChanged);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart3)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label1;
+
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem deconnexionToolStripMenuItem;
@@ -493,11 +484,16 @@
         private System.Windows.Forms.ToolStripMenuItem changerDeMotDePasseToolStripMenuItem;
         private System.Windows.Forms.Button button1;
         public System.Windows.Forms.ProgressBar progressBar1;
-        public System.Windows.Forms.Label label4;
         public System.Windows.Forms.Label label2;
         public System.Windows.Forms.Label LBL_InfoAjoutTp;
+        private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.CheckBox checkBox1;
+        public System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Panel panel1;
     }
 }
