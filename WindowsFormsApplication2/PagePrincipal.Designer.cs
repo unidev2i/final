@@ -87,7 +87,7 @@
             this.comboBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBox1.Cursor = System.Windows.Forms.Cursors.Default;
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(72, 42);
+            this.comboBox1.Location = new System.Drawing.Point(135, 37);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(203, 21);
             this.comboBox1.TabIndex = 3;
@@ -98,7 +98,7 @@
             // 
             this.comboBox3.Cursor = System.Windows.Forms.Cursors.Default;
             this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(72, 96);
+            this.comboBox3.Location = new System.Drawing.Point(135, 96);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(203, 21);
             this.comboBox3.TabIndex = 5;
@@ -118,7 +118,7 @@
             this.panel1.Controls.Add(this.comboBox1);
             this.panel1.Location = new System.Drawing.Point(12, 42);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(307, 259);
+            this.panel1.Size = new System.Drawing.Size(362, 248);
             this.panel1.TabIndex = 6;
             // 
             // label5
@@ -134,7 +134,7 @@
             // 
             this.comboBox2.Cursor = System.Windows.Forms.Cursors.Default;
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(133, 148);
+            this.comboBox2.Location = new System.Drawing.Point(196, 143);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(142, 21);
             this.comboBox2.TabIndex = 10;
@@ -311,7 +311,7 @@
             this.chart1.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(325, 42);
+            this.chart1.Location = new System.Drawing.Point(380, 42);
             this.chart1.Name = "chart1";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
@@ -332,7 +332,7 @@
             this.chart2.ChartAreas.Add(chartArea2);
             legend2.Name = "Legend1";
             this.chart2.Legends.Add(legend2);
-            this.chart2.Location = new System.Drawing.Point(810, 42);
+            this.chart2.Location = new System.Drawing.Point(833, 42);
             this.chart2.Name = "chart2";
             series2.ChartArea = "ChartArea1";
             series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Doughnut;
@@ -387,7 +387,7 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(0, 637);
+            this.progressBar1.Location = new System.Drawing.Point(0, 636);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(1185, 23);
             this.progressBar1.TabIndex = 10;
@@ -451,7 +451,8 @@
             this.Text = "PPM : La formation personnalisée";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form3_FormClosing_1);
             this.Load += new System.EventHandler(this.Form3_Load_1);
-            this.Resize += new System.EventHandler(this.PagePrincipal_Resize);
+            this.ResizeEnd += new System.EventHandler(this.PagePrincipal_ResizeEnd);
+            this.SizeChanged += new System.EventHandler(this.PagePrincipal_SizeChanged);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

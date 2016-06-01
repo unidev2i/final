@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -20,7 +21,7 @@ namespace WindowsFormsApplication2
         public string login;
         public string promotionSelected = "";
         public string idEleveSelected = "";
-        private Boolean maximise=false;
+        private Boolean maximise=true;
         #endregion Public Fields
 
         #region Private Fields
@@ -34,7 +35,7 @@ namespace WindowsFormsApplication2
         private ChangerLogin graphic4;
         private ChangerMdp graphic5;
         private DelEleve graphic7;
-
+        private PagePrincipal pageprincip;
         #endregion Private Fields
 
         #region Public Constructors
@@ -475,14 +476,84 @@ namespace WindowsFormsApplication2
 
         private void PagePrincipal_Resize(object sender, EventArgs e)
         {
-            maximise = !maximise;
             if(maximise)
             {
+
+                progressBar1.Location = new Point(100, 100);
+                /*float widthRatio = Screen.PrimaryScreen.Bounds.Width / (Screen.PrimaryScreen.Bounds.Width*0.7f);
+                float heightRatio = Screen.PrimaryScreen.Bounds.Height / (Screen.PrimaryScreen.Bounds.Height * 0.7f);
+                SizeF scale = new SizeF(widthRatio, heightRatio);
+                this.Scale(scale);
+                foreach (Control control in this.Controls)
+                {
+                    control.Font = new Font("Verdana", control.Font.SizeInPoints * heightRatio * widthRatio);
+                }*/
             }
             else
             {
+                MessageBox.Show("mini");
+                /*float widthRatio = Screen.PrimaryScreen.Bounds.Width / (Screen.PrimaryScreen.Bounds.Width * 1.3f);
+                float heightRatio = Screen.PrimaryScreen.Bounds.Height / (Screen.PrimaryScreen.Bounds.Height * 1.3f);
+                SizeF scale = new SizeF(widthRatio, heightRatio);
+                this.Scale(scale);
+                foreach (Control control in this.Controls)
+                {
+                    control.Font = new Font("Verdana", control.Font.SizeInPoints * heightRatio * widthRatio);
+                }*/
+
             }
-            //Fonction Resize
+
+            maximise = !maximise;
+        }
+
+        private void PagePrincipal_ResizeEnd(object sender, EventArgs e)
+        {
+            if (maximise)
+            {
+                progressBar1.Location = new Point(100, 100);
+                /*float widthRatio = Screen.PrimaryScreen.Bounds.Width / (Screen.PrimaryScreen.Bounds.Width * 0.7f);
+                float heightRatio = Screen.PrimaryScreen.Bounds.Height / (Screen.PrimaryScreen.Bounds.Height * 0.7f);
+                SizeF scale = new SizeF(widthRatio, heightRatio);
+                Scale(scale);
+                foreach (Control control in this.Controls)
+                {
+                    control.Font = new Font("Verdana", control.Font.SizeInPoints * heightRatio * widthRatio);
+                }*/
+            }
+            else
+            {
+                MessageBox.Show("mini");
+                /*float widthRatio = Screen.PrimaryScreen.Bounds.Width / (Screen.PrimaryScreen.Bounds.Width * 1.3f);
+                float heightRatio = Screen.PrimaryScreen.Bounds.Height / (Screen.PrimaryScreen.Bounds.Height * 1.3f);
+                SizeF scale = new SizeF(widthRatio, heightRatio);
+                this.Scale(scale);
+                foreach (Control control in this.Controls)
+                {
+                    control.Font = new Font("Verdana", control.Font.SizeInPoints * heightRatio * widthRatio);
+                }*/
+
+            }
+            //maximise = !maximise;
+        }
+
+        private void PagePrincipal_SizeChanged(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Maximized)
+            {
+                dataGridView1.Location = new Point(12, Screen.PrimaryScreen.Bounds.Height-390);
+                /*float widthRatio = Screen.PrimaryScreen.Bounds.Width / (Screen.PrimaryScreen.Bounds.Width * 0.7f);
+                float heightRatio = Screen.PrimaryScreen.Bounds.Height / (Screen.PrimaryScreen.Bounds.Height * 0.7f);
+                SizeF scale = new SizeF(widthRatio, heightRatio);
+                Scale(scale);
+                foreach (Control control in this.Controls)
+                {
+                    control.Font = new Font("Verdana", control.Font.SizeInPoints * heightRatio * widthRatio);
+                }*/
+            }
+            else
+            {
+                MessageBox.Show("aaa");
+            }
         }
     }
 }
