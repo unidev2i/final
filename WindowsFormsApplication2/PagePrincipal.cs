@@ -512,9 +512,9 @@ namespace WindowsFormsApplication2
             {
                 dataGridView1.Location = new Point(12, Screen.PrimaryScreen.Bounds.Height-390);
                 panel1.Size = new Size(307,dataGridView1.Location.Y-10-42);
-                chart1.Size = new Size(534+ (Screen.PrimaryScreen.Bounds.Width/4), 259+ (Screen.PrimaryScreen.Bounds.Height/6));
+                chart1.Size = new Size((Screen.PrimaryScreen.Bounds.Width-307)/2,((Screen.PrimaryScreen.Bounds.Height-42)/2));
                 chart2.Size = new Size(Screen.PrimaryScreen.Bounds.Width-307-chart1.Size.Width-50, chart2.Size.Height+100);
-                chart2.Location = new Point(Screen.PrimaryScreen.Bounds.Width-chart2.Size.Width-20, chart2.Location.Y);
+                chart2.Location = new Point(panel1.Size.Width+chart1.Size.Width+50, chart2.Location.Y);
                 checkBox1.Location = new Point(Screen.PrimaryScreen.Bounds.Width/2, Screen.PrimaryScreen.Bounds.Height - 100);
                 /*chart3.Location = new Point(Screen.PrimaryScreen.Bounds.Width - 470, Screen.PrimaryScreen.Bounds.Height - 360);*/
                 /*float widthRatio = Screen.PrimaryScreen.Bounds.Width / (Screen.PrimaryScreen.Bounds.Width * 0.7f);
