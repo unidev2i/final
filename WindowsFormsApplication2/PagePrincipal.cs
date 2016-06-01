@@ -541,6 +541,7 @@ namespace WindowsFormsApplication2
             if (WindowState == FormWindowState.Maximized)
             {
                 dataGridView1.Location = new Point(12, Screen.PrimaryScreen.Bounds.Height-390);
+                panel1.Size = new Size(362,dataGridView1.Location.Y-10-42);
                 /*float widthRatio = Screen.PrimaryScreen.Bounds.Width / (Screen.PrimaryScreen.Bounds.Width * 0.7f);
                 float heightRatio = Screen.PrimaryScreen.Bounds.Height / (Screen.PrimaryScreen.Bounds.Height * 0.7f);
                 SizeF scale = new SizeF(widthRatio, heightRatio);
