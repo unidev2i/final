@@ -14,6 +14,7 @@ namespace WindowsFormsApplication2
     using System.Linq;
     using System.Windows.Forms;
     using MySql.Data.MySqlClient;
+    using System.Globalization;
 
     /// <summary>
     /// The database.
@@ -1010,6 +1011,8 @@ namespace WindowsFormsApplication2
         {
             var req = "SELECT date, note FROM tp NATURAL JOIN note WHERE idEleve='" + idEleve + "' AND idCompetence ='" +
                       idComp + "'";
+            var dateRaw = "";
+            DateTime dateBash;
             var command = conn.CreateCommand();
             command.CommandText = req;
             var r = command.ExecuteReader();
@@ -1018,7 +1021,41 @@ namespace WindowsFormsApplication2
 
             while (r.Read())
             {
-                a.Add(new Tuple<float, DateTime>(float.Parse(r["note"].ToString()), DateTime.Parse(r["date"].ToString())));
+                dateRaw = r["date"].ToString();
+                dateBash = DateTime.Parse(dateRaw);
+                var strFloatValue = r["note"].ToString();
+                strFloatValue = strFloatValue.Replace(" ", "");
+                float itsgg = float.Parse(strFloatValue, CultureInfo.InvariantCulture);
+                a.Add(new Tuple<float, DateTime>(itsgg, dateBash));
+            }
+
+            var x = a.OrderBy(b => b.Item2);
+            r.Close();
+
+            return x;
+        }
+
+        public static IOrderedEnumerable<Tuple<float, DateTime>> GetCourbeClasseRequest(string idComp = "C1.1", string idPromo = "2016")
+        {
+            idPromo = Database.GetidClasse(idPromo);
+            var req = "SELECT date, note FROM tp NATURAL JOIN note NATURAL JOIN eleve WHERE idCompetence ='" +
+                      idComp + "' AND idClasse='" + idPromo + "' ";
+            var dateRaw = "";
+            DateTime dateBash;
+            var command = conn.CreateCommand();
+            command.CommandText = req;
+            var r = command.ExecuteReader();
+
+            var a = new List<Tuple<float, DateTime>>();
+
+            while (r.Read())
+            {
+                dateRaw = r["date"].ToString();
+                dateBash = DateTime.Parse(dateRaw);
+                var strFloatValue = r["note"].ToString();
+                strFloatValue = strFloatValue.Replace(" ", "");
+                float itsgg = float.Parse(strFloatValue, CultureInfo.InvariantCulture);
+                a.Add(new Tuple<float, DateTime>(itsgg, dateBash));
             }
 
             var x = a.OrderBy(b => b.Item2);

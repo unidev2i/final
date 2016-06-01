@@ -187,7 +187,7 @@ namespace WindowsFormsApplication2
 
             foreach (
                 var a in
-                    Database.GetListRequest("eleve", new[] {"idClasse"}, "Nom='" + nom + "' and Prenom='" + prenom + "'")
+                    Database.GetListRequest("eleve", new[] { "idClasse" }, "Nom='" + nom + "' and Prenom='" + prenom + "'")
                 )
                 idClasse = a;
             comboBox3.Text = Database.Getpromo(idClasse);
@@ -199,7 +199,7 @@ namespace WindowsFormsApplication2
             idEleve = Database.GetIdEleveFromName(str2[1], str2[0]);
             idEleveSelected = idEleve;
 
-            foreach (var a in Database.GetListRequest("eleve", new[] {"idEleve"},"Nom='" + str2[1] + "' and Prenom='" + str2[0] + "'"))
+            foreach (var a in Database.GetListRequest("eleve", new[] { "idEleve" }, "Nom='" + str2[1] + "' and Prenom='" + str2[0] + "'"))
                 idEleve = a ?? "1";
 
             GetData(
@@ -207,16 +207,16 @@ namespace WindowsFormsApplication2
                 idEleve + "'");
             dataGridView1.AutoResizeColumns();
 
-            
+
 
             // Draw graphics
 
             var w = Database.GetWtfRequest(idEleve);
-            var z = Database.GetWebRequest(checkBox1,idEleve);
+            var z = Database.GetWebRequest(checkBox1, idEleve);
             var y = Database.GetWebMax();
-            var x = Database.GetCourbeRequest(idEleve, comboBox2.Text);
+            var x = Database.GetCourbeRequest(idEleve, comboBox2.Text); //ADD_PLS
 
-            drawGraph(w);
+            drawGraph(w); //ADD_PLS
             drawWeb(z, 0);
             drawWeb(y, 1);
             drawCourbe(x);
@@ -229,6 +229,12 @@ namespace WindowsFormsApplication2
             isNameSelected = true;
 
             button1.Visible = true;
+
+            //Chargement ComboBox réalisées par l'élève
+            comboBox2.Items.Clear();
+            string reqIdEleve = "idEleve ='" + idEleveSelected + "' ORDER BY idCompetence"; //ADD_PLS
+            foreach (var a in Database.GetDistinctRequest("note NATURAL JOIN tp", "idCompetence", new[] { "idCompetence" }, reqIdEleve))
+                comboBox2.Items.Add(a);
 
             if (comboBox2.Text == "")
                 comboBox2.Text = comboBox2.Items[0].ToString();
@@ -261,11 +267,12 @@ namespace WindowsFormsApplication2
                 var w = Database.GetWthRequest(promo);
                 var z = Database.GetWebClasseRequest(promo);
                 var y = Database.GetWebMax();
+                var x = Database.GetCourbeClasseRequest(comboBox2.Text, comboBox3.Text);
 
                 drawGraph(w);
                 drawWeb(z, 0);
                 drawWeb(y, 1);
-               //drawCourbe(x);
+                drawCourbe(x);
                 chart1.Visible = true;
                 chart2.Visible = true;
                 chart3.Visible = true;
@@ -273,7 +280,7 @@ namespace WindowsFormsApplication2
             catch
             {
                 comboBox3.Items.Clear();
-                foreach (var a in Database.GetListRequest("classe", new[] {"Promotion"}))
+                foreach (var a in Database.GetListRequest("classe", new[] { "Promotion" }))
                     comboBox3.Items.Add(a);
             }
 
@@ -283,6 +290,17 @@ namespace WindowsFormsApplication2
             promotionSelected = comboBox3.Text;
 
             button1.Visible = true;
+
+            //Changement en fonction de la promo
+            comboBox2.Items.Clear();
+            var getidpromo = Database.GetidClasse(promotionSelected);
+            string reqIdClasse = "idClasse ='" + getidpromo + "' ORDER BY idCompetence"; 
+            foreach (var a in Database.GetDistinctRequest("note NATURAL JOIN tp NATURAL JOIN eleve", "idCompetence", new[] { "idCompetence" }, reqIdClasse))
+                comboBox2.Items.Add(a);
+
+            if (comboBox2.Text == "")
+                comboBox2.Text = comboBox2.Items[0].ToString();
+
         }
 
         private void comboBox3_TextUpdate(object sender, EventArgs e)
@@ -473,9 +491,18 @@ namespace WindowsFormsApplication2
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var x = Database.GetCourbeRequest(idEleveSelected, comboBox2.Text);
-            drawCourbe(x);
-            chart1.Visible = true;
+            if (isNameSelected)
+            {
+                var x = Database.GetCourbeRequest(idEleveSelected, comboBox2.Text);
+                drawCourbe(x);
+                chart1.Visible = true;
+            }
+            else
+            {
+                var x = Database.GetCourbeClasseRequest(comboBox2.Text, promotionSelected);
+                drawCourbe(x);
+                chart1.Visible = true;
+            }
         }
 
         #endregion Private Methods
@@ -519,6 +546,7 @@ namespace WindowsFormsApplication2
                 chart2.Size=c;
                 chart3.Size=d;
                 panel1.Controls.Remove(button1);
+                PagePrincipal.ActiveForm.Controls.Add(button1);
             }
         }
     }
