@@ -516,18 +516,11 @@ namespace WindowsFormsApplication2
                 chart2.Size = new Size(Screen.PrimaryScreen.Bounds.Width-307-chart1.Size.Width-50, chart2.Size.Height+70);
                 chart2.Location = new Point(panel1.Size.Width+chart1.Size.Width+50, chart2.Location.Y);
                 checkBox1.Location = new Point(Screen.PrimaryScreen.Bounds.Width/2, Screen.PrimaryScreen.Bounds.Height - 100);
-                chart3.Location = new Point(dataGridView1.Location.X+dataGridView1.Size.Width+30,chart1.Size.Height+60);
+                chart3.Location = new Point(dataGridView1.Location.X+dataGridView1.Size.Width+30,chart1.Size.Height+40);
                 chart3.Size = new Size(Screen.PrimaryScreen.Bounds.Width - dataGridView1.Size.Width - 30, (Screen.PrimaryScreen.Bounds.Height/2)-50);
                 label2.Location = new Point(Screen.PrimaryScreen.Bounds.Width/2,50);
-                /*chart3.Location = new Point(Screen.PrimaryScreen.Bounds.Width - 470, Screen.PrimaryScreen.Bounds.Height - 360);*/
-                /*float widthRatio = Screen.PrimaryScreen.Bounds.Width / (Screen.PrimaryScreen.Bounds.Width * 0.7f);
-                float heightRatio = Screen.PrimaryScreen.Bounds.Height / (Screen.PrimaryScreen.Bounds.Height * 0.7f);
-                SizeF scale = new SizeF(widthRatio, heightRatio);
-                Scale(scale);
-                foreach (Control control in this.Controls)
-                {
-                    control.Font = new Font("Verdana", control.Font.SizeInPoints * heightRatio * widthRatio);
-                }*/
+                panel1.Controls.Add(button1);
+                button1.Location = new Point(label4.Location.X+50,label4.Location.Y+30);
             }
             else
             {
