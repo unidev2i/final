@@ -512,10 +512,12 @@ namespace WindowsFormsApplication2
             {
                 dataGridView1.Location = new Point(12, Screen.PrimaryScreen.Bounds.Height-390);
                 panel1.Size = new Size(307,dataGridView1.Location.Y-10-42);
-                chart1.Size = new Size((Screen.PrimaryScreen.Bounds.Width-307)/2,((Screen.PrimaryScreen.Bounds.Height-42)/2));
-                chart2.Size = new Size(Screen.PrimaryScreen.Bounds.Width-307-chart1.Size.Width-50, chart2.Size.Height+100);
+                chart1.Size = new Size((Screen.PrimaryScreen.Bounds.Width-307)/2,((Screen.PrimaryScreen.Bounds.Height-42)/2)-30);
+                chart2.Size = new Size(Screen.PrimaryScreen.Bounds.Width-307-chart1.Size.Width-50, chart2.Size.Height+70);
                 chart2.Location = new Point(panel1.Size.Width+chart1.Size.Width+50, chart2.Location.Y);
                 checkBox1.Location = new Point(Screen.PrimaryScreen.Bounds.Width/2, Screen.PrimaryScreen.Bounds.Height - 100);
+                chart3.Location = new Point(dataGridView1.Location.X+dataGridView1.Size.Width+30,chart1.Size.Height+60);
+                chart3.Size = new Size(Screen.PrimaryScreen.Bounds.Width - dataGridView1.Size.Width - 30, (Screen.PrimaryScreen.Bounds.Height/2)-50);
                 /*chart3.Location = new Point(Screen.PrimaryScreen.Bounds.Width - 470, Screen.PrimaryScreen.Bounds.Height - 360);*/
                 /*float widthRatio = Screen.PrimaryScreen.Bounds.Width / (Screen.PrimaryScreen.Bounds.Width * 0.7f);
                 float heightRatio = Screen.PrimaryScreen.Bounds.Height / (Screen.PrimaryScreen.Bounds.Height * 0.7f);
