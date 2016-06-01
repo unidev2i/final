@@ -506,42 +506,17 @@ namespace WindowsFormsApplication2
             maximise = !maximise;
         }
 
-        private void PagePrincipal_ResizeEnd(object sender, EventArgs e)
-        {
-            if (maximise)
-            {
-                progressBar1.Location = new Point(100, 100);
-                /*float widthRatio = Screen.PrimaryScreen.Bounds.Width / (Screen.PrimaryScreen.Bounds.Width * 0.7f);
-                float heightRatio = Screen.PrimaryScreen.Bounds.Height / (Screen.PrimaryScreen.Bounds.Height * 0.7f);
-                SizeF scale = new SizeF(widthRatio, heightRatio);
-                Scale(scale);
-                foreach (Control control in this.Controls)
-                {
-                    control.Font = new Font("Verdana", control.Font.SizeInPoints * heightRatio * widthRatio);
-                }*/
-            }
-            else
-            {
-                MessageBox.Show("mini");
-                /*float widthRatio = Screen.PrimaryScreen.Bounds.Width / (Screen.PrimaryScreen.Bounds.Width * 1.3f);
-                float heightRatio = Screen.PrimaryScreen.Bounds.Height / (Screen.PrimaryScreen.Bounds.Height * 1.3f);
-                SizeF scale = new SizeF(widthRatio, heightRatio);
-                this.Scale(scale);
-                foreach (Control control in this.Controls)
-                {
-                    control.Font = new Font("Verdana", control.Font.SizeInPoints * heightRatio * widthRatio);
-                }*/
-
-            }
-            //maximise = !maximise;
-        }
-
         private void PagePrincipal_SizeChanged(object sender, EventArgs e)
         {
             if (WindowState == FormWindowState.Maximized)
             {
                 dataGridView1.Location = new Point(12, Screen.PrimaryScreen.Bounds.Height-390);
                 panel1.Size = new Size(362,dataGridView1.Location.Y-10-42);
+                chart2.Size = new Size(chart2.Size.Width+300,chart2.Size.Height+100);
+                chart2.Location = new Point(Screen.PrimaryScreen.Bounds.Width - 652, chart2.Location.Y);
+                checkBox1.Location = new Point(Screen.PrimaryScreen.Bounds.Width/2, Screen.PrimaryScreen.Bounds.Height - 100);
+                chart3.Size=new Size()
+                chart3.Location = new Point(Screen.PrimaryScreen.Bounds.Width - 470, Screen.PrimaryScreen.Bounds.Height - 360);
                 /*float widthRatio = Screen.PrimaryScreen.Bounds.Width / (Screen.PrimaryScreen.Bounds.Width * 0.7f);
                 float heightRatio = Screen.PrimaryScreen.Bounds.Height / (Screen.PrimaryScreen.Bounds.Height * 0.7f);
                 SizeF scale = new SizeF(widthRatio, heightRatio);
