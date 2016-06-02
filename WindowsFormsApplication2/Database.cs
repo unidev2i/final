@@ -805,11 +805,12 @@ namespace WindowsFormsApplication2
         /// <returns>
         /// The <see cref="decimal"/>.
         /// </returns>
-        public static decimal GetMaxCp(string idCompetence)
+        public static decimal GetMaxCp(string idCompetence, string promo)
         {
+            var idClasse = Database.GetidClasse(promo);
             var comp = string.Empty;
             var command = conn.CreateCommand();
-            command.CommandText = "SELECT maxEchelle FROM competence WHERE idCompetence ='" + idCompetence + "'";
+            command.CommandText = "SELECT maxEchelle FROM competence WHERE idCompetence ='" + idCompetence + "' AND idClasse='" + idClasse +"'";
             var reader = command.ExecuteReader();
             while (reader.Read())
             {
@@ -820,8 +821,15 @@ namespace WindowsFormsApplication2
 
 // MessageBox.Show(id);
             reader.Close();
-
-            return decimal.Parse(comp2);
+            try
+            {
+                return decimal.Parse(comp2);
+            }
+            catch
+            {
+                MessageBox.Show("Maximum de la promotion non géré par la BDD !");
+                return 0;
+            }
         }
 
         /// <summary>

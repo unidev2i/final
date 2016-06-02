@@ -116,6 +116,7 @@ namespace WindowsFormsApplication2
             graphic2.ShowDialog();
         }
 
+
         private void ajouterToolStripMenuItem2_Click(object sender, EventArgs e)
         {
             //BOUTON POUR AJOUTER UN ELEVE
@@ -142,10 +143,23 @@ namespace WindowsFormsApplication2
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var MaxCPForm = new MaximumCP();
-            MaxCPForm.ShowDialog();
-            var y = Database.GetWebMax();
-            drawWeb(y, 1);
+            try
+            {
+                var MaxCPForm = new MaximumCP();
+                MaxCPForm.ShowDialog();
+                var x = new List<Tuple<string, float>>();
+                var y = Database.GetWebMax();
+                if (isNameSelected)
+                    x = Database.GetWebRequest(checkBox1, idEleveSelected);
+                if (!isNameSelected)
+                    x = Database.GetWebClasseRequest(promotionSelected);
+                drawWeb(x, 0);
+                drawWeb(y, 1);
+            }
+            catch
+            {
+                return;
+            }
         }
 
         private void changerDeLoginToolStripMenuItem_Click(object sender, EventArgs e)
@@ -228,11 +242,13 @@ namespace WindowsFormsApplication2
 
             isNameSelected = true;
 
+            promotionSelected = comboBox3.Text;
+
             button1.Visible = true;
 
             //Chargement ComboBox réalisées par l'élève
             comboBox2.Items.Clear();
-            string reqIdEleve = "idEleve ='" + idEleveSelected + "' ORDER BY idCompetence"; //ADD_PLS
+            string reqIdEleve = "idEleve ='" + idEleveSelected + "' ORDER BY idCompetence"; 
             foreach (var a in Database.GetDistinctRequest("note NATURAL JOIN tp", "idCompetence", new[] { "idCompetence" }, reqIdEleve))
                 comboBox2.Items.Add(a);
 
