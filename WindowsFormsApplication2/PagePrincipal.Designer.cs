@@ -61,7 +61,6 @@
             this.chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chart3 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.button1 = new System.Windows.Forms.Button();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.label2 = new System.Windows.Forms.Label();
             this.LBL_InfoAjoutTp = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
@@ -297,13 +296,6 @@
             this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(0, 636);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(1185, 23);
-            this.progressBar1.TabIndex = 10;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -435,7 +427,6 @@
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.LBL_InfoAjoutTp);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.chart2);
             this.Controls.Add(this.chart1);
@@ -486,7 +477,6 @@
         private System.Windows.Forms.ToolStripMenuItem changerDeLoginToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem changerDeMotDePasseToolStripMenuItem;
         private System.Windows.Forms.Button button1;
-        public System.Windows.Forms.ProgressBar progressBar1;
         public System.Windows.Forms.Label label2;
         public System.Windows.Forms.Label LBL_InfoAjoutTp;
         private System.Windows.Forms.CheckBox checkBox1;

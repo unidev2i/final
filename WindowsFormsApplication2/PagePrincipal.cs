@@ -73,11 +73,6 @@ namespace WindowsFormsApplication2
 
         #region Public Methods
 
-        public int getBarValue()
-        {
-            return progressBar1.Value;
-        }
-
         public void HelloBox(string nom)
         {
             label4.Text = "Professeur connecté: " + nom;
@@ -88,16 +83,6 @@ namespace WindowsFormsApplication2
         {
             login = newlog;
             HelloBox(login);
-        }
-
-        public void setBarmax(int max)
-        {
-            progressBar1.Maximum = max;
-        }
-
-        public void setBarval(int val)
-        {
-            progressBar1.Value = val;
         }
 
         public void UpdateLogin(string login)

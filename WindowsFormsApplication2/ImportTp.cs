@@ -119,14 +119,6 @@ namespace WindowsFormsApplication2
                 cp[i] = cp[i].Substring(0, cp[i].Length - 1);
             }
 
-            Program.ac.graphic.progressBar1.Invoke(
-                (MethodInvoker) (() => Program.ac.graphic.progressBar1.Value = 0));
-            Program.ac.graphic.progressBar1.Invoke(
-                (MethodInvoker) (() => Program.ac.graphic.progressBar1.Visible = true));
-            var cp1 = cp;
-            Program.ac.graphic.progressBar1.Invoke(
-                (MethodInvoker) (() => Program.ac.graphic.progressBar1.Maximum = cp1.Count));
-
             // y = yes n = no t = traité
             var yt = 0;
             var nt = 0;
@@ -213,27 +205,8 @@ namespace WindowsFormsApplication2
                 }
 
                 fin:
-                try
-                {
-                    Program.ac.graphic.progressBar1.Invoke(
-                        (MethodInvoker) (() => Program.ac.graphic.progressBar1.Value++));
-                }
-                catch
-                {
-                    // ignored
-                }
-
+                Console.WriteLine();
                 // If you want update hashs do it here
-            }
-
-            try
-            {
-                Program.ac.graphic.progressBar1.Invoke(
-                    (MethodInvoker) (() => Program.ac.graphic.progressBar1.Visible = false));
-            }
-            catch
-            {
-                // ignored
             }
 
             if (!errMssg.Equals(string.Empty))
@@ -264,14 +237,6 @@ namespace WindowsFormsApplication2
         {
             var a = new ImportTpInfo();
             a.ShowDialog();
-
-            // ReSharper disable once NotAccessedVariable
-            var message = string.Empty;
-            if (errMssg != string.Empty)
-            {
-                // ReSharper disable once RedundantAssignment
-                message += "<p style='color:red; font-size:50px align:center'>Liste d'erreurs</p>";
-            }
         }
 
         #endregion Public Methods
@@ -514,7 +479,16 @@ namespace WindowsFormsApplication2
             foreach (var a in value)
             {
                 Database.AddNote(idPdf, a.Item1, a.Item2, a.Item3);
+                Database.Onapalten(a.Item1, GetPromo(file));
             }
+
+            Database.removeCPMax(Database.CpMaxIsNotinNote());
+
+        }
+
+        private static string GetPromo(string file)
+        {
+            return file.Split('\\')[file.Split('\\').Length - 2];
         }
 
         #endregion Private Methods

@@ -480,6 +480,11 @@ namespace WindowsFormsApplication2
             return listnewCp;
         }
 
+        public static void Onapalten(string idComp, string idClasse)
+        {
+            ("INSERT INTO competence(idCompetence, idClasse) values ('" + idComp + "', '" + idClasse + "')").SimpleRequest();
+        } 
+
         /// <summary>
         /// The delete.
         /// </summary>
@@ -1267,8 +1272,8 @@ namespace WindowsFormsApplication2
                 var command = conn.CreateCommand();
                 foreach (var idCP in listCP)
                 {
-                    ("DELETE FROM `mydb`.`competence` WHERE `competence`.`idCompetence` = \'" + idCP + "'")
-                        .SimpleRequest();
+                    //("DELETE FROM `mydb`.`competence` WHERE `competence`.`idCompetence` = \'" + idCP + "'")
+                    //    .SimpleRequest();
                 }
 
                 return 0;
