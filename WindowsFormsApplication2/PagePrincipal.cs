@@ -417,8 +417,8 @@ namespace WindowsFormsApplication2
                 comboBox1.Items.Add(a);
             foreach (var a in Database.GetListRequest("classe", new[] {"Promotion"}))
                 comboBox3.Items.Add(a);
-            foreach (var a in Database.GetDistinctRequest("note", "idCompetence", new[] { "idCompetence" }))
-                comboBox2.Items.Add(a);
+            //foreach (var a in Database.GetDistinctRequest("note", "idCompetence", new[] { "idCompetence" }))
+            //   comboBox2.Items.Add(a);
 
         }
 
