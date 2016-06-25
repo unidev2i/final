@@ -368,7 +368,7 @@ namespace WindowsFormsApplication2
             var x = Directory.GetCurrentDirectory() + @"\" + b;
             var a = new pdfHandler(ref x);
             var c = (string) a.readPDF();
-
+            MessageBox.Show(c);
             string nom;
             string prenom;
             if (Settings.Default.GetInNomFichier == "true")
