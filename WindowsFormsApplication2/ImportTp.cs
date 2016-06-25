@@ -313,7 +313,7 @@ namespace WindowsFormsApplication2
         /// <returns>
         /// The <see cref="Tuple"/>.
         /// </returns>
-        private static Tuple<string, string> GetInfos2(string file)
+        private static Tuple<string, string, string> GetInfos2(string file)
         {
             if (!file.Contains(".pdf"))
             {
@@ -327,14 +327,17 @@ namespace WindowsFormsApplication2
 
             File.Copy(file, "temp.pdf");
 
+            /*var pre = file.Split('\\');
+            MessageBox.Show(file.Split('\\')[pre.Length - 1]);*/
             var x = Directory.GetCurrentDirectory() + @"\" + "temp.pdf";
             var c = (string) new pdfHandler(ref x).readPDF();
             foreach (var sor in new Regex(@"Nom Prénom\s*\w*\s*\w*").Matches(c))
             {
                 return
-                    new Tuple<string, string>(
+                    new Tuple<string, string, string>(
                         sor.ToString().Split(' ')[1].Split(new[] {"Prénom"}, StringSplitOptions.None)[1],
-                        sor.ToString().Split(' ')[2]);
+                        sor.ToString().Split(' ')[2],
+                        "");
             }
 
             return null;
@@ -368,7 +371,6 @@ namespace WindowsFormsApplication2
             var x = Directory.GetCurrentDirectory() + @"\" + b;
             var a = new pdfHandler(ref x);
             var c = (string) a.readPDF();
-            MessageBox.Show(c);
             string nom;
             string prenom;
             if (Settings.Default.GetInNomFichier == "true")
@@ -430,21 +432,8 @@ namespace WindowsFormsApplication2
                 errMssg += file + " : Le fichier est au mauvais format. Attendu : pdf" + Environment.NewLine;
             }
 
-////? -----------------------------------------
-            /*
-            if (file.IndexOf(".", StringComparison.Ordinal) != file.IndexOf(".pdf", StringComparison.Ordinal))
-            {
-                var filetempo = file;
-                String nomFichier = file.Split('\\')[file.Split('\\').Length - 1];
-                String nomFictempo = nomFichier;
-                var regex = new Regex(Regex.Escape("."));
-                nomFichier = regex.Replace(nomFichier,"_", 1);
-                file=file.Replace(nomFictempo, nomFichier);
-                File.Move(filetempo,file);
-            }
-            */
             Tuple<string, string, string> infos;
-            Tuple<string, string> infos2;
+            Tuple<string, string, string> infos2;
             var value = GetValue(file);
             string idEleve;
             infos = GetInfos(file);
@@ -473,6 +462,7 @@ namespace WindowsFormsApplication2
 
 // ETAPE 1 : Créer le TP
             var mdr = Program.ac.graphic.login;
+            MessageBox.Show(infos.Item3);
             Database.AddTp(infos.Item3, idEleve, mdr, Crypt.Md5(file), File.GetLastWriteTime(file));
 
             // ETAPE 1' : Recup id tp
