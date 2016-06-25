@@ -112,20 +112,25 @@ namespace WindowsFormsApplication2
                 comboBox1.Items.Add(a);
         }
 
-        private void ajouterUnPDFToolStripMenuItem_Click(object sender, EventArgs e)
+        public void refreshCombo()
         {
-            ImportTp.InitializeGo();
-            var b = new Thread(ImportTp.Go);
-            b.Start();
-            //b.Join();
             comboBox1.Items.Clear();
             comboBox3.Items.Clear();
             //this.Refresh();
-            foreach (var a in Database.GetListRequest("eleve", new[] {"Prenom", "Nom"}))
+            foreach (var a in Database.GetListRequest("eleve", new[] { "Prenom", "Nom" }))
                 comboBox1.Items.Add(a);
 
-            foreach (var a in Database.GetListRequest("classe", new[] {"Promotion"}))
+            foreach (var a in Database.GetListRequest("classe", new[] { "Promotion" }))
                 comboBox3.Items.Add(a);
+        }
+
+        private void ajouterUnPDFToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var b = new Thread(ImportTp.Go);
+            b.Start();
+            //b.Join();
+            refreshCombo();
+            
         }
 
         private void button1_Click(object sender, EventArgs e)

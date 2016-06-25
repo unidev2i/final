@@ -24,7 +24,7 @@ namespace WindowsFormsApplication2
     /// <summary>
     ///     The import TP class, who allows to import and update TPs
     /// </summary>
-    public static class ImportTp
+    public class ImportTp
     {
         #region Public Constructors
 
@@ -36,10 +36,6 @@ namespace WindowsFormsApplication2
             RootFolder = Settings.Default.repoPath;
         }
 
-        public static void InitializeGo()
-        {
-            
-        }
 
         #endregion Public Constructors
 
@@ -77,9 +73,10 @@ namespace WindowsFormsApplication2
         // ReSharper disable once CyclomaticComplexity
         public static void Go()
         {
+            //ImportTp import = new ImportTp(1);
             logMssg += "Traitement des dossiers démarré." + Environment.NewLine;
 
-            if (Directory.GetFiles(RootFolder).Length != 0)
+            if (Directory.GetFiles(Settings.Default.repoPath).Length != 0) //RootFolder
             {
                 errMssg +=
                     "<li>Plusieurs fichiers à la racine du répertoire ont étés détectés. Ils ne seront pas traités.</li>" +
@@ -87,7 +84,7 @@ namespace WindowsFormsApplication2
             }
 
             // First check
-            var check = Directory.GetDirectories(RootFolder).SelectMany(Directory.GetFiles).Count();
+            var check = Directory.GetDirectories(Settings.Default.repoPath).SelectMany(Directory.GetFiles).Count(); //RootFolder
             if (check == 0)
             {
                 var dialogResult = MessageBox.Show(
@@ -131,7 +128,7 @@ namespace WindowsFormsApplication2
             var dt = 0;
 
             var cp2 = cp;
-            foreach (var dir in from dir in Directory.GetDirectories(RootFolder)
+            foreach (var dir in from dir in Directory.GetDirectories(Settings.Default.repoPath) //RootFolder
                 let temp = dir.Split('\\')[dir.Split('\\').Length - 1]
                 where !cp2.Contains(temp) && (Directory.GetFiles(dir).Length != 0)
                 select dir)
@@ -141,7 +138,7 @@ namespace WindowsFormsApplication2
 
             cp = CheckPromo();
 
-            foreach (var dir in cp.Select(a => RootFolder + "\\" + a.Remove(a.Length - 1, 1)))
+            foreach (var dir in cp.Select(a => Settings.Default.repoPath + "\\" + a.Remove(a.Length - 1, 1))) //RootFolder
             {
                 // var x = Database.GetListRequest("note", new[] { "Promotion" });
                 if (!Directory.Exists(dir) && (Directory.GetFiles(dir).Length != 0))
@@ -262,7 +259,7 @@ namespace WindowsFormsApplication2
         private static List<string> CheckPromo()
         {
             // ReSharper disable once UnusedVariable
-            var request0 = Directory.GetDirectories(RootFolder)
+            var request0 = Directory.GetDirectories(Settings.Default.repoPath) //RootFolder
                 .Aggregate(string.Empty, (current, a) => current + "\"" + Crypt.CreateMd5ForFolder(a) + "\",");
 
             var retour1 = Database.GetListRequest("classe", new[] {"promotion"}
