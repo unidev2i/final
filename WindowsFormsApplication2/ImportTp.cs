@@ -36,6 +36,11 @@ namespace WindowsFormsApplication2
             RootFolder = Settings.Default.repoPath;
         }
 
+        public static void InitializeGo()
+        {
+            
+        }
+
         #endregion Public Constructors
 
         #region Private Fields
@@ -61,6 +66,7 @@ namespace WindowsFormsApplication2
         #endregion Private Fields
 
         #region Public Methods
+
 
         /// <summary>
         ///     Execute treatements

@@ -114,9 +114,10 @@ namespace WindowsFormsApplication2
 
         private void ajouterUnPDFToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            ImportTp.InitializeGo();
             var b = new Thread(ImportTp.Go);
             b.Start();
-            b.Join();
+            //b.Join();
             comboBox1.Items.Clear();
             comboBox3.Items.Clear();
             //this.Refresh();
