@@ -116,14 +116,15 @@ namespace WindowsFormsApplication2
         {
             var b = new Thread(ImportTp.Go);
             b.Start();
-            if (!b.IsAlive)
-            {
-                foreach (var a in Database.GetListRequest("eleve", new[] {"Prenom", "Nom"}))
-                    comboBox1.Items.Add(a);
+            b.Join();
+            comboBox1.Items.Clear();
+            comboBox3.Items.Clear();
+            //this.Refresh();
+            foreach (var a in Database.GetListRequest("eleve", new[] {"Prenom", "Nom"}))
+                comboBox1.Items.Add(a);
 
-                foreach (var a in Database.GetListRequest("classe", new[] {"Promotion"}))
-                    comboBox3.Items.Add(a);
-            }
+            foreach (var a in Database.GetListRequest("classe", new[] {"Promotion"}))
+                comboBox3.Items.Add(a);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -133,7 +134,7 @@ namespace WindowsFormsApplication2
                 var MaxCPForm = new MaximumCP();
                 MaxCPForm.ShowDialog();
                 var x = new List<Tuple<string, float>>();
-                var y = Database.GetWebMax();
+                var y = Database.GetWebMax(promotionSelected);
                 if (isNameSelected)
                     x = Database.GetWebRequest(checkBox1, idEleveSelected);
                 if (!isNameSelected)
@@ -205,14 +206,20 @@ namespace WindowsFormsApplication2
                 "SELECT Prenom, Nom, idTp AS TP, date AS Date, idCompetence AS Competence, Note, maxNote AS 'Note Maximum' FROM eleve NATURAL JOIN tp NATURAL JOIN note WHERE idEleve='" +
                 idEleve + "'");
             dataGridView1.AutoResizeColumns();
+            
+            label2.Text = "Vous observez les résultats de " + comboBox1.Text;
 
+            isNameSelected = true;
 
+            promotionSelected = comboBox3.Text;
+
+            button1.Visible = true;
 
             // Draw graphics
 
             var w = Database.GetWtfRequest(idEleve);
             var z = Database.GetWebRequest(checkBox1, idEleve);
-            var y = Database.GetWebMax();
+            var y = Database.GetWebMax(promotionSelected);
             var x = Database.GetCourbeRequest(idEleve, comboBox2.Text); //ADD_PLS
 
             drawGraph(w); //ADD_PLS
@@ -223,13 +230,6 @@ namespace WindowsFormsApplication2
             chart2.Visible = true;
             chart3.Visible = true;
 
-            label2.Text = "Vous observez les résultats de " + comboBox1.Text;
-
-            isNameSelected = true;
-
-            promotionSelected = comboBox3.Text;
-
-            button1.Visible = true;
 
             //Chargement ComboBox réalisées par l'élève
             comboBox2.Items.Clear();
@@ -253,6 +253,10 @@ namespace WindowsFormsApplication2
             var i = 0;
             var promo = comboBox3.Text;
             var eleve = new string[1000];
+            label2.Text = "Vous observez les résultats de la promotion " + comboBox3.Text;
+            isNameSelected = false;
+            promotionSelected = comboBox3.Text;
+            button1.Visible = true;
             try
             {
                 eleve = Database.RecupEleveAvecPromo(promo);
@@ -267,7 +271,7 @@ namespace WindowsFormsApplication2
                 }
                 var w = Database.GetWthRequest(promo);
                 var z = Database.GetWebClasseRequest(promo);
-                var y = Database.GetWebMax();
+                var y = Database.GetWebMax(promo);
                 var x = Database.GetCourbeClasseRequest(comboBox2.Text, comboBox3.Text);
 
                 drawGraph(w);
@@ -284,13 +288,6 @@ namespace WindowsFormsApplication2
                 foreach (var a in Database.GetListRequest("classe", new[] { "Promotion" }))
                     comboBox3.Items.Add(a);
             }
-
-            label2.Text = "Vous observez les résultats de la promotion " + comboBox3.Text;
-            isNameSelected = false;
-
-            promotionSelected = comboBox3.Text;
-
-            button1.Visible = true;
 
             //Changement en fonction de la promo
             comboBox2.Items.Clear();
@@ -456,8 +453,7 @@ namespace WindowsFormsApplication2
 
         private void importerTPToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var b = new Thread(ImportTp.Go);
-            b.Start();
+
         }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)

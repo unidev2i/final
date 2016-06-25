@@ -125,16 +125,16 @@ namespace WindowsFormsApplication2
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public static int AddCpMax(List<string> listCp)
+        public static int AddCpMax(List<Tuple<string,string>> listCp)
         {
             if (listCp.Count == 0)
             {
                 return 1;
             }
             var command = conn.CreateCommand();
-            foreach (var idCp in listCp)
+            foreach (var a in listCp)
             {
-                ("INSERT INTO competence (idCompetence) VALUES ('" + idCp + "')").SimpleRequest();
+                ("INSERT INTO competence (idCompetence,idClasse) VALUES ('" + a.Item1 + "','" + a.Item2 + "')").SimpleRequest();
             }
 
             return 0;
@@ -437,12 +437,12 @@ namespace WindowsFormsApplication2
         ///     </see>
         ///     .
         /// </returns>
-        public static List<string> CpMaxIsNotinNote()
+        public static List<string> CpMaxIsNotinNote(string idClasse)
         {
             var listToRemoveCp = new List<string>();
             var command = conn.CreateCommand();
             command.CommandText =
-                "SELECT DISTINCT competence.idCompetence FROM competence LEFT JOIN note ON competence.idCompetence = note.idCompetence WHERE note.idCompetence IS NULL";
+                "SELECT DISTINCT competence.idCompetence FROM competence LEFT JOIN note ON competence.idCompetence = note.idCompetence LEFT JOIN classe ON competence.idClasse WHERE note.idCompetence IS NULL AND classe.idClasse ='"+idClasse+"'";
             var reader = command.ExecuteReader();
             while (reader.Read())
             {
@@ -463,16 +463,21 @@ namespace WindowsFormsApplication2
         ///     </see>
         ///     .
         /// </returns>
-        public static List<string> CPsNewInNote()
+        public static List<Tuple<string,string>> CPsNewInNote()
         {
-            var listnewCp = new List<string>();
+            var listnewCp = new List<Tuple<string, string>>();
             var command = conn.CreateCommand();
             command.CommandText =
-                "SELECT DISTINCT note.idCompetence FROM note LEFT JOIN competence ON note.idCompetence = competence.idCompetence WHERE competence.idCompetence IS NULL";
+                "SELECT DISTINCT note.idCompetence, classe.idClasse FROM note " +
+                "LEFT JOIN competence ON note.idCompetence = competence.idCompetence " +
+                "LEFT JOIN tp ON note.idPdf = tp.idPdf " +
+                "LEFT JOIN eleve ON tp.idEleve = eleve.idEleve " +
+                "LEFT JOIN classe ON eleve.idClasse = classe.idClasse " +
+                "WHERE competence.idCompetence IS NULL";
             var reader = command.ExecuteReader();
             while (reader.Read())
             {
-                listnewCp.Add(reader["idCompetence"].ToString());
+                listnewCp.Add(new Tuple <string,string>(reader["idCompetence"].ToString(), reader["idClasse"].ToString()));
             }
 
             reader.Close();
@@ -482,6 +487,7 @@ namespace WindowsFormsApplication2
 
         public static void Onapalten(string idComp, string idClasse)
         {
+            idClasse = Database.GetidClasse(idClasse);
             ("INSERT INTO competence(idCompetence, idClasse) values ('" + idComp + "', '" + idClasse + "')").SimpleRequest();
         } 
 
@@ -644,10 +650,10 @@ namespace WindowsFormsApplication2
 
             var id = idclasse;
 
-// MessageBox.Show(id);
+            // MessageBox.Show(id);
             reader.Close();
 
-// var Location = 1;
+            // var Location = 1;
             if (id == string.Empty)
             {
                 ("INSERT INTO classe (Promotion,Location) VALUES ('" + promo + "')").SimpleRequest();
@@ -906,10 +912,10 @@ namespace WindowsFormsApplication2
         ///     </see>
         ///     .
         /// </returns>
-        public static List<Tuple<string, float>> GetWebMax()
+        public static List<Tuple<string, float>> GetWebMax(string promo)
         {
             var retour = new List<Tuple<string, float>>();
-            var req = "SELECT " + ColIdskill + ", maxEchelle FROM competence";
+            var req = "SELECT " + ColIdskill + ", maxEchelle FROM competence WHERE idClasse='" + Database.GetidClasse(promo) + " ORDER BY idCompetence'";
             var command = conn.CreateCommand();
             command.CommandText = req;
             var r = command.ExecuteReader();
@@ -943,20 +949,10 @@ namespace WindowsFormsApplication2
         {
             var req = string.Empty;
             var retour = new List<Tuple<string, float>>();
-            if (checkBox.Checked == false)
-            {
-                req =
-                    "SELECT " + ColIdskill + ", SUM(" + ColNote + ") FROM " + TabEleve + " NATURAL JOIN " + TabTp +
-                    " NATURAL JOIN " + ColNote + " WHERE " + ColIdeleve + " = '" + idEleve + "' GROUP BY " +
-                    ColIdskill;
-            }
-            else if (checkBox.Checked == false)
-            {
-                req =
-                    "SELECT " + ColIdskill + ", SUM(" + ColNote + ") FROM " + TabEleve + " NATURAL JOIN " + TabTp +
-                    " NATURAL JOIN " + ColNote + " WHERE " + ColIdeleve + " = '" + idEleve + "' GROUP BY " +
-                    ColIdskill;
-            }
+            req =
+                "SELECT " + ColIdskill + ", SUM(" + ColNote + ") FROM " + TabEleve + " NATURAL JOIN " + TabTp +
+                " NATURAL JOIN " + ColNote + " WHERE " + ColIdeleve + " = '" + idEleve + "' GROUP BY " +
+                ColIdskill;
 
             var command = conn.CreateCommand();
             command.CommandText = req;
@@ -1171,7 +1167,7 @@ namespace WindowsFormsApplication2
 
             var id = idClasse;
 
-// MessageBox.Show(id);
+            // MessageBox.Show(id);
             reader.Close();
             var command2 = conn.CreateCommand();
             var i = 0;

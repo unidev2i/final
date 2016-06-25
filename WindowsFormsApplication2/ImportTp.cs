@@ -227,7 +227,7 @@ namespace WindowsFormsApplication2
 
             // ShowLog();
             Database.AddCpMax(Database.CPsNewInNote());
-            Database.removeCPMax(Database.CpMaxIsNotinNote());
+            //Database.removeCPMax(Database.CpMaxIsNotinNote(Database.GetidClasse(GetPromo(file))));
         }
 
         /// <summary>
@@ -479,10 +479,11 @@ namespace WindowsFormsApplication2
             foreach (var a in value)
             {
                 Database.AddNote(idPdf, a.Item1, a.Item2, a.Item3);
-                Database.Onapalten(a.Item1, GetPromo(file));
+                //Database.Onapalten(a.Item1, GetPromo(file));
+                
             }
-
-            Database.removeCPMax(Database.CpMaxIsNotinNote());
+            //Database.AddCpMax(Database.CPsNewInNote());
+            Database.removeCPMax(Database.CpMaxIsNotinNote(Database.GetidClasse(GetPromo(file))));
 
         }
 
