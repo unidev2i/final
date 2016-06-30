@@ -399,7 +399,7 @@ namespace WindowsFormsApplication2
 
             var tempReturn = new List<Tuple<string, string, string>>();
 
-            for (var index = 0; index < skills.Count + 1; index++) // +1 is for the student's autonomy
+            for (var index = 0; index < skills.Count; index++) // +1 is for the student's autonomy
             {
                 var m = mark[index];
 
@@ -407,7 +407,7 @@ namespace WindowsFormsApplication2
                 maxMark.Add(m.Split('/')[1]);
             }
 
-            for (var index = 0; index < skills.Count + 1; index++)
+            for (var index = 0; index < skills.Count; index++)
             {
                 var z = mark[index] + "->" + maxMark[index];
                 tempReturn.Add(new Tuple<string, string, string>(skills[index], mark[index], maxMark[index]));
