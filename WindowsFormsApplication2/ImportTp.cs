@@ -382,8 +382,8 @@ namespace WindowsFormsApplication2
 
             const string strRegex = @"C[0-9].[0-9]";
             var myRegex = new Regex(strRegex, RegexOptions.None);
-            const string strRegex2 = @"[0-9]{1,2}\.{0,1}[0-9]{0,3}\s{0,2}\/\s{0,2}[0-9]{1,2}\.{0,1}[0-9]{0,1}\s";
-            var myRegex2 = new Regex(strRegex2, RegexOptions.None);
+            const string strRegex2 = @"[0-9]{1,2}\.{0,1}[0-9]{0,3}\s{0,3}\/\s{0,5}[0-9]{1,2}\.{0,1}[0-9]{0,1}\s";
+            var myRegex2 = new Regex(strRegex2, RegexOptions.IgnoreCase);
 
             var maxMark = new List<string>();
 
@@ -399,7 +399,7 @@ namespace WindowsFormsApplication2
 
             var tempReturn = new List<Tuple<string, string, string>>();
 
-            for (var index = 0; index < skills.Count; index++)
+            for (var index = 0; index < skills.Count + 1; index++) // +1 is for the student's autonomy
             {
                 var m = mark[index];
 
@@ -407,7 +407,7 @@ namespace WindowsFormsApplication2
                 maxMark.Add(m.Split('/')[1]);
             }
 
-            for (var index = 0; index < skills.Count; index++)
+            for (var index = 0; index < skills.Count + 1; index++)
             {
                 var z = mark[index] + "->" + maxMark[index];
                 tempReturn.Add(new Tuple<string, string, string>(skills[index], mark[index], maxMark[index]));

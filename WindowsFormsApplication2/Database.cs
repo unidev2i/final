@@ -597,6 +597,7 @@ namespace WindowsFormsApplication2
             var command = conn.CreateCommand();
             command.CommandText = request;
             command.ExecuteNonQuery();
+            command.Dispose();
         }
 
         /// <summary>
