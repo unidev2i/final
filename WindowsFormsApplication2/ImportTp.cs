@@ -462,7 +462,7 @@ namespace WindowsFormsApplication2
 
 // ETAPE 1 : Créer le TP
             var mdr = Program.ac.graphic.login;
-            MessageBox.Show(infos.Item3);
+            //MessageBox.Show(infos.Item3);
             Database.AddTp(infos.Item3, idEleve, mdr, Crypt.Md5(file), File.GetLastWriteTime(file));
 
             // ETAPE 1' : Recup id tp

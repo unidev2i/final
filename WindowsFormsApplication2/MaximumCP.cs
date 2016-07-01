@@ -10,16 +10,15 @@ namespace WindowsFormsApplication2
         public MaximumCP()
         {
             InitializeComponent();
-            foreach (var a in Database.GetListRequest("competence", new[] {"idCompetence"}))
-                comboBox1.Items.Add(a);
-
+           /* foreach (var a in Database.GetListRequest("competence", new[] { "idCompetence" }))
+                comboBox1.Items.Add(a); */
             try
             {
                 comboBox1.Items.Clear();
                 var getidpromo = Database.GetidClasse(Program.ac.graphic.promotionSelected);
                 string reqIdClasse = "idClasse ='" + getidpromo + "' ORDER BY idCompetence";
                 foreach (var a in Database.GetDistinctRequest("competence", "idCompetence", new[] { "idCompetence" }, reqIdClasse))
-                    comboBox1.Items.Add(a);
+                    comboBox1.Items.Add(a.Substring(0,a.Length - 1));
 
                 if (comboBox1.Text == "")
                     comboBox1.Text = comboBox1.Items[0].ToString();
@@ -60,5 +59,13 @@ namespace WindowsFormsApplication2
         }
 
         #endregion Private Methods
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            if (numericUpDown1.Value != null)
+                Database.setMaxCP(comboBox1.Text, numericUpDown1.Value);
+            else
+                Database.setMaxCP(comboBox1.Text, 0);
+        }
     }
 }

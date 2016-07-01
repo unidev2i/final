@@ -735,27 +735,36 @@ namespace WindowsFormsApplication2
         /// </returns>
         public static IEnumerable<string> GetListRequest(string table, string[] columns, string additionalWhereClause = "1")
         {
-            var retour = new List<string>();
-            var command = conn.CreateCommand();
-            command.CommandText = "SELECT * FROM " + table + " WHERE " + additionalWhereClause;
-            var r = command.ExecuteReader();
-
-            while (r.Read())
+            try
             {
-                try
-                {
-                    var toReturn = columns.Aggregate(string.Empty, (current, c) => current + r[c].ToString() + " ");
-                    retour.Add(toReturn);
-                }
-                catch (Exception)
-                {
-                    r.Close();
-                    return retour;
-                }
-            }
+                var retour = new List<string>();
+                var command = conn.CreateCommand();
+                command.CommandText = "SELECT * FROM " + table + " WHERE " + additionalWhereClause;
+                var r = command.ExecuteReader();
 
-            r.Close();
-            return retour;
+           
+                while (r.Read())
+                {
+                    try
+                    {
+                        var toReturn = columns.Aggregate(string.Empty, (current, c) => current + r[c].ToString() + " ");
+                        retour.Add(toReturn);
+                    }
+                    catch (Exception)
+                    {
+                        r.Close();
+                        return retour;
+                    }
+                }
+
+                r.Close();
+                return retour;
+            }
+            catch (Exception)
+            {
+                //MessageBox.Show("Erreur dans la lecture des Activités, veuillez réessayer");
+                return null;
+            }
         }
 
         /// <summary>
@@ -872,6 +881,25 @@ namespace WindowsFormsApplication2
             return promo2;
         }
 
+        public static string GetPromotionFromEleve(string idEleve)
+        {
+            var promo = string.Empty;
+            var command = conn.CreateCommand();
+            command.CommandText = "SELECT Promotion FROM classe NATURAL JOIN eleve WHERE eleve.idEleve ='" + idEleve + "'";
+            var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                promo = reader["Promotion"].ToString();
+            }
+
+            var promo2 = promo;
+
+            // MessageBox.Show(id);
+            reader.Close();
+
+            return promo2;
+        }
+
         /// <summary>
         /// The get web classe request.
         /// </summary>
@@ -916,7 +944,7 @@ namespace WindowsFormsApplication2
         public static List<Tuple<string, float>> GetWebMax(string promo)
         {
             var retour = new List<Tuple<string, float>>();
-            var req = "SELECT " + ColIdskill + ", maxEchelle FROM competence WHERE idClasse='" + Database.GetidClasse(promo) + " ORDER BY idCompetence'";
+            var req = "SELECT " + ColIdskill + ", maxEchelle FROM competence WHERE idClasse='" + Database.GetidClasse(promo) + "' ORDER BY idCompetence";
             var command = conn.CreateCommand();
             command.CommandText = req;
             var r = command.ExecuteReader();
@@ -983,23 +1011,32 @@ namespace WindowsFormsApplication2
         /// </returns>
         public static List<Tuple<string, float, int>> GetWtfRequest(string idEleve = "2")
         {
-            var req =
-                "SELECT " + ColIdskill + ",COUNT(" + ColNote + ") AS quantite, ((SUM(" + ColNote + "/" + ColMaxnote +
-                ")/COUNT(" + ColNote + "))*100) AS moyenne FROM " + TabEleve + " NATURAL JOIN " + TabTp +
-                " NATURAL JOIN " + ColNote + " WHERE " + ColIdeleve + " = " + idEleve + " GROUP BY " + ColIdskill;
-            var command = conn.CreateCommand();
-            command.CommandText = req;
-            var r = command.ExecuteReader();
-
-            var a = new List<Tuple<string, float, int>>();
-
-            while (r.Read())
+            try
             {
-                a.Add(new Tuple<string, float, int>(r[ColIdskill].ToString(), float.Parse(r["moyenne"].ToString()), int.Parse(r["quantite"].ToString())));
-            }
+                var req =
+                       "SELECT " + ColIdskill + ",COUNT(" + ColNote + ") AS quantite, ((SUM(" + ColNote + "/" + ColMaxnote +
+                       ")/COUNT(" + ColNote + "))*100) AS moyenne FROM " + TabEleve + " NATURAL JOIN " + TabTp +
+                       " NATURAL JOIN " + ColNote + " WHERE " + ColIdeleve + " = " + idEleve + " GROUP BY " + ColIdskill;
+                var command = conn.CreateCommand();
+                command.CommandText = req;
+            
+                var r = command.ExecuteReader();
 
-            r.Close();
-            return a;
+                var a = new List<Tuple<string, float, int>>();
+
+                while (r.Read())
+                {
+                    a.Add(new Tuple<string, float, int>(r[ColIdskill].ToString(), float.Parse(r["moyenne"].ToString()), int.Parse(r["quantite"].ToString())));
+                }
+
+                r.Close();
+                return a;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Erreur de lecture de la base de données ! ");
+                return null;
+            }
         }
 
         /// <summary>
@@ -1354,8 +1391,7 @@ namespace WindowsFormsApplication2
         public static void setMaxCP(string idCompetence, decimal maxCP)
         {
             var command = conn.CreateCommand();
-            command.CommandText = "UPDATE competence SET maxEchelle = " + maxCP + " WHERE idCompetence = '" +
-                                  idCompetence + "'";
+            command.CommandText = "UPDATE competence SET maxEchelle = " + maxCP + " WHERE idCompetence = '" +  idCompetence + "' AND idClasse ='" + Database.GetidClasse(Program.ac.graphic.promotionSelected) + "'";
             var reader = command.ExecuteReader();
 
 // MessageBox.Show(id);

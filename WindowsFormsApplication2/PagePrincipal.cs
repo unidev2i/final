@@ -115,21 +115,48 @@ namespace WindowsFormsApplication2
         public void refreshCombo()
         {
             comboBox1.Items.Clear();
+            comboBox2.Items.Clear();
             comboBox3.Items.Clear();
-            //this.Refresh();
-            foreach (var a in Database.GetListRequest("eleve", new[] { "Prenom", "Nom" }))
-                comboBox1.Items.Add(a);
 
-            foreach (var a in Database.GetListRequest("classe", new[] { "Promotion" }))
-                comboBox3.Items.Add(a);
+            chart1.Hide();
+            chart2.Hide();
+            chart3.Hide();
+            label2.Hide();
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+            
+            comboBox1.Text = "";
+            comboBox2.Text = "";
+            comboBox3.Text = "";
+            try
+            {               
+                //this.Refresh();
+                foreach (var a in Database.GetListRequest("eleve", new[] { "Prenom", "Nom" }))
+                    comboBox1.Items.Add(a);
+
+                foreach (var a in Database.GetListRequest("classe", new[] { "Promotion" }))
+                    comboBox3.Items.Add(a);
+            }
+            catch
+            {
+                //VIDE
+            }
         }
 
         private void ajouterUnPDFToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var b = new Thread(ImportTp.Go);
             b.Start();
-            //b.Join();
+            int test = 1;
+            while(b.IsAlive && test < 5000)
+            {
+                Console.WriteLine(test);
+                test++;
+                this.Cursor = Cursors.WaitCursor;
+            }
             refreshCombo();
+            this.Invalidate();
+            this.Cursor = Cursors.Default;
             
         }
 
@@ -140,7 +167,7 @@ namespace WindowsFormsApplication2
                 var MaxCPForm = new MaximumCP();
                 MaxCPForm.ShowDialog();
                 var x = new List<Tuple<string, float>>();
-                var y = Database.GetWebMax(promotionSelected);
+                var y = Database.GetWebMax(Database.GetPromotionFromEleve(idEleveSelected));
                 if (isNameSelected)
                     x = Database.GetWebRequest(checkBox1, idEleveSelected);
                 if (!isNameSelected)
@@ -191,6 +218,8 @@ namespace WindowsFormsApplication2
             var idClasse = "";
             var classe = new List<string>();
 
+            dataGridView1.DataSource = bindingSource1;
+
             foreach (
                 var a in
                     Database.GetListRequest("eleve", new[] { "idClasse" }, "Nom='" + nom + "' and Prenom='" + prenom + "'")
@@ -203,16 +232,17 @@ namespace WindowsFormsApplication2
             var str2 = Regex.Split(comboBox1.Text, " ");
             var idEleve = "";
             idEleve = Database.GetIdEleveFromName(str2[1], str2[0]);
+            idEleve = idEleve.Substring(0, idEleve.Length - 1);
             idEleveSelected = idEleve;
 
             foreach (var a in Database.GetListRequest("eleve", new[] { "idEleve" }, "Nom='" + str2[1] + "' and Prenom='" + str2[0] + "'"))
-                idEleve = a ?? "1";
+                idEleve = a.Substring(0, a.Length - 1) ?? "1";
 
             GetData(
                 "SELECT Prenom, Nom, idTp AS TP, date AS Date, idCompetence AS Competence, Note, maxNote AS 'Note Maximum' FROM eleve NATURAL JOIN tp NATURAL JOIN note WHERE idEleve='" +
                 idEleve + "'");
             dataGridView1.AutoResizeColumns();
-            
+            label2.Show();
             label2.Text = "Vous observez les résultats de " + comboBox1.Text;
 
             isNameSelected = true;
@@ -225,7 +255,7 @@ namespace WindowsFormsApplication2
 
             var w = Database.GetWtfRequest(idEleve);
             var z = Database.GetWebRequest(checkBox1, idEleve);
-            var y = Database.GetWebMax(promotionSelected);
+            var y = Database.GetWebMax(Program.ac.graphic.promotionSelected);
             var x = Database.GetCourbeRequest(idEleve, comboBox2.Text); //ADD_PLS
 
             drawGraph(w); //ADD_PLS
@@ -259,6 +289,7 @@ namespace WindowsFormsApplication2
             var i = 0;
             var promo = comboBox3.Text;
             var eleve = new string[1000];
+            label2.Show();
             label2.Text = "Vous observez les résultats de la promotion " + comboBox3.Text;
             isNameSelected = false;
             promotionSelected = comboBox3.Text;
@@ -277,7 +308,7 @@ namespace WindowsFormsApplication2
                 }
                 var w = Database.GetWthRequest(promo);
                 var z = Database.GetWebClasseRequest(promo);
-                var y = Database.GetWebMax(promo);
+                var y = Database.GetWebMax(Program.ac.graphic.promotionSelected);
                 var x = Database.GetCourbeClasseRequest(comboBox2.Text, comboBox3.Text);
 
                 drawGraph(w);
@@ -337,7 +368,7 @@ namespace WindowsFormsApplication2
             var array = tuples.Select(a => a.Item1).ToList();
             var parray = tuples.Select(a => a.Item2).ToList();
             var xarray = tuples.Select(a => a.Item3).ToList();
-
+            chart2.Show();
             //chart1.Palette = ChartColorPalette.Excel;
             /*chart1.Series.Clear();
 
@@ -365,6 +396,7 @@ namespace WindowsFormsApplication2
 
         private void drawCourbe(IOrderedEnumerable<Tuple<float, DateTime>> aTuples)
         {
+            chart1.Show();
             chart1.Series[0].Points.Clear();
             chart1.Series[0].XValueType = ChartValueType.DateTime;
             chart1.Series[0].Name = comboBox2.Text;
@@ -384,7 +416,7 @@ namespace WindowsFormsApplication2
             var result = Regex.Split(str, " ");
             var prenom = result[0];
             var nom = result[1];
-
+            chart3.Show();
             chart3.Series[1]["RadarDrawingStyle"] = "Line";
             chart3.Series[serie].Points.Clear();
             Database.removeCPFromWeb(aTuples, prenom, nom);
