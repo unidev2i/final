@@ -152,11 +152,16 @@ namespace WindowsFormsApplication2
             {
                 Console.WriteLine(test);
                 test++;
-                this.Cursor = Cursors.WaitCursor;
+                Cursor = Cursors.WaitCursor;
             }
+            Thread.Sleep(5000);
             refreshCombo();
             this.Invalidate();
-            this.Cursor = Cursors.Default;
+            this.Refresh();
+            comboBox1.Invalidate();
+            comboBox2.Invalidate();
+            comboBox3.Invalidate();
+            Cursor = Cursors.Default;
             
         }
 
@@ -583,6 +588,11 @@ namespace WindowsFormsApplication2
                 panel1.Controls.Remove(button1);
                 PagePrincipal.ActiveForm.Controls.Add(button1);
             }
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+            //MessageBox.Show("COUCOU");
         }
     }
 }

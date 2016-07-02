@@ -75,12 +75,20 @@ namespace WindowsFormsApplication2
         {
             //ImportTp import = new ImportTp(1);
             logMssg += "Traitement des dossiers démarré." + Environment.NewLine;
-
-            if (Directory.GetFiles(Settings.Default.repoPath).Length != 0) //RootFolder
+            try
             {
-                errMssg +=
-                    "<li>Plusieurs fichiers à la racine du répertoire ont étés détectés. Ils ne seront pas traités.</li>" +
-                    Environment.NewLine;
+                if (Directory.GetFiles(Settings.Default.repoPath).Length != 0) //RootFolder
+                {
+                    errMssg +=
+                        "<li>Plusieurs fichiers à la racine du répertoire ont étés détectés. Ils ne seront pas traités.</li>" +
+                        Environment.NewLine;
+                }
+            }
+
+            catch
+            {
+                MessageBox.Show("Erreur dans la synchronisation !");
+                return;
             }
 
             // First check
@@ -231,6 +239,7 @@ namespace WindowsFormsApplication2
             // ShowLog();
             Database.AddCpMax(Database.CPsNewInNote());
             //Database.removeCPMax(Database.CpMaxIsNotinNote(Database.GetidClasse(GetPromo(file))));
+            
         }
 
         /// <summary>
