@@ -363,7 +363,7 @@ namespace WindowsFormsApplication2
 
         private void deconnexionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var sgInfo = new ProcessStartInfo("WindowsFormsApplication2.exe");
+            var sgInfo = new ProcessStartInfo("PPM.exe");
             Process.Start(sgInfo);
             Close();
         }
